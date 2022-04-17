@@ -74,6 +74,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -100,7 +101,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Interfaces\ICollection.cs" />
+    <Compile Include="Interfaces\ICollectionItem.cs" />
+    <Compile Include="Interfaces\ICollectionsManager.cs" />
     <Compile Include="Interfaces\IWindowTitle.cs" />
+    <Compile Include="Models\Collection.cs" />
+    <Compile Include="Models\CollectionsManager.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

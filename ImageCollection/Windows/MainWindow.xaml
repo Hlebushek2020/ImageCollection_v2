@@ -14,7 +14,7 @@
     <Grid>
         <Menu VerticalAlignment="Top" FontSize="12">
             <MenuItem Header="Файл">
-                <MenuItem Header="Открыть папку"/>
+                <MenuItem Header="Открыть папку" Command="{Binding OpenFolder}"/>
                 <Separator/>
                 <MenuItem Header="Удалить" />
                 <MenuItem Header="Переименовать" />
@@ -37,7 +37,7 @@
                 <MenuItem Header="Разрешение" />
             </MenuItem>
         </Menu>
-        <ComboBox x:Name="comboBox_CollectionNames" Margin="10,25,10,0" VerticalAlignment="Top" />
+        <ComboBox Margin="10,25,10,0" VerticalAlignment="Top" DisplayMemberPath="Name" ItemsSource="{Binding Collections, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Grid Margin="10,56,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="350"/>
