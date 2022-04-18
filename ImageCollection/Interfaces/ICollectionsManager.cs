@@ -6,5 +6,8 @@ namespace ImageCollection.Interfaces
     {
         ObservableCollection<ICollection> Collections { get; }
         ICollection DefaultCollection { get; }
+
+        bool Rename(ICollection collection, string name);
+        ICollection Create(string name);
     }
 }
