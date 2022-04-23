@@ -45,7 +45,5 @@ namespace ImageCollection.ViewModels
                 }
             });
         }
-
-        public CollectionEditViewModel(ICollectionsManager collectionsManager) : this(collectionsManager, null) { }
     }
 }

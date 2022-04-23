@@ -24,9 +24,9 @@
                 <MenuItem Header="Настройки"/>
             </MenuItem>
             <MenuItem Header="Коллекция">
-                <MenuItem Header="Создать" />
-                <MenuItem Header="Изменить" />
-                <MenuItem Header="Удалить" />
+                <MenuItem Header="Создать" Command="{Binding CreateCollection}"/>
+                <MenuItem Header="Переименовать" Command="{Binding RenameCollection}"/>
+                <MenuItem Header="Удалить" Command="{Binding RemoveCollection}"/>
                 <Separator/>
                 <MenuItem Header="Переименовать файлы" />
                 <MenuItem Header="Горячие клавиши" />
@@ -53,7 +53,7 @@
                 <TextBlock x:Name="textBlock_Intelligence" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Center" Style="{StaticResource TextBlockStyle}"/>
             </Grid>
             <GridSplitter Grid.Column="1" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-            <ListBox x:Name="listBox_CollectionItems" Grid.Column="2" Margin="5,0,0,0" SelectionMode="Extended" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+            <ListBox Grid.Column="2" Margin="5,0,0,0" SelectionMode="Extended" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True" >
                 <ListBox.ContextMenu>
                     <ContextMenu FontSize="12">
                         <MenuItem Header="Удалить" InputGestureText="Delete" />

@@ -105,6 +105,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\CollectionItem.cs" />
     <Compile Include="ViewModels\CollectionEditViewModel.cs" />
     <Compile Include="Windows\CollectionEditWindow.xaml.cs">
       <DependentUpon>CollectionEditWindow.xaml</DependentUpon>

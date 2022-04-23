@@ -54,5 +54,10 @@ namespace ImageCollection.Models
             }
             return null;
         }
+
+        public void Remove(ICollection collection)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

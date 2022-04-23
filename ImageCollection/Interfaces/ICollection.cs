@@ -2,7 +2,7 @@
 
 namespace ImageCollection.Interfaces
 {
-    internal interface ICollection
+    public interface ICollection
     {
         string Name { get; }
         ObservableCollection<ICollectionItem> Items { get; }

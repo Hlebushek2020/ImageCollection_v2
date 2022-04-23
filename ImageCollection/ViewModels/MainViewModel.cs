@@ -20,6 +20,9 @@ namespace ImageCollection.ViewModels
 
         #region Commands
         public DelegateCommand OpenFolder { get; }
+        public DelegateCommand CreateCollection { get; }
+        public DelegateCommand RenameCollection { get; }
+        public DelegateCommand RemoveCollection { get; }
         #endregion
 
         public MainViewModel()
@@ -35,6 +38,20 @@ namespace ImageCollection.ViewModels
                     SelectedCollection = _collectionsManager.DefaultCollection;
                     RaisePropertyChanged("SelectedCollection");
                 }
+            });
+            CreateCollection = new DelegateCommand(() =>
+            {
+                CollectionEditWindow collectionEdit = new CollectionEditWindow(_collectionsManager);
+                collectionEdit.ShowDialog();
+            });
+            RenameCollection = new DelegateCommand(() =>
+            {
+                CollectionEditWindow collectionEdit = new CollectionEditWindow(_collectionsManager, SelectedCollection);
+                collectionEdit.ShowDialog();
+            });
+            RemoveCollection = new DelegateCommand(() =>
+            {
+                _collectionsManager.Remove(SelectedCollection);
             });
         }
     }
