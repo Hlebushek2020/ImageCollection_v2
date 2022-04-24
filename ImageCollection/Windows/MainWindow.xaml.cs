@@ -1,6 +1,5 @@
 ﻿using ImageCollection.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace ImageCollection
 {

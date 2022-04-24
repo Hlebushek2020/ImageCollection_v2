@@ -1,21 +1,22 @@
 ﻿using ImageCollection.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace ImageCollection.Models
 {
     internal class CollectionItem : ICollectionItem
     {
-        public string Name => throw new NotImplementedException();
+        public Guid Id { get; }
+        public string Name { get; }
+        public string Description { get; }
+        public BitmapImage Preview { get; }
+        public bool IsSelected { get; }
 
-        public string Description => throw new NotImplementedException();
-
-        public BitmapImage Preview => throw new NotImplementedException();
-
-        public bool IsSelected => throw new NotImplementedException();
+        public CollectionItem(FileInfo fileInfo)
+        {
+            Id = Guid.NewGuid();
+            Name = fileInfo.Name;
+        }
     }
 }
