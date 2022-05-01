@@ -23,6 +23,7 @@ namespace ImageCollection.ViewModels
         public DelegateCommand CreateCollection { get; }
         public DelegateCommand RenameCollection { get; }
         public DelegateCommand RemoveCollection { get; }
+        public DelegateCommand RemoveSelectedFiles { get; }
         #endregion
 
         public MainViewModel()
@@ -52,6 +53,10 @@ namespace ImageCollection.ViewModels
             RemoveCollection = new DelegateCommand(() =>
             {
                 _collectionsManager.Remove(SelectedCollection);
+            });
+            RemoveSelectedFiles = new DelegateCommand(() =>
+            {
+                SelectedCollection.RemoveSelectedFiles();
             });
         }
     }

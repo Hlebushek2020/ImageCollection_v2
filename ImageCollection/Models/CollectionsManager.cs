@@ -11,22 +11,22 @@ namespace ImageCollection.Models
     {
         private HashSet<string> _collectionNames = new HashSet<string>();
 
-        private string _rootDirectory;
+        public string RootDirectory { get; private set; }
 
         public ObservableCollection<ICollection> Collections { get; private set; } = new ObservableCollection<ICollection>();
         public ICollection DefaultCollection { get; private set; }
 
         public CollectionsManager(string folder)
         {
-            _rootDirectory = folder;
-            DirectoryInfo directoryInfo = new DirectoryInfo(_rootDirectory);
-            DefaultCollection = new Collection("not collection", directoryInfo.GetFiles().WhereIsImage());
+            RootDirectory = folder;
+            DirectoryInfo directoryInfo = new DirectoryInfo(RootDirectory);
+            DefaultCollection = new Collection(this, "not collection", directoryInfo.GetFiles().WhereIsImage());
             _collectionNames.Add("not collection");
             Collections.Add(DefaultCollection);
             DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
             foreach (DirectoryInfo directory in directoryInfos)
             {
-                Collections.Add(new Collection(directory.Name, directory.GetFiles().WhereIsImage()));
+                Collections.Add(new Collection(this, directory.Name, directory.GetFiles().WhereIsImage()));
                 _collectionNames.Add(directory.Name);
             }
         }
@@ -35,7 +35,7 @@ namespace ImageCollection.Models
         {
             if (!_collectionNames.Contains(name))
             {
-                Directory.Move(Path.Combine(_rootDirectory, collection.Name), Path.Combine(_rootDirectory, name));
+                Directory.Move(Path.Combine(RootDirectory, collection.Name), Path.Combine(RootDirectory, name));
                 ((Collection)collection).Name = name;
                 return true;
             }
@@ -46,8 +46,8 @@ namespace ImageCollection.Models
         {
             if (!_collectionNames.Contains(name))
             {
-                Directory.CreateDirectory(Path.Combine(_rootDirectory, name));
-                Collection collection = new Collection(name, Guid.NewGuid());
+                Directory.CreateDirectory(Path.Combine(RootDirectory, name));
+                Collection collection = new Collection(this, name, Guid.NewGuid());
                 Collections.Add(collection);
                 _collectionNames.Add(name);
                 return collection;
@@ -57,6 +57,10 @@ namespace ImageCollection.Models
 
         public void Remove(ICollection collection)
         {
+            foreach (ICollectionItem item in collection.Items)
+            {
+
+            }
             throw new NotImplementedException();
         }
     }
