@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace ImageCollection.Interfaces
 {
     public interface ICollection
     {
+        Guid Id { get; }
         string Name { get; }
         ObservableCollection<ICollectionItem> Items { get; }
 

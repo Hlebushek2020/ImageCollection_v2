@@ -7,6 +7,6 @@ namespace ImageCollection.Interfaces
         string Name { get; }
         string Description { get; }
         BitmapImage Preview { get; }
-        bool IsSelected { get; }
+        bool IsSelected { get; set; }
     }
 }

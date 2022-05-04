@@ -8,10 +8,10 @@ namespace ImageCollection.Models
     internal class CollectionItem : ICollectionItem
     {
         public Guid Id { get; }
-        public string Name { get; }
+        public string Name { get; set; }
         public string Description { get; }
         public BitmapImage Preview { get; }
-        public bool IsSelected { get; }
+        public bool IsSelected { get; set; }
 
         public CollectionItem(FileInfo fileInfo)
         {

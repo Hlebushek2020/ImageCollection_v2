@@ -57,11 +57,24 @@ namespace ImageCollection.Models
 
         public void Remove(ICollection collection)
         {
+            string currentDirectoty = Path.Combine(RootDirectory, collection.Name);
             foreach (ICollectionItem item in collection.Items)
             {
-
+                string fromPath = Path.Combine(currentDirectoty, item.Name);
+                string toPath = Path.Combine(RootDirectory, item.Name);
+                int counter = 0;
+                string newName = null;
+                while (File.Exists(toPath))
+                {
+                    newName = $"{counter}-{item.Name}";
+                    toPath = Path.Combine(RootDirectory, newName);
+                }
+                File.Move(fromPath, toPath);
+                if (newName != null)
+                {
+                    ((CollectionItem)item).Name = newName;
+                }
             }
-            throw new NotImplementedException();
         }
     }
 }

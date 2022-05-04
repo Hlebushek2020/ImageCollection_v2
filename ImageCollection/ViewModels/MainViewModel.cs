@@ -3,6 +3,8 @@ using ImageCollection.Models;
 using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using System.Windows;
+using SUID = Sergey.UI.Extension.Dialogs;
 
 namespace ImageCollection.ViewModels
 {
@@ -10,12 +12,31 @@ namespace ImageCollection.ViewModels
     {
         #region Fields
         private ICollectionsManager _collectionsManager;
+
+        private ICollection _selectedCollection;
+        private ObservableCollection<ICollection> _collections;
         #endregion
 
         #region Property
         public string Title { get => App.Name; }
-        public ObservableCollection<ICollection> Collections { get; set; }
-        public ICollection SelectedCollection { get; set; }
+        public ObservableCollection<ICollection> Collections
+        {
+            get { return _collections; }
+            set
+            {
+                _collections = value;
+                RaisePropertyChanged();
+            }
+        }
+        public ICollection SelectedCollection
+        {
+            get { return _selectedCollection; }
+            set
+            {
+                _selectedCollection = value;
+                RaisePropertyChanged();
+            }
+        }
         #endregion
 
         #region Commands
@@ -35,9 +56,7 @@ namespace ImageCollection.ViewModels
                 {
                     _collectionsManager = new CollectionsManager(folderBrowserDialog.SelectedPath);
                     Collections = _collectionsManager.Collections;
-                    RaisePropertyChanged("Collections");
                     SelectedCollection = _collectionsManager.DefaultCollection;
-                    RaisePropertyChanged("SelectedCollection");
                 }
             });
             CreateCollection = new DelegateCommand(() =>
@@ -52,7 +71,13 @@ namespace ImageCollection.ViewModels
             });
             RemoveCollection = new DelegateCommand(() =>
             {
-                _collectionsManager.Remove(SelectedCollection);
+                if (_selectedCollection != null && _selectedCollection != _collectionsManager.DefaultCollection)
+                {
+                    if (SUID.MessageBox.Show($"Удалить коллекцию \"{_selectedCollection.Name}\"?", App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        _collectionsManager.Remove(SelectedCollection);
+                    }
+                }
             });
             RemoveSelectedFiles = new DelegateCommand(() =>
             {
