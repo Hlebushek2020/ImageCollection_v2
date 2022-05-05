@@ -49,11 +49,11 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="29"/>
                 </Grid.RowDefinitions>
-                <Image x:Name="image_Image" Grid.Row="0" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" />
+                <Image x:Name="image_Image" Grid.Row="0" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding ImageOfSelectedCollectionItem, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock x:Name="textBlock_Intelligence" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Center" Style="{StaticResource TextBlockStyle}"/>
             </Grid>
             <GridSplitter Grid.Column="1" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-            <ListBox Grid.Column="2" Margin="5,0,0,0" SelectionMode="Extended" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding SelectedCollection.Items, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListBox Grid.Column="2" Margin="5,0,0,0" SelectionMode="Extended" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True" SelectedItem="{Binding SelectedCollectionItem, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SelectedCollection.Items, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListBox.ContextMenu>
                     <ContextMenu FontSize="12">
                         <MenuItem Header="Удалить" />

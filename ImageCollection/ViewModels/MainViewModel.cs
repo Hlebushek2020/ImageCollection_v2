@@ -4,6 +4,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using SUID = Sergey.UI.Extension.Dialogs;
 
 namespace ImageCollection.ViewModels
@@ -12,13 +13,15 @@ namespace ImageCollection.ViewModels
     {
         #region Fields
         private ICollectionsManager _collectionsManager;
-
+        private ICollectionItem _selectedCollectionItem;
         private ICollection _selectedCollection;
         private ObservableCollection<ICollection> _collections;
+        private BitmapImage _imageOfSelectedCollectionItem;
         #endregion
 
         #region Property
         public string Title { get => App.Name; }
+
         public ObservableCollection<ICollection> Collections
         {
             get { return _collections; }
@@ -28,12 +31,37 @@ namespace ImageCollection.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         public ICollection SelectedCollection
         {
             get { return _selectedCollection; }
             set
             {
                 _selectedCollection = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public ICollectionItem SelectedCollectionItem
+        {
+            get { return _selectedCollectionItem; }
+            set
+            {
+                _selectedCollectionItem = value;
+                if (_selectedCollectionItem != null)
+                {
+                    ImageOfSelectedCollectionItem = _selectedCollection.GetImageOfCollectionItem(_selectedCollectionItem);
+                }
+                RaisePropertyChanged();
+            }
+        }
+
+        public BitmapImage ImageOfSelectedCollectionItem
+        {
+            get { return _imageOfSelectedCollectionItem; }
+            private set
+            {
+                _imageOfSelectedCollectionItem = value;
                 RaisePropertyChanged();
             }
         }

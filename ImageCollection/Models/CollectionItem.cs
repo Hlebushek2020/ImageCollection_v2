@@ -17,6 +17,7 @@ namespace ImageCollection.Models
         {
             Id = Guid.NewGuid();
             Name = fileInfo.Name;
+            Description = fileInfo.Length + "";
         }
     }
 }

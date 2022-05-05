@@ -6,17 +6,18 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using SUID = Sergey.UI.Extension.Dialogs;
 
 namespace ImageCollection.Models
 {
-    internal class Collection : BindableBase, ICollection
+    internal class Collection : BindableBase, ICollection, IEquatable<Collection>
     {
         public Guid Id { get; }
         public string Name { get; set; }
         public ObservableCollection<ICollectionItem> Items { get; } = new ObservableCollection<ICollectionItem>();
 
-        private CollectionsManager _collectionsManager;
+        private readonly CollectionsManager _collectionsManager;
 
         public Collection(CollectionsManager collectionsManager, string name, IEnumerable<FileInfo> fileInfos)
         {
@@ -65,9 +66,20 @@ namespace ImageCollection.Models
             throw new NotImplementedException();
         }
 
-        public override bool Equals(object obj) => (obj is Collection).Equals(Id);
+        public BitmapImage GetImageOfCollectionItem(ICollectionItem item)
+        {
+            string imagePath = Path.Combine(_collectionsManager.RootDirectory, Name, item.Name);
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.StreamSource = new MemoryStream(File.ReadAllBytes(imagePath));
+            bitmapImage.EndInit();
+            return bitmapImage;
+        }
+
+        public override bool Equals(object obj) => obj != null && Equals(obj as Collection);
+
+        public bool Equals(Collection other) => other != null && Id.Equals(other.Id);
 
         public override int GetHashCode() => Id.GetHashCode();
-
     }
 }

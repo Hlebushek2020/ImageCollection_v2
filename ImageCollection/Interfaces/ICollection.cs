@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Windows.Media.Imaging;
 
 namespace ImageCollection.Interfaces
 {
@@ -12,5 +13,7 @@ namespace ImageCollection.Interfaces
         void RemoveSelectedFiles();
         bool AddItem(ICollectionItem item);
         bool RemoveItem(ICollection item);
+
+        BitmapImage GetImageOfCollectionItem(ICollectionItem item);
     }
 }
