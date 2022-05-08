@@ -14,7 +14,7 @@
         Title="{Binding Title, Mode=OneWay}"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
-        <ComboBox Margin="0,0,0,0" VerticalAlignment="Top" ItemsSource="{Binding Collections, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <ComboBox Margin="0,0,0,0" VerticalAlignment="Top" DisplayMemberPath="Name" ItemsSource="{Binding Collections, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Style="{StaticResource ButtonStyle}" Content="Применить" HorizontalAlignment="Right" Margin="0,34,85,0" VerticalAlignment="Top" Height="30" Width="100" Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
         <Button Style="{StaticResource ButtonStyle}" Content="Закрыть" HorizontalAlignment="Right" Margin="0,34,0,0" VerticalAlignment="Top" Height="30" Width="80" Command="{Binding CanselCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
     </Grid>

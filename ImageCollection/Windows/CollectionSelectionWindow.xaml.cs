@@ -9,10 +9,15 @@ namespace ImageCollection
     /// </summary>
     public partial class CollectionSelectionWindow : Window
     {
-        public CollectionSelectionWindow(ICollectionsManager collectionsManager)
+        private readonly CollectionSelectionViewModel viewModel;
+
+        public CollectionSelectionWindow(ICollectionsManager collectionsManager, ICollection currentCollection)
         {
             InitializeComponent();
-            DataContext = new CollectionSelectionViewModel(collectionsManager);
+            viewModel = new CollectionSelectionViewModel(collectionsManager, currentCollection);
+            DataContext = viewModel;
         }
+
+        public ICollection GetSelectedCollection() => viewModel.SelectedCollection;
     }
 }

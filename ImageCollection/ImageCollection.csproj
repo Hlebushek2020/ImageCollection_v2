@@ -101,7 +101,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\CollectionEditWindow.xaml">
+    <Page Include="Windows\AddOrRenameCollectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,6 +114,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Interfaces\ICollectionItemMover.cs" />
+    <Compile Include="Models\CollectionItemMover.cs" />
     <Compile Include="ViewModels\CollectionSelectionViewModel.cs" />
     <Compile Include="Windows\CollectionSelectionWindow.xaml.cs">
       <DependentUpon>CollectionSelectionWindow.xaml</DependentUpon>
@@ -122,9 +123,9 @@
     <Compile Include="Windows\RenamingWindow.xaml.cs">
       <DependentUpon>RenamingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CollectionEditViewModel.cs" />
-    <Compile Include="Windows\CollectionEditWindow.xaml.cs">
-      <DependentUpon>CollectionEditWindow.xaml</DependentUpon>
+    <Compile Include="ViewModels\AddOrRenameCollectionViewModel.cs" />
+    <Compile Include="Windows\AddOrRenameCollectionWindow.xaml.cs">
+      <DependentUpon>AddOrRenameCollectionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Interfaces\ICollection.cs" />

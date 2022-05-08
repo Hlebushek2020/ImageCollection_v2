@@ -17,9 +17,9 @@
                 <MenuItem Header="Открыть папку" Command="{Binding OpenFolder}"/>
                 <Separator/>
                 <MenuItem Header="Удалить" Command="{Binding RemoveSelectedFiles}"/>
-                <MenuItem Header="Переименовать" Command="{Binding ToCollection}"/>
+                <MenuItem Header="Переименовать" />
                 <Separator/>
-                <MenuItem Header="Добавить в коллекцию" />
+                <MenuItem Header="Добавить в коллекцию" Command="{Binding ToCollection}"/>
                 <Separator/>
                 <MenuItem Header="Настройки"/>
             </MenuItem>

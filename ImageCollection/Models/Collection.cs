@@ -13,11 +13,11 @@ namespace ImageCollection.Models
 {
     internal class Collection : BindableBase, ICollection, IEquatable<Collection>
     {
+        private readonly CollectionsManager _collectionsManager;
+
         public Guid Id { get; }
         public string Name { get; set; }
         public ObservableCollection<ICollectionItem> Items { get; } = new ObservableCollection<ICollectionItem>();
-
-        private readonly CollectionsManager _collectionsManager;
 
         public Collection(CollectionsManager collectionsManager, string name, IEnumerable<FileInfo> fileInfos)
         {
@@ -37,6 +37,7 @@ namespace ImageCollection.Models
             Name = name;
         }
 
+        //TODO: refactor?
         public void RemoveSelectedFiles()
         {
             IReadOnlyList<ICollectionItem> selectedItems = Items.Where(item => item.IsSelected).ToList();
@@ -61,7 +62,7 @@ namespace ImageCollection.Models
             throw new NotImplementedException();
         }
 
-        public bool RemoveItem(ICollection item)
+        public bool RemoveItem(ICollectionItem item)
         {
             throw new NotImplementedException();
         }

@@ -6,7 +6,7 @@ using SUID = Sergey.UI.Extension.Dialogs;
 
 namespace ImageCollection.ViewModels
 {
-    internal class CollectionEditViewModel : IWindowTitle
+    internal class AddOrRenameCollectionViewModel : IWindowTitle
     {
         #region Property
         public string Title { get => App.Name; }
@@ -18,7 +18,7 @@ namespace ImageCollection.ViewModels
         public DelegateCommand<Window> OkCommand { get; }
         #endregion
 
-        public CollectionEditViewModel(ICollectionsManager collectionsManager, ICollection collection)
+        public AddOrRenameCollectionViewModel(ICollectionsManager collectionsManager, ICollection collection)
         {
             if (collection != null)
             {

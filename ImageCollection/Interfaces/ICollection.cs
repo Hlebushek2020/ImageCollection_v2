@@ -12,7 +12,7 @@ namespace ImageCollection.Interfaces
 
         void RemoveSelectedFiles();
         bool AddItem(ICollectionItem item);
-        bool RemoveItem(ICollection item);
+        bool RemoveItem(ICollectionItem item);
 
         BitmapImage GetImageOfCollectionItem(ICollectionItem item);
     }

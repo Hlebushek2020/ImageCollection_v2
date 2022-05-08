@@ -3,6 +3,7 @@ using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using SUID = Sergey.UI.Extension.Dialogs;
 
 namespace ImageCollection.ViewModels
 {
@@ -19,13 +20,25 @@ namespace ImageCollection.ViewModels
         public DelegateCommand<Window> OkCommand { get; }
         #endregion
 
-        public CollectionSelectionViewModel(ICollectionsManager collectionsManager)
+        public CollectionSelectionViewModel(ICollectionsManager collectionsManager, ICollection currentCollection)
         {
             Collections = collectionsManager.Collections;
             CanselCommand = new DelegateCommand<Window>((w) => w.Close());
             OkCommand = new DelegateCommand<Window>((w) =>
             {
-                throw new NotImplementedException();
+                if (SelectedCollection == null)
+                {
+                    SUID.MessageBox.Show("Выберите коллекцию!", App.Name, MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else if (SelectedCollection.Equals(currentCollection))
+                {
+                    SUID.MessageBox.Show("Невозможно добавть элементы в ту же коллекцию, выберите другую коллекцию!", App.Name, MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    w.DialogResult = true;
+                    w.Close();
+                }
             });
         }
     }

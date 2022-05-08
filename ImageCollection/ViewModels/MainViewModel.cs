@@ -91,12 +91,12 @@ namespace ImageCollection.ViewModels
             });
             CreateCollection = new DelegateCommand(() =>
             {
-                CollectionEditWindow collectionEdit = new CollectionEditWindow(_collectionsManager);
+                AddOrRenameCollectionWindow collectionEdit = new AddOrRenameCollectionWindow(_collectionsManager);
                 collectionEdit.ShowDialog();
             });
             RenameCollection = new DelegateCommand(() =>
             {
-                CollectionEditWindow collectionEdit = new CollectionEditWindow(_collectionsManager, SelectedCollection);
+                AddOrRenameCollectionWindow collectionEdit = new AddOrRenameCollectionWindow(_collectionsManager, SelectedCollection);
                 collectionEdit.ShowDialog();
             });
             RemoveCollection = new DelegateCommand(() =>
@@ -115,7 +115,12 @@ namespace ImageCollection.ViewModels
             });
             ToCollection = new DelegateCommand(() =>
             {
-                throw new NotImplementedException();
+                CollectionSelectionWindow collectionSelection = new CollectionSelectionWindow(_collectionsManager, _selectedCollection);
+                bool? result = collectionSelection.ShowDialog();
+                if (result.HasValue && result.Value)
+                {
+                    _collectionsManager.ToCollection(_selectedCollection, collectionSelection.GetSelectedCollection());
+                }
             });
         }
     }

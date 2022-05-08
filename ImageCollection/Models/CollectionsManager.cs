@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 
 namespace ImageCollection.Models
 {
     internal class CollectionsManager : ICollectionsManager
     {
-        private HashSet<string> _collectionNames = new HashSet<string>();
+        private readonly HashSet<string> _collectionNames = new HashSet<string>();
 
         public string RootDirectory { get; private set; }
 
@@ -57,23 +58,20 @@ namespace ImageCollection.Models
 
         public void Remove(ICollection collection)
         {
-            string currentDirectoty = Path.Combine(RootDirectory, collection.Name);
+            CollectionItemMover itemMover = new CollectionItemMover(this, collection, DefaultCollection);
             foreach (ICollectionItem item in collection.Items)
             {
-                string fromPath = Path.Combine(currentDirectoty, item.Name);
-                string toPath = Path.Combine(RootDirectory, item.Name);
-                int counter = 0;
-                string newName = null;
-                while (File.Exists(toPath))
-                {
-                    newName = $"{counter}-{item.Name}";
-                    toPath = Path.Combine(RootDirectory, newName);
-                }
-                File.Move(fromPath, toPath);
-                if (newName != null)
-                {
-                    ((CollectionItem)item).Name = newName;
-                }
+                itemMover.Move(item);
+            }
+        }
+
+        public void ToCollection(ICollection from, ICollection to)
+        {
+            IEnumerable<ICollectionItem> items = from.Items.Where(ci => ci.IsSelected);
+            CollectionItemMover itemMover = new CollectionItemMover(this, from, to);
+            foreach (ICollectionItem item in items)
+            {
+                itemMover.Move(item);
             }
         }
     }
