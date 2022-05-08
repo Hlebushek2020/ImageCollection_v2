@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ImageCollection.Interfaces;
+using ImageCollection.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ImageCollection
 {
@@ -19,9 +9,10 @@ namespace ImageCollection
     /// </summary>
     public partial class CollectionSelectionWindow : Window
     {
-        public CollectionSelectionWindow()
+        public CollectionSelectionWindow(ICollectionsManager collectionsManager)
         {
             InitializeComponent();
+            DataContext = new CollectionSelectionViewModel(collectionsManager);
         }
     }
 }

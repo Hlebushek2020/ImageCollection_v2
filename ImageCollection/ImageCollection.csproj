@@ -113,6 +113,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\ICollectionItemMover.cs" />
+    <Compile Include="ViewModels\CollectionSelectionViewModel.cs" />
     <Compile Include="Windows\CollectionSelectionWindow.xaml.cs">
       <DependentUpon>CollectionSelectionWindow.xaml</DependentUpon>
     </Compile>

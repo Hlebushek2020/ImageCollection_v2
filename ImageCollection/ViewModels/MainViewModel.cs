@@ -2,6 +2,7 @@
 using ImageCollection.Models;
 using Prism.Commands;
 using Prism.Mvvm;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -69,10 +70,11 @@ namespace ImageCollection.ViewModels
 
         #region Commands
         public DelegateCommand OpenFolder { get; }
+        public DelegateCommand RemoveSelectedFiles { get; }
+        public DelegateCommand ToCollection { get; }
         public DelegateCommand CreateCollection { get; }
         public DelegateCommand RenameCollection { get; }
         public DelegateCommand RemoveCollection { get; }
-        public DelegateCommand RemoveSelectedFiles { get; }
         #endregion
 
         public MainViewModel()
@@ -110,6 +112,10 @@ namespace ImageCollection.ViewModels
             RemoveSelectedFiles = new DelegateCommand(() =>
             {
                 SelectedCollection.RemoveSelectedFiles();
+            });
+            ToCollection = new DelegateCommand(() =>
+            {
+                throw new NotImplementedException();
             });
         }
     }
