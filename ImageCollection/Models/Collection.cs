@@ -66,6 +66,11 @@ namespace ImageCollection.Models
             return bitmapImage;
         }
 
+        public bool CheckingNewFileName(ICollectionItem collectionItem, string newName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool Equals(object obj) => obj != null && Equals(obj as Collection);
 
         public bool Equals(Collection other) => other != null && Id.Equals(other.Id);

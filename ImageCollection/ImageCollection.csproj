@@ -100,7 +100,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\RenamingWindow.xaml">
+    <Page Include="Windows\RenameFilesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -118,13 +118,14 @@
     </Compile>
     <Compile Include="Interfaces\ICollectionItemMover.cs" />
     <Compile Include="Models\CollectionItemMover.cs" />
+    <Compile Include="ViewModels\RenameFilesViewModel.cs" />
     <Compile Include="ViewModels\CollectionSelectionViewModel.cs" />
     <Compile Include="Windows\CollectionSelectionWindow.xaml.cs">
       <DependentUpon>CollectionSelectionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\CollectionItem.cs" />
-    <Compile Include="Windows\RenamingWindow.xaml.cs">
-      <DependentUpon>RenamingWindow.xaml</DependentUpon>
+    <Compile Include="Windows\RenameFilesWindow.xaml.cs">
+      <DependentUpon>RenameFilesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AddOrRenameCollectionViewModel.cs" />
     <Compile Include="Windows\AddOrRenameCollectionWindow.xaml.cs">

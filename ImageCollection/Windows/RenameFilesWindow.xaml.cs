@@ -5,9 +5,9 @@ namespace ImageCollection
     /// <summary>
     /// Interaction logic for RenameWindow.xaml
     /// </summary>
-    public partial class RenameWindow : Window
+    public partial class RenameFilesWindow : Window
     {
-        public RenameWindow()
+        public RenameFilesWindow()
         {
             InitializeComponent();
         }
