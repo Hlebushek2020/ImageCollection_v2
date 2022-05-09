@@ -1,6 +1,5 @@
 ﻿using ImageCollection.Interfaces;
 using Prism.Commands;
-using System;
 using System.Collections.Generic;
 using System.Windows;
 using SUID = Sergey.UI.Extension.Dialogs;

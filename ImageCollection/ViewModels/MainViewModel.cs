@@ -2,7 +2,6 @@
 using ImageCollection.Models;
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
