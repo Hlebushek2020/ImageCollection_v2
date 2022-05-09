@@ -8,10 +8,6 @@ namespace ImageCollection.ViewModels
 {
     internal class RenameFilesViewModel : IWindowTitle
     {
-        #region Fields
-        private string collectionDirectory;
-        #endregion
-
         #region Property
         public string Title { get => App.Name; }
         public string NewNameOrPattern { get; set; }

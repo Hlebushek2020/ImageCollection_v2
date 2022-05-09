@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using ImageCollection.Interfaces;
+using ImageCollection.ViewModels;
+using System.Windows;
 
 namespace ImageCollection
 {
@@ -7,9 +9,12 @@ namespace ImageCollection
     /// </summary>
     public partial class RenameFilesWindow : Window
     {
-        public RenameFilesWindow()
+        public RenameFilesWindow(ICollectionItem collectionItem, ICollection collection)
         {
             InitializeComponent();
+            DataContext = new RenameFilesViewModel(collectionItem, collection);
         }
+
+        public RenameFilesWindow() : this(null, null) { }
     }
 }
