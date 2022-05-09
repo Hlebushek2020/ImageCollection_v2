@@ -2,7 +2,9 @@
 using ImageCollection.Models;
 using Prism.Commands;
 using Prism.Mvvm;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SUID = Sergey.UI.Extension.Dialogs;
@@ -110,7 +112,16 @@ namespace ImageCollection.ViewModels
             });
             RemoveSelectedFiles = new DelegateCommand(() =>
             {
-                SelectedCollection.RemoveSelectedFiles();
+                IReadOnlyList<ICollectionItem> selectedItems = _selectedCollection.Items.Where(item => item.IsSelected).ToList();
+                string message = "Удалить выбранные файлы?";
+                if (selectedItems.Count == 1)
+                {
+                    message = $"Удалить {selectedItems[0].Name}?";
+                }
+                if (SUID.MessageBox.Show(message, App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    SelectedCollection.RemoveFiles(selectedItems);
+                }
             });
             ToCollection = new DelegateCommand(() =>
             {

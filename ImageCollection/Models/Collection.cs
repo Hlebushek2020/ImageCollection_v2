@@ -4,10 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Windows;
 using System.Windows.Media.Imaging;
-using SUID = Sergey.UI.Extension.Dialogs;
 
 namespace ImageCollection.Models
 {
@@ -37,39 +34,31 @@ namespace ImageCollection.Models
             Name = name;
         }
 
-        //TODO: refactor?
-        public void RemoveSelectedFiles()
+        public void RemoveFiles(IEnumerable<ICollectionItem> items)
         {
-            IReadOnlyList<ICollectionItem> selectedItems = Items.Where(item => item.IsSelected).ToList();
-            string message = "Удалить выбранные файлы?";
-            if (selectedItems.Count == 1)
+            string collectionDirectory = _collectionsManager.RootDirectory;
+            if (Equals(_collectionsManager.DefaultCollection))
             {
-                message = $"Удалить {selectedItems[0].Name}?";
+                collectionDirectory = Path.Combine(_collectionsManager.RootDirectory, Name);
             }
-            if (SUID.MessageBox.Show(message, App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            foreach (ICollectionItem collectionItem in items)
             {
-                string collectionDirectory = Path.Combine(_collectionsManager.RootDirectory, Name);
-                foreach (ICollectionItem collectionItem in selectedItems)
-                {
-                    File.Delete(Path.Combine(collectionDirectory, collectionItem.Name));
-                    Items.Remove(collectionItem);
-                }
+                File.Delete(Path.Combine(collectionDirectory, collectionItem.Name));
+                Items.Remove(collectionItem);
             }
         }
 
-        public bool AddItem(ICollectionItem item)
-        {
-            throw new NotImplementedException();
-        }
+        public void AddItem(ICollectionItem item) => Items.Add(item);
 
-        public bool RemoveItem(ICollectionItem item)
-        {
-            throw new NotImplementedException();
-        }
+        public bool RemoveItem(ICollectionItem item) => Items.Remove(item);
 
         public BitmapImage GetImageOfCollectionItem(ICollectionItem item)
         {
-            string imagePath = Path.Combine(_collectionsManager.RootDirectory, Name, item.Name);
+            string imagePath = Path.Combine(_collectionsManager.RootDirectory, item.Name);
+            if (Equals(_collectionsManager.DefaultCollection))
+            {
+                imagePath = Path.Combine(_collectionsManager.RootDirectory, Name, item.Name);
+            }
             BitmapImage bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
             bitmapImage.StreamSource = new MemoryStream(File.ReadAllBytes(imagePath));
