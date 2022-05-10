@@ -72,10 +72,12 @@ namespace ImageCollection.ViewModels
         #region Commands
         public DelegateCommand OpenFolder { get; }
         public DelegateCommand RemoveSelectedFiles { get; }
+        public DelegateCommand RenameSelectedFiles { get; }
         public DelegateCommand ToCollection { get; }
         public DelegateCommand CreateCollection { get; }
         public DelegateCommand RenameCollection { get; }
         public DelegateCommand RemoveCollection { get; }
+        public DelegateCommand RenameCollectionFiles { get; }
         #endregion
 
         public MainViewModel()
@@ -130,6 +132,37 @@ namespace ImageCollection.ViewModels
                 if (result.HasValue && result.Value)
                 {
                     _collectionsManager.ToCollection(_selectedCollection, collectionSelection.GetSelectedCollection());
+                }
+            });
+            RenameSelectedFiles = new DelegateCommand(() =>
+            {
+                IReadOnlyList<ICollectionItem> selectedFiles = _selectedCollection.Items.Where(ci => ci.IsSelected).ToList();
+                RenameFilesWindow renameFiles = new RenameFilesWindow();
+                if (selectedFiles.Count == 1)
+                {
+                    renameFiles = new RenameFilesWindow(_selectedCollectionItem, _selectedCollection);
+                }
+                bool? result = renameFiles.ShowDialog();
+                if (result.HasValue && result.Value)
+                {
+                    string newNameOrPattern = renameFiles.GetNewNameOrPattern();
+                    if (selectedFiles.Count > 1)
+                    {
+                        _selectedCollection.RenameFile(_selectedCollectionItem, newNameOrPattern);
+                    }
+                    else
+                    {
+                        _selectedCollection.RenameFiles(selectedFiles, newNameOrPattern);
+                    }
+                }
+            });
+            RenameCollectionFiles = new DelegateCommand(() =>
+            {
+                RenameFilesWindow renameFiles = new RenameFilesWindow();
+                bool? result = renameFiles.ShowDialog();
+                if (result.HasValue && result.Value)
+                {
+                    _selectedCollection.RenameFiles(_selectedCollection.Items, renameFiles.GetNewNameOrPattern());
                 }
             });
         }

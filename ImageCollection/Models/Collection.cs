@@ -71,6 +71,16 @@ namespace ImageCollection.Models
             throw new NotImplementedException();
         }
 
+        public void RenameFile(ICollectionItem item, string newName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RenameFiles(IEnumerable<ICollectionItem> items, string pattern)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool Equals(object obj) => obj != null && Equals(obj as Collection);
 
         public bool Equals(Collection other) => other != null && Id.Equals(other.Id);

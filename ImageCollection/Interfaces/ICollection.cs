@@ -14,6 +14,8 @@ namespace ImageCollection.Interfaces
         void AddItem(ICollectionItem item);
         bool RemoveItem(ICollectionItem item);
         void RemoveFiles(IEnumerable<ICollectionItem> items);
+        void RenameFile(ICollectionItem item, string newName);
+        void RenameFiles(IEnumerable<ICollectionItem> items, string pattern);
 
         BitmapImage GetImageOfCollectionItem(ICollectionItem item);
         bool CheckingNewFileName(ICollectionItem collectionItem, string newName);
