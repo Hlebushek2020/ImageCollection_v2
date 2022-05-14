@@ -59,6 +59,9 @@
     <ApplicationIcon>appIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MetadataExtractor, Version=2.7.2.0, Culture=neutral, PublicKeyToken=b66b5ccaf776c301, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetadataExtractor.2.7.2\lib\net45\MetadataExtractor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -90,6 +93,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XmpCore, Version=6.1.10.1, Culture=neutral, PublicKeyToken=961f4f366277b80e, processorArchitecture=MSIL">
+      <HintPath>..\packages\XmpCore.6.1.10.1\lib\net35\XmpCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -117,7 +123,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Interfaces\ICollectionItemMover.cs" />
+    <Compile Include="Models\CollectionHotkey.cs" />
     <Compile Include="Models\CollectionItemMover.cs" />
+    <Compile Include="Models\CollectionsHotkeyManager.cs" />
     <Compile Include="ViewModels\RenameFilesViewModel.cs" />
     <Compile Include="ViewModels\CollectionSelectionViewModel.cs" />
     <Compile Include="Windows\CollectionSelectionWindow.xaml.cs">

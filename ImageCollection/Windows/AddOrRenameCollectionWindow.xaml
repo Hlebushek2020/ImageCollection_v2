@@ -15,7 +15,7 @@
         WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <TextBox Margin="0,0,0,0" TextWrapping="NoWrap" Text="{Binding NewName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
-        <Button Style="{StaticResource ButtonStyle}" Content="Применить" HorizontalAlignment="Right" Margin="0,36,85,0" VerticalAlignment="Top" Height="30" Width="100" Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}" />
+        <Button Style="{StaticResource ButtonStyle}" Content="Применить" HorizontalAlignment="Right" Margin="0,36,85,0" VerticalAlignment="Top" Height="30" Width="100" Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
         <Button Style="{StaticResource ButtonStyle}" Content="Закрыть" HorizontalAlignment="Right" Margin="0,36,0,0" VerticalAlignment="Top" Height="30" Width="80" Command="{Binding CanselCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
     </Grid>
 </Window>

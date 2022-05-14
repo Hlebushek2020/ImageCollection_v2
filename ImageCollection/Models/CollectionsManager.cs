@@ -21,8 +21,8 @@ namespace ImageCollection.Models
         {
             RootDirectory = folder;
             DirectoryInfo directoryInfo = new DirectoryInfo(RootDirectory);
-            DefaultCollection = new Collection(this, "not collection", directoryInfo.GetFiles().WhereIsImage());
-            _collectionNames.Add("not collection");
+            DefaultCollection = new Collection(this, "Root", directoryInfo.GetFiles().WhereIsImage());
+            _collectionNames.Add("Root");
             Collections.Add(DefaultCollection);
             DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
             foreach (DirectoryInfo directory in directoryInfos)

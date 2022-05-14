@@ -2,6 +2,7 @@
 using ImageCollection.Models;
 using Prism.Commands;
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -78,6 +79,8 @@ namespace ImageCollection.ViewModels
         public DelegateCommand RenameCollection { get; }
         public DelegateCommand RemoveCollection { get; }
         public DelegateCommand RenameCollectionFiles { get; }
+        public DelegateCommand CollectionHotkeys { get; }
+        public DelegateCommand Settings { get; }
         #endregion
 
         public MainViewModel()
@@ -164,6 +167,14 @@ namespace ImageCollection.ViewModels
                 {
                     _selectedCollection.RenameFiles(_selectedCollection.Items, renameFiles.GetNewNameOrPattern());
                 }
+            });
+            CollectionHotkeys = new DelegateCommand(() =>
+            {
+                throw new NotImplementedException();
+            });
+            Settings = new DelegateCommand(() =>
+            {
+                throw new NotImplementedException();
             });
         }
     }

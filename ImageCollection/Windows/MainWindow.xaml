@@ -21,7 +21,7 @@
                 <Separator/>
                 <MenuItem Header="Добавить в коллекцию" Command="{Binding ToCollection}"/>
                 <Separator/>
-                <MenuItem Header="Настройки"/>
+                <MenuItem Header="Настройки" Command="{Binding Settings}"/>
             </MenuItem>
             <MenuItem Header="Коллекция">
                 <MenuItem Header="Создать" Command="{Binding CreateCollection}"/>
@@ -29,7 +29,7 @@
                 <MenuItem Header="Удалить" Command="{Binding RemoveCollection}"/>
                 <Separator/>
                 <MenuItem Header="Переименовать файлы" Command="{Binding RenameCollectionFiles}"/>
-                <MenuItem Header="Горячие клавиши" />
+                <MenuItem Header="Горячие клавиши" Command="{Binding CollectionHotkeys}"/>
             </MenuItem>
             <MenuItem Header="Сортировка">
                 <MenuItem Header="Имя" />

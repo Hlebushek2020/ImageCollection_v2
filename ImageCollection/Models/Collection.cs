@@ -36,11 +36,7 @@ namespace ImageCollection.Models
 
         public void RemoveFiles(IEnumerable<ICollectionItem> items)
         {
-            string collectionDirectory = _collectionsManager.RootDirectory;
-            if (Equals(_collectionsManager.DefaultCollection))
-            {
-                collectionDirectory = Path.Combine(_collectionsManager.RootDirectory, Name);
-            }
+            string collectionDirectory = GetCollectionDirectory();
             foreach (ICollectionItem collectionItem in items)
             {
                 File.Delete(Path.Combine(collectionDirectory, collectionItem.Name));
@@ -54,13 +50,9 @@ namespace ImageCollection.Models
 
         public BitmapImage GetImageOfCollectionItem(ICollectionItem item)
         {
-            string imagePath = Path.Combine(_collectionsManager.RootDirectory, item.Name);
-            if (Equals(_collectionsManager.DefaultCollection))
-            {
-                imagePath = Path.Combine(_collectionsManager.RootDirectory, Name, item.Name);
-            }
             BitmapImage bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
+            string imagePath = Path.Combine(GetCollectionDirectory(), item.Name);
             bitmapImage.StreamSource = new MemoryStream(File.ReadAllBytes(imagePath));
             bitmapImage.EndInit();
             return bitmapImage;
@@ -68,17 +60,50 @@ namespace ImageCollection.Models
 
         public bool CheckingNewFileName(ICollectionItem collectionItem, string newName)
         {
-            throw new NotImplementedException();
+            string filePath = Path.Combine(GetCollectionDirectory(), $"{newName}.{Path.GetExtension(collectionItem.Name)}");
+            return File.Exists(filePath);
         }
 
         public void RenameFile(ICollectionItem item, string newName)
         {
-            throw new NotImplementedException();
+            string directoryPath = GetCollectionDirectory();
+            string fromPath = Path.Combine(directoryPath, item.Name);
+            string toPath = Path.Combine(directoryPath, $"{newName}.{Path.GetExtension(item.Name)}");
+            File.Move(fromPath, toPath);
         }
 
         public void RenameFiles(IEnumerable<ICollectionItem> items, string pattern)
         {
-            throw new NotImplementedException();
+            string directoryPath = GetCollectionDirectory();
+            HashSet<string> checkName = new HashSet<string>();
+            int counter = 0;
+            foreach (ICollectionItem collectionItem in items)
+            {
+                string extension = Path.GetExtension(collectionItem.Name);
+                string fromPath = Path.Combine(directoryPath, collectionItem.Name);
+                bool skip = false;
+                string newName;
+                string toPath;
+                do
+                {
+                    newName = $"{string.Format(pattern, counter)}.{extension}";
+                    checkName.Add(newName);
+                    toPath = Path.Combine(directoryPath, newName);
+                    if (checkName.Contains(collectionItem.Name))
+                    {
+                        skip = true;
+                    }
+                    else
+                    {
+                        counter++;
+                    }
+                } while (File.Exists(toPath) && !skip);
+                if (!skip)
+                {
+                    File.Move(fromPath, toPath);
+                    ((CollectionItem)collectionItem).Name = newName;
+                }
+            }
         }
 
         public override bool Equals(object obj) => obj != null && Equals(obj as Collection);
@@ -86,5 +111,14 @@ namespace ImageCollection.Models
         public bool Equals(Collection other) => other != null && Id.Equals(other.Id);
 
         public override int GetHashCode() => Id.GetHashCode();
+
+        private string GetCollectionDirectory()
+        {
+            if (!Equals(_collectionsManager.DefaultCollection))
+            {
+                return Path.Combine(_collectionsManager.RootDirectory, Name);
+            }
+            return _collectionsManager.RootDirectory;
+        }
     }
 }
