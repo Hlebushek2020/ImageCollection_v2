@@ -25,6 +25,18 @@ namespace ImageCollection.ViewModels
         #region Property
         public string Title { get => App.Name; }
 
+        private ICollectionsManager CollectionsManager
+        {
+            get { return _collectionsManager; }
+            set
+            {
+                _collectionsManager = value;
+                CreateCollection.RaiseCanExecuteChanged();
+                Collections = _collectionsManager.Collections;
+                SelectedCollection = _collectionsManager.DefaultCollection;
+            }
+        }
+
         public ObservableCollection<ICollection> Collections
         {
             get { return _collections; }
@@ -42,6 +54,9 @@ namespace ImageCollection.ViewModels
             {
                 _selectedCollection = value;
                 RaisePropertyChanged();
+                RenameCollection.RaiseCanExecuteChanged();
+                RemoveCollection.RaiseCanExecuteChanged();
+                RenameCollectionFiles.RaiseCanExecuteChanged();
             }
         }
 
@@ -56,6 +71,9 @@ namespace ImageCollection.ViewModels
                     ImageOfSelectedCollectionItem = _selectedCollection.GetImageOfCollectionItem(_selectedCollectionItem);
                 }
                 RaisePropertyChanged();
+                ToCollection.RaiseCanExecuteChanged();
+                RemoveSelectedFiles.RaiseCanExecuteChanged();
+                RenameSelectedFiles.RaiseCanExecuteChanged();
             }
         }
 
@@ -90,21 +108,19 @@ namespace ImageCollection.ViewModels
                 System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
                 if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    _collectionsManager = new CollectionsManager(folderBrowserDialog.SelectedPath);
-                    Collections = _collectionsManager.Collections;
-                    SelectedCollection = _collectionsManager.DefaultCollection;
+                    CollectionsManager = new CollectionsManager(folderBrowserDialog.SelectedPath);
                 }
             });
             CreateCollection = new DelegateCommand(() =>
             {
                 AddOrRenameCollectionWindow collectionEdit = new AddOrRenameCollectionWindow(_collectionsManager);
                 collectionEdit.ShowDialog();
-            });
+            }, () => _collectionsManager != null);
             RenameCollection = new DelegateCommand(() =>
             {
                 AddOrRenameCollectionWindow collectionEdit = new AddOrRenameCollectionWindow(_collectionsManager, SelectedCollection);
                 collectionEdit.ShowDialog();
-            });
+            }, () => _selectedCollection != null);
             RemoveCollection = new DelegateCommand(() =>
             {
                 if (_selectedCollection != null && _selectedCollection != _collectionsManager.DefaultCollection)
@@ -114,7 +130,7 @@ namespace ImageCollection.ViewModels
                         _collectionsManager.Remove(SelectedCollection);
                     }
                 }
-            });
+            }, () => _selectedCollection != null);
             RemoveSelectedFiles = new DelegateCommand(() =>
             {
                 IReadOnlyList<ICollectionItem> selectedItems = _selectedCollection.Items.Where(item => item.IsSelected).ToList();
@@ -127,7 +143,7 @@ namespace ImageCollection.ViewModels
                 {
                     SelectedCollection.RemoveFiles(selectedItems);
                 }
-            });
+            }, () => _selectedCollectionItem != null);
             ToCollection = new DelegateCommand(() =>
             {
                 CollectionSelectionWindow collectionSelection = new CollectionSelectionWindow(_collectionsManager, _selectedCollection);
@@ -136,7 +152,7 @@ namespace ImageCollection.ViewModels
                 {
                     _collectionsManager.ToCollection(_selectedCollection, collectionSelection.GetSelectedCollection());
                 }
-            });
+            }, () => _selectedCollectionItem != null);
             RenameSelectedFiles = new DelegateCommand(() =>
             {
                 IReadOnlyList<ICollectionItem> selectedFiles = _selectedCollection.Items.Where(ci => ci.IsSelected).ToList();
@@ -158,7 +174,7 @@ namespace ImageCollection.ViewModels
                         _selectedCollection.RenameFiles(selectedFiles, newNameOrPattern);
                     }
                 }
-            });
+            }, () => _selectedCollectionItem != null);
             RenameCollectionFiles = new DelegateCommand(() =>
             {
                 RenameFilesWindow renameFiles = new RenameFilesWindow();
@@ -167,7 +183,7 @@ namespace ImageCollection.ViewModels
                 {
                     _selectedCollection.RenameFiles(_selectedCollection.Items, renameFiles.GetNewNameOrPattern());
                 }
-            });
+            }, () => _selectedCollection != null);
             CollectionHotkeys = new DelegateCommand(() =>
             {
                 throw new NotImplementedException();
