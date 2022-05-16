@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SUID = Sergey.UI.Extension.Dialogs;
@@ -20,6 +21,7 @@ namespace ImageCollection.ViewModels
         private ICollection _selectedCollection;
         private ObservableCollection<ICollection> _collections;
         private BitmapImage _imageOfSelectedCollectionItem;
+        private CancellationTokenSource _initializingPreviewImagesCts;
         #endregion
 
         #region Property
@@ -57,6 +59,14 @@ namespace ImageCollection.ViewModels
                 RenameCollection.RaiseCanExecuteChanged();
                 RemoveCollection.RaiseCanExecuteChanged();
                 RenameCollectionFiles.RaiseCanExecuteChanged();
+                if (_selectedCollection != null)
+                {
+                    if (_initializingPreviewImagesCts != null)
+                    {
+                        _initializingPreviewImagesCts.Cancel();
+                    }
+                    _initializingPreviewImagesCts = _selectedCollection.InitializingPreviewImages();
+                }
             }
         }
 
@@ -118,7 +128,7 @@ namespace ImageCollection.ViewModels
             }, () => _collectionsManager != null);
             RenameCollection = new DelegateCommand(() =>
             {
-                AddOrRenameCollectionWindow collectionEdit = new AddOrRenameCollectionWindow(_collectionsManager, SelectedCollection);
+                AddOrRenameCollectionWindow collectionEdit = new AddOrRenameCollectionWindow(_collectionsManager, _selectedCollection);
                 collectionEdit.ShowDialog();
             }, () => _selectedCollection != null);
             RemoveCollection = new DelegateCommand(() =>
@@ -127,7 +137,7 @@ namespace ImageCollection.ViewModels
                 {
                     if (SUID.MessageBox.Show($"Удалить коллекцию \"{_selectedCollection.Name}\"?", App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        _collectionsManager.Remove(SelectedCollection);
+                        _collectionsManager.Remove(_selectedCollection);
                     }
                 }
             }, () => _selectedCollection != null);
@@ -141,7 +151,7 @@ namespace ImageCollection.ViewModels
                 }
                 if (SUID.MessageBox.Show(message, App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    SelectedCollection.RemoveFiles(selectedItems);
+                    _selectedCollection.RemoveFiles(selectedItems);
                 }
             }, () => _selectedCollectionItem != null);
             ToCollection = new DelegateCommand(() =>

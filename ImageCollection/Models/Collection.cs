@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading;
 using System.Windows.Media.Imaging;
 
 namespace ImageCollection.Models
@@ -104,6 +105,11 @@ namespace ImageCollection.Models
                     ((CollectionItem)collectionItem).Name = newName;
                 }
             }
+        }
+
+        public CancellationTokenSource InitializingPreviewImages()
+        {
+            throw new NotImplementedException();
         }
 
         public override bool Equals(object obj) => obj != null && Equals(obj as Collection);
