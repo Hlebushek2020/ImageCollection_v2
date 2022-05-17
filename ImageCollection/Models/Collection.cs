@@ -119,7 +119,8 @@ namespace ImageCollection.Models
             CancellationToken token = cts.Token;
             Task.Run(() =>
             {
-                string previewDirectory = Path.Combine(GetCollectionDirectory(), "IC_PREVIEW");
+                string collectionDirectory = GetCollectionDirectory();
+                string previewDirectory = Path.Combine(collectionDirectory, "IC_PREVIEW");
                 Directory.CreateDirectory(previewDirectory);
                 foreach (ICollectionItem collectionItem in Items)
                 {
@@ -132,7 +133,7 @@ namespace ImageCollection.Models
                         string previewPath = Path.Combine(previewDirectory, $"{Path.GetFileNameWithoutExtension(collectionItem.Name)}.jpg");
                         if (!File.Exists(previewPath))
                         {
-                            string originalPath = Path.Combine(previewDirectory, collectionItem.Name);
+                            string originalPath = Path.Combine(collectionDirectory, collectionItem.Name);
                             byte[] originalBuffer = File.ReadAllBytes(originalPath);
                             Size resolutionSize = collectionItem.Resolution;
                             int previewWidth = (int)(resolutionSize.Width / resolutionSize.Height * 94.0);
@@ -149,11 +150,18 @@ namespace ImageCollection.Models
                                 previewEncoder.Save(previewStream);
                             }
                         }
-                        BitmapImage preview = new BitmapImage();
-                        preview.BeginInit();
-                        preview.StreamSource = new MemoryStream(File.ReadAllBytes(previewPath));
-                        preview.EndInit();
-                        collectionItem.Preview = preview;
+                        if (token.IsCancellationRequested)
+                        {
+                            return;
+                        }
+                        App.Current.Dispatcher.Invoke((Action<string>)((string _previewPath) =>
+                        {
+                            BitmapImage preview = new BitmapImage();
+                            preview.BeginInit();
+                            preview.StreamSource = new MemoryStream(File.ReadAllBytes(previewPath));
+                            preview.EndInit();
+                            collectionItem.Preview = preview;
+                        }), previewPath);
                     }
                 }
             }, token);
