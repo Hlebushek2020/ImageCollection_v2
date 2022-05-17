@@ -9,7 +9,7 @@ namespace ImageCollection.Interfaces
         string Description { get; }
         long Size { get; }
         Size Resolution { get; }
-        BitmapImage Preview { get; }
+        BitmapImage Preview { get; set; }
         bool IsSelected { get; set; }
     }
 }

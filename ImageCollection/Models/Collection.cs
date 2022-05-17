@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace ImageCollection.Models
@@ -109,7 +111,53 @@ namespace ImageCollection.Models
 
         public CancellationTokenSource InitializingPreviewImages()
         {
-            throw new NotImplementedException();
+            if (Items.Count == 0)
+            {
+                return null;
+            }
+            CancellationTokenSource cts = new CancellationTokenSource();
+            CancellationToken token = cts.Token;
+            Task.Run(() =>
+            {
+                string previewDirectory = Path.Combine(GetCollectionDirectory(), "IC_PREVIEW");
+                Directory.CreateDirectory(previewDirectory);
+                foreach (ICollectionItem collectionItem in Items)
+                {
+                    if (token.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                    if (collectionItem.Preview == null)
+                    {
+                        string previewPath = Path.Combine(previewDirectory, $"{Path.GetFileNameWithoutExtension(collectionItem.Name)}.jpg");
+                        if (!File.Exists(previewPath))
+                        {
+                            string originalPath = Path.Combine(previewDirectory, collectionItem.Name);
+                            byte[] originalBuffer = File.ReadAllBytes(originalPath);
+                            Size resolutionSize = collectionItem.Resolution;
+                            int previewWidth = (int)(resolutionSize.Width / resolutionSize.Height * 94.0);
+                            BitmapImage convert = new BitmapImage();
+                            convert.BeginInit();
+                            convert.StreamSource = new MemoryStream(originalBuffer);
+                            convert.DecodePixelHeight = 94;
+                            convert.DecodePixelWidth = previewWidth;
+                            convert.EndInit();
+                            JpegBitmapEncoder previewEncoder = new JpegBitmapEncoder();
+                            previewEncoder.Frames.Add(BitmapFrame.Create(convert));
+                            using (FileStream previewStream = new FileStream(previewPath, FileMode.Create, FileAccess.Write))
+                            {
+                                previewEncoder.Save(previewStream);
+                            }
+                        }
+                        BitmapImage preview = new BitmapImage();
+                        preview.BeginInit();
+                        preview.StreamSource = new MemoryStream(File.ReadAllBytes(previewPath));
+                        preview.EndInit();
+                        collectionItem.Preview = preview;
+                    }
+                }
+            }, token);
+            return cts;
         }
 
         public override bool Equals(object obj) => obj != null && Equals(obj as Collection);

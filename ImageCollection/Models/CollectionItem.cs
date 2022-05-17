@@ -14,7 +14,7 @@ namespace ImageCollection.Models
         public string Description { get; }
         public long Size { get; set; }
         public Size Resolution { get; set; }
-        public BitmapImage Preview { get; }
+        public BitmapImage Preview { get; set; }
         public bool IsSelected { get; set; }
 
         public CollectionItem(FileInfo fileInfo)
