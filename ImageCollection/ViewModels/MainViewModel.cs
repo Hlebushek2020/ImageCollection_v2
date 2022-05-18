@@ -109,6 +109,9 @@ namespace ImageCollection.ViewModels
         public DelegateCommand RenameCollectionFiles { get; }
         public DelegateCommand CollectionHotkeys { get; }
         public DelegateCommand Settings { get; }
+        public DelegateCommand SortByName { get; }
+        public DelegateCommand SortBySize { get; }
+        public DelegateCommand SortByResolution { get; }
         #endregion
 
         public MainViewModel()
@@ -199,6 +202,18 @@ namespace ImageCollection.ViewModels
                 throw new NotImplementedException();
             });
             Settings = new DelegateCommand(() =>
+            {
+                throw new NotImplementedException();
+            });
+            SortByName = new DelegateCommand(() =>
+            {
+                throw new NotImplementedException();
+            });
+            SortBySize = new DelegateCommand(() =>
+            {
+                throw new NotImplementedException();
+            });
+            SortByResolution = new DelegateCommand(() =>
             {
                 throw new NotImplementedException();
             });

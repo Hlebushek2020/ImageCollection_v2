@@ -43,9 +43,9 @@
                 <MenuItem Header="Горячие клавиши" InputGestureText="Ctrl + H" Command="{Binding CollectionHotkeys}"/>
             </MenuItem>
             <MenuItem Header="Сортировка">
-                <MenuItem Header="Имя" />
-                <MenuItem Header="Размер" />
-                <MenuItem Header="Разрешение" />
+                <MenuItem Header="Имя" Command="{Binding SortByName}"/>
+                <MenuItem Header="Размер" Command="{Binding SortBySize}"/>
+                <MenuItem Header="Разрешение" Command="{Binding SortByResolution}"/>
             </MenuItem>
         </Menu>
         <ComboBox Margin="10,25,10,0" VerticalAlignment="Top" DisplayMemberPath="Name" ItemsSource="{Binding Collections, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
