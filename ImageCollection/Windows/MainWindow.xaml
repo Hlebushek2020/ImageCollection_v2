@@ -21,6 +21,9 @@
         <KeyBinding Modifiers="Ctrl" Key="Delete" Command="{Binding RemoveCollection}"/>
         <KeyBinding Modifiers="Ctrl+Shift" Key="F2" Command="{Binding RenameCollectionFiles}"/>
         <KeyBinding Modifiers="Ctrl" Key="H" Command="{Binding CollectionHotkeys}"/>
+        <KeyBinding Modifiers="Alt+Shift" Key="1" Command="{Binding SortByName}"/>
+        <KeyBinding Modifiers="Alt+Shift" Key="2" Command="{Binding SortBySize}"/>
+        <KeyBinding Modifiers="Alt+Shift" Key="3" Command="{Binding SortByResolution}"/>
     </Window.InputBindings>
     <Grid>
         <Menu VerticalAlignment="Top" FontSize="12">
@@ -43,9 +46,9 @@
                 <MenuItem Header="Горячие клавиши" InputGestureText="Ctrl + H" Command="{Binding CollectionHotkeys}"/>
             </MenuItem>
             <MenuItem Header="Сортировка">
-                <MenuItem Header="Имя" Command="{Binding SortByName}"/>
-                <MenuItem Header="Размер" Command="{Binding SortBySize}"/>
-                <MenuItem Header="Разрешение" Command="{Binding SortByResolution}"/>
+                <MenuItem Header="Имя" InputGestureText="Alt + Shift + 1" Command="{Binding SortByName}"/>
+                <MenuItem Header="Размер" InputGestureText="Alt + Shift + 2" Command="{Binding SortBySize}"/>
+                <MenuItem Header="Разрешение" InputGestureText="Alt + Shift + 3" Command="{Binding SortByResolution}"/>
             </MenuItem>
         </Menu>
         <ComboBox Margin="10,25,10,0" VerticalAlignment="Top" DisplayMemberPath="Name" ItemsSource="{Binding Collections, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
