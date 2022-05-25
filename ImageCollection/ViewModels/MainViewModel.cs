@@ -5,9 +5,11 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using SUID = Sergey.UI.Extension.Dialogs;
 
@@ -207,15 +209,21 @@ namespace ImageCollection.ViewModels
             });
             SortByName = new DelegateCommand(() =>
             {
-                throw new NotImplementedException();
+                ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
+                collectionView.SortDescriptions.Clear();
+                collectionView.SortDescriptions.Add(new SortDescription(nameof(ICollectionItem.Name), ListSortDirection.Descending));
             });
             SortBySize = new DelegateCommand(() =>
             {
-                throw new NotImplementedException();
+                ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
+                collectionView.SortDescriptions.Clear();
+                collectionView.SortDescriptions.Add(new SortDescription(nameof(ICollectionItem.Size), ListSortDirection.Descending));
             });
             SortByResolution = new DelegateCommand(() =>
             {
-                throw new NotImplementedException();
+                ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
+                collectionView.SortDescriptions.Clear();
+                collectionView.SortDescriptions.Add(new SortDescription(nameof(ICollectionItem.Resolution), ListSortDirection.Descending));
             });
         }
     }
