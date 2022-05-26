@@ -46,6 +46,7 @@
                 <MenuItem Header="Горячие клавиши" InputGestureText="Ctrl + H" Command="{Binding CollectionHotkeys}"/>
             </MenuItem>
             <MenuItem Header="Сортировка">
+                <MenuItem Header="Нет" InputGestureText="Alt + Shift + 0" Command="{Binding ResetSorting}"/>
                 <MenuItem Header="Имя" InputGestureText="Alt + Shift + 1" Command="{Binding SortByName}"/>
                 <MenuItem Header="Размер" InputGestureText="Alt + Shift + 2" Command="{Binding SortBySize}"/>
                 <MenuItem Header="Разрешение" InputGestureText="Alt + Shift + 3" Command="{Binding SortByResolution}"/>

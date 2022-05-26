@@ -111,6 +111,7 @@ namespace ImageCollection.ViewModels
         public DelegateCommand RenameCollectionFiles { get; }
         public DelegateCommand CollectionHotkeys { get; }
         public DelegateCommand Settings { get; }
+        public DelegateCommand ResetSorting { get; }
         public DelegateCommand SortByName { get; }
         public DelegateCommand SortBySize { get; }
         public DelegateCommand SortByResolution { get; }
@@ -206,6 +207,11 @@ namespace ImageCollection.ViewModels
             Settings = new DelegateCommand(() =>
             {
                 throw new NotImplementedException();
+            });
+            ResetSorting = new DelegateCommand(() =>
+            {
+                ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
+                collectionView.SortDescriptions.Clear();
             });
             SortByName = new DelegateCommand(() =>
             {
