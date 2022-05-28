@@ -17,6 +17,7 @@ namespace ImageCollection.Models
 
         public Guid Id { get; }
         public string Name { get; set; }
+        public Hotkey Hotkey => throw new NotImplementedException();
         public ObservableCollection<ICollectionItem> Items { get; } = new ObservableCollection<ICollectionItem>();
 
         public Collection(CollectionsManager collectionsManager, string name, IEnumerable<FileInfo> fileInfos)

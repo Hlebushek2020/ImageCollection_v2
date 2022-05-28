@@ -36,6 +36,7 @@ namespace ImageCollection.ViewModels
             {
                 _collectionsManager = value;
                 CreateCollection.RaiseCanExecuteChanged();
+                CollectionHotkeys.RaiseCanExecuteChanged();
                 Collections = _collectionsManager.Collections;
                 SelectedCollection = _collectionsManager.DefaultCollection;
             }
@@ -202,8 +203,9 @@ namespace ImageCollection.ViewModels
             }, () => _selectedCollection != null);
             CollectionHotkeys = new DelegateCommand(() =>
             {
-                throw new NotImplementedException();
-            });
+                CollectionHotkeysWindow collectionHotkeys = new CollectionHotkeysWindow(_collectionsManager);
+                collectionHotkeys.ShowDialog();
+            }, () => _collectionsManager != null);
             Settings = new DelegateCommand(() =>
             {
                 throw new NotImplementedException();

@@ -1,10 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using ImageCollection.Models;
+using System.Collections.ObjectModel;
 
 namespace ImageCollection.Interfaces
 {
     public interface ICollectionsManager
     {
         string RootDirectory { get; }
+        CollectionsHotkeyManager HotkeyManager { get; }
         ObservableCollection<ICollection> Collections { get; }
         ICollection DefaultCollection { get; }
 

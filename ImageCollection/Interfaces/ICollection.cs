@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageCollection.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -10,6 +11,7 @@ namespace ImageCollection.Interfaces
     {
         Guid Id { get; }
         string Name { get; }
+        Hotkey Hotkey { get; }
         ObservableCollection<ICollectionItem> Items { get; }
 
         void AddItem(ICollectionItem item);

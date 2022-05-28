@@ -80,6 +80,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -102,6 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Windows\CollectionHotkeysWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\CollectionSelectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -122,10 +127,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\CollectionHotkeysViewModel.cs" />
+    <Compile Include="Windows\CollectionHotkeysWindow.xaml.cs">
+      <DependentUpon>CollectionHotkeysWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\ICollectionItemMover.cs" />
     <Compile Include="Models\CollectionHotkey.cs" />
     <Compile Include="Models\CollectionItemMover.cs" />
     <Compile Include="Models\CollectionsHotkeyManager.cs" />
+    <Compile Include="Models\Hotkey.cs" />
     <Compile Include="ViewModels\RenameFilesViewModel.cs" />
     <Compile Include="ViewModels\CollectionSelectionViewModel.cs" />
     <Compile Include="Windows\CollectionSelectionWindow.xaml.cs">
@@ -182,6 +192,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="appIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\menu-edit-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\menu-reset-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

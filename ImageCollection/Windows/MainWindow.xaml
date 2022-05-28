@@ -21,9 +21,10 @@
         <KeyBinding Modifiers="Ctrl" Key="Delete" Command="{Binding RemoveCollection}"/>
         <KeyBinding Modifiers="Ctrl+Shift" Key="F2" Command="{Binding RenameCollectionFiles}"/>
         <KeyBinding Modifiers="Ctrl" Key="H" Command="{Binding CollectionHotkeys}"/>
-        <KeyBinding Modifiers="Alt+Shift" Key="1" Command="{Binding SortByName}"/>
-        <KeyBinding Modifiers="Alt+Shift" Key="2" Command="{Binding SortBySize}"/>
-        <KeyBinding Modifiers="Alt+Shift" Key="3" Command="{Binding SortByResolution}"/>
+        <KeyBinding Modifiers="Alt+Shift" Key="D0" Command="{Binding ResetSorting}"/>
+        <KeyBinding Modifiers="Alt+Shift" Key="D1" Command="{Binding SortByName}"/>
+        <KeyBinding Modifiers="Alt+Shift" Key="D2" Command="{Binding SortBySize}"/>
+        <KeyBinding Modifiers="Alt+Shift" Key="D3" Command="{Binding SortByResolution}"/>
     </Window.InputBindings>
     <Grid>
         <Menu VerticalAlignment="Top" FontSize="12">

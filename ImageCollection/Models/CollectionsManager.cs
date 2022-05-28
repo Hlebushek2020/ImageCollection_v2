@@ -13,7 +13,7 @@ namespace ImageCollection.Models
         private readonly HashSet<string> _collectionNames = new HashSet<string>();
 
         public string RootDirectory { get; private set; }
-
+        public CollectionsHotkeyManager HotkeyManager { get; } = new CollectionsHotkeyManager();
         public ObservableCollection<ICollection> Collections { get; private set; } = new ObservableCollection<ICollection>();
         public ICollection DefaultCollection { get; private set; }
 
