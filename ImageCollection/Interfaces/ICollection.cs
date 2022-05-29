@@ -11,7 +11,7 @@ namespace ImageCollection.Interfaces
     {
         Guid Id { get; }
         string Name { get; }
-        Hotkey Hotkey { get; }
+        Hotkey? Hotkey { get; set; }
         ObservableCollection<ICollectionItem> Items { get; }
 
         void AddItem(ICollectionItem item);

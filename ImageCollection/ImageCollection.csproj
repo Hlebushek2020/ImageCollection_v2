@@ -103,6 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Windows\EditHotkeyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\CollectionHotkeysWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +130,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModels\EditHotkeyViewModel.cs" />
+    <Compile Include="Windows\EditHotkeyWindow.xaml.cs">
+      <DependentUpon>EditHotkeyWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CollectionHotkeysViewModel.cs" />
     <Compile Include="Windows\CollectionHotkeysWindow.xaml.cs">

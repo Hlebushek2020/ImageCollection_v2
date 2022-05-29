@@ -11,6 +11,10 @@
         Title="{Binding Title, Mode=OneWay}"
         WindowStartupLocation="CenterScreen"
         FontSize="14">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="E" Command="{Binding Edit}"/>
+        <KeyBinding Modifiers="Ctrl" Key="R" Command="{Binding Reset}"/>
+    </Window.InputBindings>
     <Grid Margin="10">
         <StackPanel Orientation="Horizontal" Height="22" VerticalAlignment="Top">
             <Button Style="{StaticResource MenuIconButtonStyle}" ToolTip="Изменить">
@@ -20,16 +24,18 @@
                 <Image Source="/Resources/menu-reset-32.png"/>
             </Button>
         </StackPanel>
-        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,27,0,0">
+        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,27,0,0" SelectionMode="Single" ItemsSource="{Binding Collections, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCollection, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header="Коллекция" DisplayMemberBinding="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Модификатор" DisplayMemberBinding="{Binding Hotkey.Value?.Modifier, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Клавиша" DisplayMemberBinding="{Binding Hotkey.Value?.Key, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Изменить"/>
-                    <MenuItem Header="Сбросить"/>
+                    <MenuItem Header="Изменить" InputGestureText="Ctrl + E" Command="{Binding Edit}"/>
+                    <MenuItem Header="Сбросить" InputGestureText="Ctrl + R" Command="{Binding Reset}"/>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>

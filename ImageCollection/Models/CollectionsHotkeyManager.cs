@@ -9,12 +9,20 @@ namespace ImageCollection.Models
         private readonly Dictionary<ModifierKeys, Dictionary<Key, ICollection>> _hotkeysForCollection =
             new Dictionary<ModifierKeys, Dictionary<Key, ICollection>>();
 
-        public void Register(ICollection collection, Hotkey hotkey)
+        public void Register(Hotkey? oldHotkey, Hotkey? newHotkey, ICollection collection)
         {
-            if (_hotkeysForCollection.ContainsKey(hotkey.Modifier))
-                _hotkeysForCollection[hotkey.Modifier].Add(hotkey.Key, collection);
-            else
-                _hotkeysForCollection.Add(hotkey.Modifier, new Dictionary<Key, ICollection> { { hotkey.Key, collection } });
+            Remove(oldHotkey);
+            if (newHotkey != null)
+            {
+                if (_hotkeysForCollection.ContainsKey(newHotkey.Value.Modifier))
+                    _hotkeysForCollection[newHotkey.Value.Modifier].Add(newHotkey.Value.Key, collection);
+                else
+                {
+                    _hotkeysForCollection.Add(newHotkey.Value.Modifier, new Dictionary<Key, ICollection> {
+                        { newHotkey.Value.Key, collection }
+                    });
+                }
+            }
         }
 
         public bool Contains(ModifierKeys modifier, Key key)
@@ -24,7 +32,11 @@ namespace ImageCollection.Models
             return false;
         }
 
-        public void Remove(Hotkey hotkey) => _hotkeysForCollection[hotkey.Modifier]?.Remove(hotkey.Key);
+        public void Remove(Hotkey? hotkey)
+        {
+            if (hotkey != null)
+                _hotkeysForCollection[hotkey.Value.Modifier]?.Remove(hotkey.Value.Key);
+        }
 
         public ICollection GetCollectionByHotkeys(ModifierKeys modifier, Key key) => _hotkeysForCollection[modifier]?[key];
     }

@@ -13,12 +13,26 @@ namespace ImageCollection.Models
 {
     internal class Collection : BindableBase, ICollection, IEquatable<Collection>
     {
+        #region Field
         private readonly CollectionsManager _collectionsManager;
+        private Hotkey? _hotkey;
+        #endregion
 
+        #region Properties
         public Guid Id { get; }
         public string Name { get; set; }
-        public Hotkey Hotkey => throw new NotImplementedException();
+        public Hotkey? Hotkey
+        {
+            get { return _hotkey; }
+            set
+            {
+                _collectionsManager.HotkeyManager.Register(_hotkey, value, this);
+                _hotkey = value;
+                RaisePropertyChanged();
+            }
+        }
         public ObservableCollection<ICollectionItem> Items { get; } = new ObservableCollection<ICollectionItem>();
+        #endregion
 
         public Collection(CollectionsManager collectionsManager, string name, IEnumerable<FileInfo> fileInfos)
         {
