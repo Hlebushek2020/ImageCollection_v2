@@ -1,6 +1,5 @@
 ﻿using ImageCollection.Interfaces;
 using Prism.Commands;
-using System;
 using System.Collections.ObjectModel;
 
 namespace ImageCollection.ViewModels
@@ -28,8 +27,8 @@ namespace ImageCollection.ViewModels
         #endregion
 
         #region Commands
-        DelegateCommand Edit { get; }
-        DelegateCommand Reset { get; }
+        public DelegateCommand Edit { get; }
+        public DelegateCommand Reset { get; }
         #endregion
 
         public CollectionHotkeysViewModel(ICollectionsManager collectionsManager)
@@ -39,7 +38,8 @@ namespace ImageCollection.ViewModels
             Reset = new DelegateCommand(() => _selectedCollection.Hotkey = null, () => _selectedCollection != null);
             Edit = new DelegateCommand(() =>
             {
-                throw new NotImplementedException();
+                EditHotkeyWindow editHotkey = new EditHotkeyWindow();
+                editHotkey.ShowDialog();
             }, () => _selectedCollection != null);
         }
     }

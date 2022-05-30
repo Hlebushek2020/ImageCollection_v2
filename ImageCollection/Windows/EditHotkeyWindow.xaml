@@ -6,17 +6,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageCollection"
         mc:Ignorable="d"
-        Width="600"
+        Width="250"
         FontSize="14"
         SnapsToDevicePixels="True"
         SizeToContent="Height"
         Style="{StaticResource WindowStyle}"
         Title="{Binding Title, Mode=OneWay}"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize">
     <Grid Margin="10">
-        <ComboBox d:ItemsSource="{d:SampleData ItemCount=5}" SelectedIndex="0" HorizontalAlignment="Left" Margin="18,1,0,0" VerticalAlignment="Top" Width="120"/>
-        <TextBox Margin="143,0,0,0" TextWrapping="NoWrap" Text="Binding NewName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
-        <Button Style="{StaticResource ButtonStyle}" Content="Применить" HorizontalAlignment="Right" Margin="0,36,85,0" VerticalAlignment="Top" Height="30" Width="100" Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
-        <Button Style="{StaticResource ButtonStyle}" Content="Закрыть" HorizontalAlignment="Right" Margin="0,36,0,0" VerticalAlignment="Top" Height="30" Width="80" Command="{Binding CanselCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
+        <ComboBox HorizontalAlignment="Left" Margin="0,1,0,0" VerticalAlignment="Top" Width="80" ItemsSource="{Binding Modifiers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedModifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Margin="85,0,0,0" VerticalAlignment="Top" TextAlignment="Center" TextWrapping="NoWrap" PreviewKeyDown="TextBox_PreviewKeyDown" Text="{Binding DisplaySelectedKey, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Grid Margin="0,38,0,0" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource ButtonStyle}" Grid.Column="0" Content="Применить" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" Height="30" Width="100" Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
+            <Button Style="{StaticResource ButtonStyle}" Grid.Column="2" Content="Закрыть" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" Height="30" Width="80" Command="{Binding CanselCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
+        </Grid>
     </Grid>
 </Window>

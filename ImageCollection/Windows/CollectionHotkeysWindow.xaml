@@ -17,10 +17,10 @@
     </Window.InputBindings>
     <Grid Margin="10">
         <StackPanel Orientation="Horizontal" Height="22" VerticalAlignment="Top">
-            <Button Style="{StaticResource MenuIconButtonStyle}" ToolTip="Изменить">
+            <Button Style="{StaticResource MenuIconButtonStyle}" ToolTip="Изменить" Command="{Binding Edit}">
                 <Image Source="/Resources/menu-edit-32.png"/>
             </Button>
-            <Button Style="{StaticResource MenuIconButtonStyle}" ToolTip="Сбросить">
+            <Button Style="{StaticResource MenuIconButtonStyle}" ToolTip="Сбросить" Command="{Binding Reset}">
                 <Image Source="/Resources/menu-reset-32.png"/>
             </Button>
         </StackPanel>
@@ -33,7 +33,7 @@
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
-                <ContextMenu>
+                <ContextMenu FontSize="12">
                     <MenuItem Header="Изменить" InputGestureText="Ctrl + E" Command="{Binding Edit}"/>
                     <MenuItem Header="Сбросить" InputGestureText="Ctrl + R" Command="{Binding Reset}"/>
                 </ContextMenu>
