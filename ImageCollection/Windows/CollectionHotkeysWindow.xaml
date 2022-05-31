@@ -28,8 +28,8 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Коллекция" DisplayMemberBinding="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <GridViewColumn Header="Модификатор" DisplayMemberBinding="{Binding Hotkey.Value?.Modifier, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <GridViewColumn Header="Клавиша" DisplayMemberBinding="{Binding Hotkey.Value?.Key, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Модификатор" DisplayMemberBinding="{Binding Hotkey.Modifier, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Клавиша" DisplayMemberBinding="{Binding Hotkey.Key, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>

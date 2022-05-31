@@ -1,4 +1,5 @@
 ﻿using ImageCollection.Interfaces;
+using ImageCollection.Models.Structures;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,13 @@ namespace ImageCollection.Models
     {
         #region Field
         private readonly CollectionsManager _collectionsManager;
-        private Hotkey? _hotkey;
+        private Hotkey _hotkey;
         #endregion
 
         #region Properties
         public Guid Id { get; }
         public string Name { get; set; }
-        public Hotkey? Hotkey
+        public Hotkey Hotkey
         {
             get { return _hotkey; }
             set

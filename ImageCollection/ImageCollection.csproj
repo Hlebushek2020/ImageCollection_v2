@@ -143,7 +143,7 @@
     <Compile Include="Models\CollectionHotkey.cs" />
     <Compile Include="Models\CollectionItemMover.cs" />
     <Compile Include="Models\CollectionsHotkeyManager.cs" />
-    <Compile Include="Models\Hotkey.cs" />
+    <Compile Include="Models\Structures\Hotkey.cs" />
     <Compile Include="ViewModels\RenameFilesViewModel.cs" />
     <Compile Include="ViewModels\CollectionSelectionViewModel.cs" />
     <Compile Include="Windows\CollectionSelectionWindow.xaml.cs">

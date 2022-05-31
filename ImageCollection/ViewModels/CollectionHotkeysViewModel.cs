@@ -1,4 +1,5 @@
 ﻿using ImageCollection.Interfaces;
+using ImageCollection.Models.Structures;
 using Prism.Commands;
 using System.Collections.ObjectModel;
 
@@ -35,11 +36,15 @@ namespace ImageCollection.ViewModels
         {
             _collectionsManager = collectionsManager;
             Collections = _collectionsManager.Collections;
-            Reset = new DelegateCommand(() => _selectedCollection.Hotkey = null, () => _selectedCollection != null);
+            Reset = new DelegateCommand(() => _selectedCollection.Hotkey = new Hotkey(), () => _selectedCollection != null);
             Edit = new DelegateCommand(() =>
             {
-                EditHotkeyWindow editHotkey = new EditHotkeyWindow();
+                EditHotkeyWindow editHotkey = new EditHotkeyWindow(_selectedCollection.Hotkey, _collectionsManager.HotkeyManager);
                 editHotkey.ShowDialog();
+                if (editHotkey.IsAvailableHotkey)
+                {
+                    _selectedCollection.Hotkey = editHotkey.GetHotkey();
+                }
             }, () => _selectedCollection != null);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace ImageCollection.Models
+namespace ImageCollection.Models.Structures
 {
     public struct Hotkey
     {

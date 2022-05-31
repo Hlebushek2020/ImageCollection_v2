@@ -1,4 +1,5 @@
 ﻿using ImageCollection.Interfaces;
+using ImageCollection.Models.Structures;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -9,17 +10,17 @@ namespace ImageCollection.Models
         private readonly Dictionary<ModifierKeys, Dictionary<Key, ICollection>> _hotkeysForCollection =
             new Dictionary<ModifierKeys, Dictionary<Key, ICollection>>();
 
-        public void Register(Hotkey? oldHotkey, Hotkey? newHotkey, ICollection collection)
+        public void Register(Hotkey oldHotkey, Hotkey newHotkey, ICollection collection)
         {
             Remove(oldHotkey);
-            if (newHotkey != null)
+            if (newHotkey.Key != Key.None && newHotkey.Modifier != ModifierKeys.None)
             {
-                if (_hotkeysForCollection.ContainsKey(newHotkey.Value.Modifier))
-                    _hotkeysForCollection[newHotkey.Value.Modifier].Add(newHotkey.Value.Key, collection);
+                if (_hotkeysForCollection.ContainsKey(newHotkey.Modifier))
+                    _hotkeysForCollection[newHotkey.Modifier].Add(newHotkey.Key, collection);
                 else
                 {
-                    _hotkeysForCollection.Add(newHotkey.Value.Modifier, new Dictionary<Key, ICollection> {
-                        { newHotkey.Value.Key, collection }
+                    _hotkeysForCollection.Add(newHotkey.Modifier, new Dictionary<Key, ICollection> {
+                        { newHotkey.Key, collection }
                     });
                 }
             }
@@ -32,10 +33,10 @@ namespace ImageCollection.Models
             return false;
         }
 
-        public void Remove(Hotkey? hotkey)
+        public void Remove(Hotkey hotkey)
         {
-            if (hotkey != null)
-                _hotkeysForCollection[hotkey.Value.Modifier]?.Remove(hotkey.Value.Key);
+            if (hotkey.Key != Key.None && hotkey.Modifier != ModifierKeys.None)
+                _hotkeysForCollection[hotkey.Modifier]?.Remove(hotkey.Key);
         }
 
         public ICollection GetCollectionByHotkeys(ModifierKeys modifier, Key key) => _hotkeysForCollection[modifier]?[key];

@@ -1,4 +1,6 @@
-﻿using ImageCollection.ViewModels;
+﻿using ImageCollection.Models;
+using ImageCollection.Models.Structures;
+using ImageCollection.ViewModels;
 using System.Windows;
 using System.Windows.Input;
 
@@ -11,17 +13,28 @@ namespace ImageCollection
     {
         private readonly EditHotkeyViewModel _viewModel;
 
-        public EditHotkeyWindow()
+        public bool IsAvailableHotkey { get => _viewModel.SelectedKey != Key.None; }
+
+        public EditHotkeyWindow(Hotkey hotkey, CollectionsHotkeyManager hotkeyManager)
         {
             InitializeComponent();
-            _viewModel = new EditHotkeyViewModel();
+            _viewModel = new EditHotkeyViewModel(hotkey, hotkeyManager);
             DataContext = _viewModel;
         }
 
         private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            _viewModel.SelectedKey = e.Key;
+            if ((e.Key >= Key.D0 && e.Key <= Key.Z) || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
+            {
+                if (_viewModel.SelectedModifier != ModifierKeys.Control &&
+                    e.Key != Key.O && e.Key != Key.A && e.Key != Key.H)
+                {
+                    _viewModel.SelectedKey = e.Key;
+                }
+            }
             e.Handled = true;
         }
+
+        public Hotkey GetHotkey() => new Hotkey(_viewModel.SelectedModifier, _viewModel.SelectedKey);
     }
 }

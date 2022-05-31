@@ -1,4 +1,4 @@
-﻿using ImageCollection.Models;
+﻿using ImageCollection.Models.Structures;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +11,7 @@ namespace ImageCollection.Interfaces
     {
         Guid Id { get; }
         string Name { get; }
-        Hotkey? Hotkey { get; set; }
+        Hotkey Hotkey { get; set; }
         ObservableCollection<ICollectionItem> Items { get; }
 
         void AddItem(ICollectionItem item);
