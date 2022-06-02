@@ -8,6 +8,10 @@ namespace ImageCollection.Models
 {
     internal class Settings
     {
+        #region Constants
+        public const string IcdFileName = "data.icd";
+        #endregion
+
         public static string ProgramResourceFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SergeyGovorunov", "ImageCollection");
 
         #region Instance

@@ -131,6 +131,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\IcdFile.cs" />
     <Compile Include="ViewModels\EditHotkeyViewModel.cs" />
     <Compile Include="Windows\EditHotkeyWindow.xaml.cs">
       <DependentUpon>EditHotkeyWindow.xaml</DependentUpon>

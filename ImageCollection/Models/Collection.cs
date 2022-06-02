@@ -190,6 +190,8 @@ namespace ImageCollection.Models
 
         public override int GetHashCode() => Id.GetHashCode();
 
+        public void SaveHotkey() => IcdFile.WriteHotkey(Path.Combine(GetCollectionDirectory(), Settings.IcdFileName), _hotkey);
+
         private string GetCollectionDirectory()
         {
             if (!Equals(_collectionsManager.DefaultCollection))
