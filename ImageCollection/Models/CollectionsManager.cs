@@ -1,5 +1,6 @@
 ﻿using ImageCollection.Extensions;
 using ImageCollection.Interfaces;
+using ImageCollection.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,6 +21,14 @@ namespace ImageCollection.Models
         public CollectionsManager(string folder)
         {
             RootDirectory = folder;
+            //
+            //
+            /*ProgressViewModel progressViewModel = new ProgressViewModel();
+            progressViewModel.DoWork += InitCollectionManager;
+            ProgressWindow progressWindow = new ProgressWindow(progressViewModel);
+            progressWindow.ShowDialog();*/
+            //
+            //
             DirectoryInfo directoryInfo = new DirectoryInfo(RootDirectory);
             DefaultCollection = new Collection(this, "Root", directoryInfo.GetFiles().WhereIsImage());
             _collectionNames.Add("Root");
@@ -30,6 +39,11 @@ namespace ImageCollection.Models
                 Collections.Add(new Collection(this, directory.Name, directory.GetFiles().WhereIsImage()));
                 _collectionNames.Add(directory.Name);
             }
+        }
+
+        private void InitCollectionManager(ProgressViewModel progress)
+        {
+            throw new NotImplementedException();
         }
 
         public bool Rename(ICollection collection, string name)
