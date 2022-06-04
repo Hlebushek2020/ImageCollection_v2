@@ -3,6 +3,7 @@ using Sergey.UI.Extension.Themes;
 using System;
 using System.IO;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace ImageCollection.Models
 {
@@ -10,9 +11,11 @@ namespace ImageCollection.Models
     {
         #region Constants
         public const string IcdFileName = "data.icd";
-        #endregion
+        public const string DefaultCollectionName = "Root";
 
         public static string ProgramResourceFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SergeyGovorunov", "ImageCollection");
+        public static BitmapImage DefaultPreview { get; } = new BitmapImage(new Uri("/Resources/defaultImage.png", UriKind.Relative));
+        #endregion
 
         #region Instance
         private static Settings _current;

@@ -1,7 +1,6 @@
 ﻿using ImageCollection.Extensions;
 using ImageCollection.Interfaces;
 using ImageCollection.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -21,29 +20,63 @@ namespace ImageCollection.Models
         public CollectionsManager(string folder)
         {
             RootDirectory = folder;
-            //
-            //
-            /*ProgressViewModel progressViewModel = new ProgressViewModel();
+            ProgressViewModel progressViewModel = new ProgressViewModel();
             progressViewModel.DoWork += InitCollectionManager;
             ProgressWindow progressWindow = new ProgressWindow(progressViewModel);
-            progressWindow.ShowDialog();*/
-            //
-            //
+            progressWindow.ShowDialog();
+            /*
+                  DirectoryInfo directoryInfo = new DirectoryInfo(RootDirectory);
+                  DefaultCollection = new Collection(this, "Root", directoryInfo.GetFiles().WhereIsImage());
+                  _collectionNames.Add("Root");
+                  Collections.Add(DefaultCollection);
+                  DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
+                  foreach (DirectoryInfo directory in directoryInfos)
+                  {
+                      Collections.Add(new Collection(this, directory.Name, directory.GetFiles().WhereIsImage()));
+                      _collectionNames.Add(directory.Name);
+                  }*/
+        }
+
+        private void InitCollectionManager(IWorkProgress progress)
+        {
             DirectoryInfo directoryInfo = new DirectoryInfo(RootDirectory);
-            DefaultCollection = new Collection(this, "Root", directoryInfo.GetFiles().WhereIsImage());
-            _collectionNames.Add("Root");
+            progress.State = $"Создание коллекции: {Settings.DefaultCollectionName}";
+            DefaultCollection = new Collection(this, Settings.DefaultCollectionName);
+            foreach (FileInfo fileInfo in directoryInfo.GetFiles().WhereIsImage())
+            {
+                progress.State = $"Добавление: {fileInfo.FullName}";
+                DefaultCollection.AddItem(new CollectionItem(fileInfo));
+            }
+            progress.State = "Чтение и обработка метаданных";
+            IcdFile icdFile = IcdFile.Read(Path.Combine(RootDirectory, Settings.IcdFileName));
+            if (icdFile != null)
+            {
+                DefaultCollection.Hotkey = icdFile.Hotkey;
+            }
+            progress.State = $"Добавление коллекции \"{Settings.DefaultCollectionName}\" в список";
+            Collections.Add(DefaultCollection);
+            _collectionNames.Add(Settings.DefaultCollectionName.ToLower());
             Collections.Add(DefaultCollection);
             DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
             foreach (DirectoryInfo directory in directoryInfos)
             {
-                Collections.Add(new Collection(this, directory.Name, directory.GetFiles().WhereIsImage()));
-                _collectionNames.Add(directory.Name);
+                progress.State = $"Создание коллекции: {directory.Name}";
+                Collection collection = new Collection(this, directory.Name);
+                foreach (FileInfo fileInfo in directory.GetFiles().WhereIsImage())
+                {
+                    progress.State = $"Добавление: {fileInfo.FullName}";
+                    collection.AddItem(new CollectionItem(fileInfo));
+                }
+                progress.State = "Чтение и обработка метаданных";
+                icdFile = IcdFile.Read(Path.Combine(RootDirectory, directory.Name, Settings.IcdFileName));
+                if (icdFile != null)
+                {
+                    collection.Hotkey = icdFile.Hotkey;
+                }
+                progress.State = $"Добавление коллекции \"{directory.Name}\" в список";
+                Collections.Add(collection);
+                _collectionNames.Add(directory.Name.ToLower());
             }
-        }
-
-        private void InitCollectionManager(ProgressViewModel progress)
-        {
-            throw new NotImplementedException();
         }
 
         public bool Rename(ICollection collection, string name)
@@ -51,6 +84,8 @@ namespace ImageCollection.Models
             if (!_collectionNames.Contains(name))
             {
                 Directory.Move(Path.Combine(RootDirectory, collection.Name), Path.Combine(RootDirectory, name));
+                _collectionNames.Remove(collection.Name);
+                _collectionNames.Add(name.ToLower());
                 ((Collection)collection).Name = name;
                 return true;
             }
@@ -62,9 +97,9 @@ namespace ImageCollection.Models
             if (!_collectionNames.Contains(name))
             {
                 Directory.CreateDirectory(Path.Combine(RootDirectory, name));
-                Collection collection = new Collection(this, name, Guid.NewGuid());
+                Collection collection = new Collection(this, name);
                 Collections.Add(collection);
-                _collectionNames.Add(name);
+                _collectionNames.Add(name.ToLower());
                 return collection;
             }
             return null;

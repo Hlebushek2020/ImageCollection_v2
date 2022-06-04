@@ -135,6 +135,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IWorkProgress.cs" />
     <Compile Include="Models\IcdFile.cs" />
     <Compile Include="ViewModels\ProgressViewModel.cs" />
     <Compile Include="Windows\ProgressWindow.xaml.cs">
@@ -215,6 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\menu-reset-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\defaultImage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

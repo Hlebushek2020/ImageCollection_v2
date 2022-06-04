@@ -137,17 +137,14 @@ namespace ImageCollection.ViewModels
             {
                 AddOrRenameCollectionWindow collectionEdit = new AddOrRenameCollectionWindow(_collectionsManager, _selectedCollection);
                 collectionEdit.ShowDialog();
-            }, () => _selectedCollection != null);
+            }, () => _selectedCollection != null && _selectedCollection != _collectionsManager.DefaultCollection);
             RemoveCollection = new DelegateCommand(() =>
             {
-                if (_selectedCollection != null && _selectedCollection != _collectionsManager.DefaultCollection)
+                if (SUID.MessageBox.Show($"Удалить коллекцию \"{_selectedCollection.Name}\"?", App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    if (SUID.MessageBox.Show($"Удалить коллекцию \"{_selectedCollection.Name}\"?", App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                    {
-                        _collectionsManager.Remove(_selectedCollection);
-                    }
+                    _collectionsManager.Remove(_selectedCollection);
                 }
-            }, () => _selectedCollection != null);
+            }, () => _selectedCollection != null && _selectedCollection != _collectionsManager.DefaultCollection);
             RemoveSelectedFiles = new DelegateCommand(() =>
             {
                 IReadOnlyList<ICollectionItem> selectedItems = _selectedCollection.Items.Where(item => item.IsSelected).ToList();

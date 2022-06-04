@@ -19,9 +19,15 @@ namespace ImageCollection.Models
         public string Description { get; }
         public long Size { get; set; }
         public Size Resolution { get; set; }
+        public bool IsPreview { get { return _preview != null; } }
         public BitmapImage Preview
         {
-            get { return _preview; }
+            get
+            {
+                if (_preview != null)
+                    return _preview;
+                return Settings.DefaultPreview;
+            }
             set
             {
                 _preview = value;

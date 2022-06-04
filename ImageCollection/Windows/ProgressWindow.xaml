@@ -17,6 +17,6 @@
         Closing="Window_Closing">
     <Grid Margin="10">
         <ProgressBar Height="20" Margin="0,0,0,0" VerticalAlignment="Top" IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Minimum="{Binding Minimum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Maximum="{Binding Maximum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock TextAlignment="Left" Margin="0,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="56" Text="{Binding State, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Style="{StaticResource TextBlockStyle}" TextAlignment="Left" Margin="0,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="56" Text="{Binding State, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </Window>

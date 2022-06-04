@@ -35,16 +35,7 @@ namespace ImageCollection.Models
         public ObservableCollection<ICollectionItem> Items { get; } = new ObservableCollection<ICollectionItem>();
         #endregion
 
-        public Collection(CollectionsManager collectionsManager, string name, IEnumerable<FileInfo> fileInfos)
-        {
-            Id = Guid.NewGuid();
-            _collectionsManager = collectionsManager;
-            Name = name;
-            foreach (FileInfo fileInfo in fileInfos)
-            {
-                Items.Add(new CollectionItem(fileInfo));
-            }
-        }
+        public Collection(CollectionsManager collectionsManager, string name) : this(collectionsManager, name, Guid.NewGuid()) { }
 
         public Collection(CollectionsManager collectionsManager, string name, Guid id)
         {
@@ -144,7 +135,7 @@ namespace ImageCollection.Models
                     {
                         return;
                     }
-                    if (collectionItem.Preview == null)
+                    if (!collectionItem.IsPreview)
                     {
                         string previewPath = Path.Combine(previewDirectory, $"{Path.GetFileNameWithoutExtension(collectionItem.Name)}.jpg");
                         if (!File.Exists(previewPath))

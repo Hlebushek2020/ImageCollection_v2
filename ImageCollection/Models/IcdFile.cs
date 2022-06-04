@@ -14,7 +14,7 @@ namespace ImageCollection.Models
         public static IcdFile Read(string path)
         {
             if (!File.Exists(path))
-                return new IcdFile();
+                return null;
             IcdFile icdFile = new IcdFile();
             using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
