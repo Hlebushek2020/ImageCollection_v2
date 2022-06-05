@@ -16,12 +16,26 @@ namespace ImageCollection.Models
     {
         #region Field
         private readonly CollectionsManager _collectionsManager;
+
         private Hotkey _hotkey;
+        private string _name;
+
+        private Task _taskInitPreviewImages;
+        private CancellationTokenSource _ctsInitPreviewImages;
+        private bool _isPreviousCompleted;
         #endregion
 
         #region Properties
         public Guid Id { get; }
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                RaisePropertyChanged();
+            }
+        }
         public Hotkey Hotkey
         {
             get { return _hotkey; }
@@ -35,23 +49,23 @@ namespace ImageCollection.Models
         public ObservableCollection<ICollectionItem> Items { get; } = new ObservableCollection<ICollectionItem>();
         #endregion
 
-        public Collection(CollectionsManager collectionsManager, string name) : this(collectionsManager, name, Guid.NewGuid()) { }
-
-        public Collection(CollectionsManager collectionsManager, string name, Guid id)
+        public Collection(CollectionsManager collectionsManager, string name)
         {
             _collectionsManager = collectionsManager;
-            Id = id;
+            Id = Guid.NewGuid();
             Name = name;
         }
 
         public void RemoveFiles(IEnumerable<ICollectionItem> items)
         {
+            StopInitPreviewImages(true);
             string collectionDirectory = GetCollectionDirectory();
             foreach (ICollectionItem collectionItem in items)
             {
                 File.Delete(Path.Combine(collectionDirectory, collectionItem.Name));
                 Items.Remove(collectionItem);
             }
+            InitPreviewImages();
         }
 
         public void AddItem(ICollectionItem item) => Items.Add(item);
@@ -76,14 +90,17 @@ namespace ImageCollection.Models
 
         public void RenameFile(ICollectionItem item, string newName)
         {
+            StopInitPreviewImages(true);
             string directoryPath = GetCollectionDirectory();
             string fromPath = Path.Combine(directoryPath, item.Name);
             string toPath = Path.Combine(directoryPath, $"{newName}.{Path.GetExtension(item.Name)}");
             File.Move(fromPath, toPath);
+            InitPreviewImages();
         }
 
         public void RenameFiles(IEnumerable<ICollectionItem> items, string pattern)
         {
+            StopInitPreviewImages(true);
             string directoryPath = GetCollectionDirectory();
             HashSet<string> checkName = new HashSet<string>();
             int counter = 0;
@@ -114,65 +131,80 @@ namespace ImageCollection.Models
                     ((CollectionItem)collectionItem).Name = newName;
                 }
             }
+            InitPreviewImages();
         }
 
-        public CancellationTokenSource InitializingPreviewImages()
+        public void InitPreviewImages()
         {
-            if (Items.Count == 0)
+            if (Items.Count != 0 && (!_isPreviousCompleted || _taskInitPreviewImages == null || _taskInitPreviewImages.IsCompleted))
             {
-                return null;
-            }
-            CancellationTokenSource cts = new CancellationTokenSource();
-            CancellationToken token = cts.Token;
-            Task.Run(() =>
-            {
-                string collectionDirectory = GetCollectionDirectory();
-                string previewDirectory = Path.Combine(collectionDirectory, "IC_PREVIEW");
-                Directory.CreateDirectory(previewDirectory);
-                foreach (ICollectionItem collectionItem in Items)
+                _ctsInitPreviewImages = new CancellationTokenSource();
+                CancellationToken token = _ctsInitPreviewImages.Token;
+                _taskInitPreviewImages = Task.Run(() =>
                 {
-                    if (token.IsCancellationRequested)
+                    string collectionDirectory = GetCollectionDirectory();
+                    string previewDirectory = Path.Combine(collectionDirectory, "IC_PREVIEW");
+                    Directory.CreateDirectory(previewDirectory);
+                    foreach (ICollectionItem collectionItem in Items)
                     {
-                        return;
-                    }
-                    if (!collectionItem.IsPreview)
-                    {
-                        string previewPath = Path.Combine(previewDirectory, $"{Path.GetFileNameWithoutExtension(collectionItem.Name)}.jpg");
-                        if (!File.Exists(previewPath))
-                        {
-                            string originalPath = Path.Combine(collectionDirectory, collectionItem.Name);
-                            byte[] originalBuffer = File.ReadAllBytes(originalPath);
-                            Size resolutionSize = collectionItem.Resolution;
-                            int previewWidth = (int)(resolutionSize.Width / resolutionSize.Height * 94.0);
-                            BitmapImage convert = new BitmapImage();
-                            convert.BeginInit();
-                            convert.StreamSource = new MemoryStream(originalBuffer);
-                            convert.DecodePixelHeight = 94;
-                            convert.DecodePixelWidth = previewWidth;
-                            convert.EndInit();
-                            JpegBitmapEncoder previewEncoder = new JpegBitmapEncoder();
-                            previewEncoder.Frames.Add(BitmapFrame.Create(convert));
-                            using (FileStream previewStream = new FileStream(previewPath, FileMode.Create, FileAccess.Write))
-                            {
-                                previewEncoder.Save(previewStream);
-                            }
-                        }
                         if (token.IsCancellationRequested)
                         {
                             return;
                         }
-                        App.Current.Dispatcher.Invoke((Action<string>)((string _previewPath) =>
+                        if (!collectionItem.IsPreview)
                         {
-                            BitmapImage preview = new BitmapImage();
-                            preview.BeginInit();
-                            preview.StreamSource = new MemoryStream(File.ReadAllBytes(previewPath));
-                            preview.EndInit();
-                            collectionItem.Preview = preview;
-                        }), previewPath);
+                            string previewPath = Path.Combine(previewDirectory, $"{Path.GetFileNameWithoutExtension(collectionItem.Name)}.jpg");
+                            if (!File.Exists(previewPath))
+                            {
+                                string originalPath = Path.Combine(collectionDirectory, collectionItem.Name);
+                                byte[] originalBuffer = File.ReadAllBytes(originalPath);
+                                Size resolutionSize = collectionItem.Resolution;
+                                int previewWidth = (int)(resolutionSize.Width / resolutionSize.Height * 94.0);
+                                BitmapImage convert = new BitmapImage();
+                                convert.BeginInit();
+                                convert.StreamSource = new MemoryStream(originalBuffer);
+                                convert.DecodePixelHeight = 94;
+                                convert.DecodePixelWidth = previewWidth;
+                                convert.EndInit();
+                                JpegBitmapEncoder previewEncoder = new JpegBitmapEncoder();
+                                previewEncoder.Frames.Add(BitmapFrame.Create(convert));
+                                using (FileStream previewStream = new FileStream(previewPath, FileMode.Create, FileAccess.Write))
+                                {
+                                    previewEncoder.Save(previewStream);
+                                }
+                            }
+                            if (token.IsCancellationRequested)
+                            {
+                                return;
+                            }
+                            App.Current.Dispatcher.Invoke((Action<string>)((string _previewPath) =>
+                            {
+                                BitmapImage preview = new BitmapImage();
+                                preview.BeginInit();
+                                preview.StreamSource = new MemoryStream(File.ReadAllBytes(previewPath));
+                                preview.EndInit();
+                                collectionItem.Preview = preview;
+                            }), previewPath);
+                        }
+                    }
+                }, token);
+            }
+        }
+
+        public void StopInitPreviewImages(bool isWait = false)
+        {
+            if (_taskInitPreviewImages != null)
+            {
+                _isPreviousCompleted = _taskInitPreviewImages.IsCompleted;
+                if (!_taskInitPreviewImages.IsCompleted)
+                {
+                    _ctsInitPreviewImages.Cancel();
+                    if (isWait)
+                    {
+                        _taskInitPreviewImages.Wait();
                     }
                 }
-            }, token);
-            return cts;
+            }
         }
 
         public override bool Equals(object obj) => obj != null && Equals(obj as Collection);

@@ -24,17 +24,6 @@ namespace ImageCollection.Models
             progressViewModel.DoWork += InitCollectionManager;
             ProgressWindow progressWindow = new ProgressWindow(progressViewModel);
             progressWindow.ShowDialog();
-            /*
-                  DirectoryInfo directoryInfo = new DirectoryInfo(RootDirectory);
-                  DefaultCollection = new Collection(this, "Root", directoryInfo.GetFiles().WhereIsImage());
-                  _collectionNames.Add("Root");
-                  Collections.Add(DefaultCollection);
-                  DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
-                  foreach (DirectoryInfo directory in directoryInfos)
-                  {
-                      Collections.Add(new Collection(this, directory.Name, directory.GetFiles().WhereIsImage()));
-                      _collectionNames.Add(directory.Name);
-                  }*/
         }
 
         private void InitCollectionManager(IWorkProgress progress)
@@ -83,10 +72,12 @@ namespace ImageCollection.Models
         {
             if (!_collectionNames.Contains(name))
             {
+                collection.StopInitPreviewImages(true);
                 Directory.Move(Path.Combine(RootDirectory, collection.Name), Path.Combine(RootDirectory, name));
                 _collectionNames.Remove(collection.Name);
                 _collectionNames.Add(name.ToLower());
                 ((Collection)collection).Name = name;
+                collection.InitPreviewImages();
                 return true;
             }
             return false;
@@ -107,21 +98,25 @@ namespace ImageCollection.Models
 
         public void Remove(ICollection collection)
         {
+            collection.StopInitPreviewImages(true);
             CollectionItemMover itemMover = new CollectionItemMover(this, collection, DefaultCollection);
             foreach (ICollectionItem item in collection.Items)
             {
                 itemMover.Move(item);
             }
+            collection.InitPreviewImages();
         }
 
         public void ToCollection(ICollection from, ICollection to)
         {
+            from.StopInitPreviewImages(true);
             IEnumerable<ICollectionItem> items = from.Items.Where(ci => ci.IsSelected);
             CollectionItemMover itemMover = new CollectionItemMover(this, from, to);
             foreach (ICollectionItem item in items)
             {
                 itemMover.Move(item);
             }
+            from.InitPreviewImages();
         }
     }
 }

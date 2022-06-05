@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
 using System.Windows.Media.Imaging;
 
 namespace ImageCollection.Interfaces
@@ -21,7 +20,8 @@ namespace ImageCollection.Interfaces
         void RenameFiles(IEnumerable<ICollectionItem> items, string pattern);
 
         BitmapImage GetImageOfCollectionItem(ICollectionItem item);
-        CancellationTokenSource InitializingPreviewImages();
         bool CheckingNewFileName(ICollectionItem collectionItem, string newName);
+        void InitPreviewImages();
+        void StopInitPreviewImages(bool isWait = false);
     }
 }

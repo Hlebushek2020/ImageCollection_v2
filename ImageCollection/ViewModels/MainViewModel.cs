@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
@@ -23,7 +22,6 @@ namespace ImageCollection.ViewModels
         private ICollection _selectedCollection;
         private ObservableCollection<ICollection> _collections;
         private BitmapImage _imageOfSelectedCollectionItem;
-        private CancellationTokenSource _initializingPreviewImagesCts;
         #endregion
 
         #region Property
@@ -57,6 +55,10 @@ namespace ImageCollection.ViewModels
             get { return _selectedCollection; }
             set
             {
+                if (_selectedCollection != null)
+                {
+                    _selectedCollection.StopInitPreviewImages();
+                }
                 _selectedCollection = value;
                 RaisePropertyChanged();
                 RenameCollection.RaiseCanExecuteChanged();
@@ -64,11 +66,7 @@ namespace ImageCollection.ViewModels
                 RenameCollectionFiles.RaiseCanExecuteChanged();
                 if (_selectedCollection != null)
                 {
-                    if (_initializingPreviewImagesCts != null)
-                    {
-                        _initializingPreviewImagesCts.Cancel();
-                    }
-                    _initializingPreviewImagesCts = _selectedCollection.InitializingPreviewImages();
+                    _selectedCollection.InitPreviewImages();
                 }
             }
         }
