@@ -11,11 +11,20 @@ namespace ImageCollection.Models
     internal class CollectionItem : BindableBase, ICollectionItem
     {
         #region Fields
+        private string _name;
         private BitmapImage _preview;
         #endregion
 
         public Guid Id { get; }
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                RaisePropertyChanged();
+            }
+        }
         public string Description { get; }
         public long Size { get; set; }
         public Size Resolution { get; set; }
@@ -39,7 +48,7 @@ namespace ImageCollection.Models
         public CollectionItem(FileInfo fileInfo)
         {
             Id = Guid.NewGuid();
-            Name = fileInfo.Name;
+            _name = fileInfo.Name;
             Size = fileInfo.Length;
             Resolution = fileInfo.GetImageResolution();
             Description = $"{Resolution.Width}x{Resolution.Height}; {Math.Round(Size / 1024.0 / 1024.0, 2)} Мб";
