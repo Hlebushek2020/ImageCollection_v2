@@ -27,10 +27,10 @@ namespace ImageCollection.ViewModels
         #region Property
         public string Title { get => App.Name; }
 
-        private ICollectionsManager CollectionsManager
+        public ICollectionsManager CollectionsManager
         {
             get { return _collectionsManager; }
-            set
+            private set
             {
                 _collectionsManager = value;
                 CreateCollection.RaiseCanExecuteChanged();
