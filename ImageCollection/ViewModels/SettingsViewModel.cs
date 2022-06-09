@@ -13,6 +13,9 @@ namespace ImageCollection.ViewModels
         public string Title { get { return App.Name; } }
         public List<DisplayTheme> Themes { get; } = DisplayTheme.GetList();
         public DisplayTheme SelectedTheme { get; set; } = new DisplayTheme(Settings.Current.Theme);
+        public bool MoveItemsFromRemoveCollection { get; set; } = Settings.Current.MoveItemsFromRemoveCollection;
+        public bool DeleteCollectionFolder { get; set; } = Settings.Current.DeleteCollectionFolder;
+        public bool DeleteCollectionFolderIfEmpty { get; set; } = Settings.Current.DeleteCollectionFolderIfEmpty;
         #endregion
 
         #region Commands

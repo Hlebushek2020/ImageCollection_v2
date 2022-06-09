@@ -1,13 +1,15 @@
-﻿<Window x:Class="ImageCollection.SettingsWindow"
+﻿<Window x:Name="window"
+        x:Class="ImageCollection.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageCollection"
         mc:Ignorable="d"
-        Width="800"
+        Width="600"
         FontSize="14"
         SizeToContent="Height"
+        ResizeMode="CanMinimize"
         Style="{StaticResource WindowStyle}"
         Title="{Binding Title, Mode=OneWay}"
         WindowStartupLocation="CenterScreen">
@@ -20,13 +22,13 @@
         </GroupBox>
         <GroupBox Header="Удаление коллекции" FontWeight="Medium" Margin="0,67,0,0" VerticalAlignment="Top">
             <Grid Margin="5">
-                <CheckBox FontWeight="Normal" Content="Перемещать элементы удаляемой коллекции в коллекцию по умолчанию" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                <CheckBox FontWeight="Normal" Content="Перемещать элементы удаляемой коллекции в коллекцию по умолчанию" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" IsChecked="{Binding MoveItemsFromRemoveCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <GroupBox FontWeight="Normal" Margin="0,26,0,0" VerticalAlignment="Top">
                     <GroupBox.Header>
-                        <CheckBox Content="Удалять папку коллекции" HorizontalAlignment="Left"/>
+                        <CheckBox Content="Удалить папку коллекции" HorizontalAlignment="Left" IsChecked="{Binding DeleteCollectionFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </GroupBox.Header>
                     <Grid Margin="5">
-                        <CheckBox Content="Удалять вместе с файлами" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                        <CheckBox Content="Только пустую" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" IsChecked="{Binding DeleteCollectionFolderIfEmpty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding DeleteCollectionFolder, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </GroupBox>
             </Grid>
