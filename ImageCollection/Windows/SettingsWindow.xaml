@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageCollection"
         mc:Ignorable="d"
-        Height="450" 
         Width="800"
         FontSize="14"
+        SizeToContent="Height"
         Style="{StaticResource WindowStyle}"
         Title="{Binding Title, Mode=OneWay}"
         WindowStartupLocation="CenterScreen">
@@ -18,7 +18,22 @@
                 <ComboBox FontWeight="Normal" d:ItemsSource="{d:SampleData ItemCount=5}" d:SelectedIndex="0" Margin="40,0,0,0" VerticalAlignment="Top" ItemsSource="{Binding Themes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Display"/>
             </Grid>
         </GroupBox>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="507,375,0,0" VerticalAlignment="Top"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="681,375,0,0" VerticalAlignment="Top"/>
+        <GroupBox Header="Удаление коллекции" FontWeight="Medium" Margin="0,67,0,0" VerticalAlignment="Top">
+            <Grid Margin="5">
+                <CheckBox FontWeight="Normal" Content="Перемещать элементы удаляемой коллекции в коллекцию по умолчанию" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                <GroupBox FontWeight="Normal" Margin="0,26,0,0" VerticalAlignment="Top">
+                    <GroupBox.Header>
+                        <CheckBox Content="Удалять папку коллекции" HorizontalAlignment="Left"/>
+                    </GroupBox.Header>
+                    <Grid Margin="5">
+                        <CheckBox Content="Удалять вместе с файлами" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+        <Grid Margin="0,198,0,0" VerticalAlignment="Top">
+            <Button Style="{StaticResource ButtonStyle}" Content="Применить" HorizontalAlignment="Right" Margin="0,0,85,0" VerticalAlignment="Top" Height="30" Width="100" Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
+            <Button Style="{StaticResource ButtonStyle}" Content="Закрыть" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" Height="30" Width="80" Command="{Binding CanselCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
+        </Grid>
     </Grid>
 </Window>
