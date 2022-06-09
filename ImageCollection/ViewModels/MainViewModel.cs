@@ -2,7 +2,6 @@
 using ImageCollection.Models;
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -203,7 +202,8 @@ namespace ImageCollection.ViewModels
             }, () => _collectionsManager != null);
             Settings = new DelegateCommand(() =>
             {
-                throw new NotImplementedException();
+                SettingsWindow settings = new SettingsWindow();
+                settings.ShowDialog();
             });
             ResetSorting = new DelegateCommand(() =>
             {
