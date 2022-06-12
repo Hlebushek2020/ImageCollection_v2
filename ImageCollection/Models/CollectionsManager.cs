@@ -99,12 +99,43 @@ namespace ImageCollection.Models
         public void Remove(ICollection collection)
         {
             collection.StopInitPreviewImages(true);
-            CollectionItemMover itemMover = new CollectionItemMover(this, collection, DefaultCollection);
-            foreach (ICollectionItem item in collection.Items)
+            if (Settings.Current.MoveItemsFromRemoveCollection)
             {
-                itemMover.Move(item);
+                CollectionItemMover itemMover = new CollectionItemMover(this, collection, DefaultCollection);
+                foreach (ICollectionItem item in collection.Items)
+                {
+                    itemMover.Move(item);
+                }
             }
-            collection.InitPreviewImages();
+            if (Settings.Current.DeleteCollectionFolder)
+            {
+                if (Settings.Current.DeleteCollectionFolderIfEmpty)
+                {
+                    string collectionDirectory = collection.GetCollectionDirectory();
+                    DirectoryInfo previewDirectory = new DirectoryInfo(Path.Combine(collectionDirectory, Settings.PreviewDirectoryName));
+                    if (previewDirectory.Exists)
+                    {
+                        previewDirectory.Delete(true);
+                    }
+                    FileInfo dataIcd = new FileInfo(Path.Combine(collectionDirectory, Settings.IcdFileName));
+                    if (dataIcd.Exists)
+                    {
+                        dataIcd.Delete();
+                    }
+                    DirectoryInfo collectionDirectoryInfo = new DirectoryInfo(collectionDirectory);
+                    FileInfo[] directoryInfo = collectionDirectoryInfo.GetFiles("*", SearchOption.AllDirectories);
+                    if (directoryInfo.Length == 0)
+                    {
+                        collectionDirectoryInfo.Delete(true);
+                    }
+                }
+                else
+                {
+                    Directory.Delete(collection.GetCollectionDirectory(), true);
+                }
+            }
+            Collections.Remove(collection);
+            _collectionNames.Remove(collection.Name.ToLower());
         }
 
         public void ToCollection(ICollection from, ICollection to)

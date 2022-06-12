@@ -28,8 +28,12 @@ namespace ImageCollection.ViewModels
             CanselCommand = new DelegateCommand<Window>((w) => w.Close());
             OkCommand = new DelegateCommand<Window>((w) =>
             {
+                Settings.Current.MoveItemsFromRemoveCollection = MoveItemsFromRemoveCollection;
+                Settings.Current.DeleteCollectionFolder = DeleteCollectionFolder;
+                Settings.Current.DeleteCollectionFolderIfEmpty = DeleteCollectionFolderIfEmpty;
                 App.SwitchTheme(SelectedTheme.Value);
                 Settings.Current.Save();
+                w.Close();
             });
         }
     }

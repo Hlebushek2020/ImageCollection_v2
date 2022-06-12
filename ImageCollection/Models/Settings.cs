@@ -12,6 +12,7 @@ namespace ImageCollection.Models
         #region Constants
         public const string IcdFileName = "data.icd";
         public const string DefaultCollectionName = "Root";
+        public const string PreviewDirectoryName = "IC_PREVIEW";
 
         public static string ProgramResourceFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SergeyGovorunov", "ImageCollection");
         public static BitmapImage DefaultPreview { get; } = new BitmapImage(new Uri("/Resources/defaultImage.png", UriKind.Relative));

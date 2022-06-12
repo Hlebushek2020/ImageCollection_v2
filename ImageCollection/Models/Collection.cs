@@ -143,7 +143,7 @@ namespace ImageCollection.Models
                 _taskInitPreviewImages = Task.Run(() =>
                 {
                     string collectionDirectory = GetCollectionDirectory();
-                    string previewDirectory = Path.Combine(collectionDirectory, "IC_PREVIEW");
+                    string previewDirectory = Path.Combine(collectionDirectory, Settings.PreviewDirectoryName);
                     Directory.CreateDirectory(previewDirectory);
                     foreach (ICollectionItem collectionItem in Items)
                     {
@@ -215,7 +215,7 @@ namespace ImageCollection.Models
 
         public void SaveHotkey() => IcdFile.WriteHotkey(Path.Combine(GetCollectionDirectory(), Settings.IcdFileName), _hotkey);
 
-        private string GetCollectionDirectory()
+        public string GetCollectionDirectory()
         {
             if (!Equals(_collectionsManager.DefaultCollection))
             {

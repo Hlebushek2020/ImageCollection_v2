@@ -23,5 +23,6 @@ namespace ImageCollection.Interfaces
         bool CheckingNewFileName(ICollectionItem collectionItem, string newName);
         void InitPreviewImages();
         void StopInitPreviewImages(bool isWait = false);
+        string GetCollectionDirectory();
     }
 }
