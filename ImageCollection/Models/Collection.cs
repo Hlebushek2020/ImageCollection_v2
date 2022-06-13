@@ -1,5 +1,6 @@
 ﻿using ImageCollection.Interfaces;
 using ImageCollection.Models.Structures;
+using ImageCollection.ViewModels;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -101,36 +102,48 @@ namespace ImageCollection.Models
         public void RenameFiles(IEnumerable<ICollectionItem> items, string pattern)
         {
             StopInitPreviewImages(true);
-            string directoryPath = GetCollectionDirectory();
-            HashSet<string> checkName = new HashSet<string>();
-            int counter = 0;
-            foreach (ICollectionItem collectionItem in items)
+            ProgressViewModel progressView = new ProgressViewModel();
+            progressView.DoWork += delegate (IWorkProgress progress)
             {
-                string extension = Path.GetExtension(collectionItem.Name);
-                string fromPath = Path.Combine(directoryPath, collectionItem.Name);
-                bool skip = false;
-                string newName;
-                string toPath;
-                do
+                progress.State = "Подготовка";
+                string directoryPath = GetCollectionDirectory();
+                HashSet<string> checkName = new HashSet<string>();
+                int counter = 0;
+                foreach (ICollectionItem collectionItem in items)
                 {
-                    newName = $"{string.Format(pattern, counter)}.{extension}";
-                    checkName.Add(newName);
-                    toPath = Path.Combine(directoryPath, newName);
-                    if (checkName.Contains(collectionItem.Name))
+                    string extension = Path.GetExtension(collectionItem.Name);
+                    string fromPath = Path.Combine(directoryPath, collectionItem.Name);
+                    bool skip = false;
+                    string newName;
+                    string toPath;
+                    do
                     {
-                        skip = true;
+                        newName = $"{string.Format(pattern, counter)}.{extension}";
+                        checkName.Add(newName);
+                        toPath = Path.Combine(directoryPath, newName);
+                        if (checkName.Contains(collectionItem.Name))
+                        {
+                            skip = true;
+                        }
+                        else
+                        {
+                            counter++;
+                        }
+                    } while (File.Exists(toPath) && !skip);
+                    if (skip)
+                    {
+                        progress.State = "Пропущен: " + fromPath;
                     }
                     else
                     {
-                        counter++;
+                        progress.State = fromPath + " -> " + toPath;
+                        File.Move(fromPath, toPath);
+                        ((CollectionItem)collectionItem).Name = newName;
                     }
-                } while (File.Exists(toPath) && !skip);
-                if (!skip)
-                {
-                    File.Move(fromPath, toPath);
-                    ((CollectionItem)collectionItem).Name = newName;
                 }
-            }
+            };
+            ProgressWindow progressWindow = new ProgressWindow(progressView);
+            progressWindow.ShowDialog();
             InitPreviewImages();
         }
 

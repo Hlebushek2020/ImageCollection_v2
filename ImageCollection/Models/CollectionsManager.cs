@@ -21,51 +21,49 @@ namespace ImageCollection.Models
         {
             RootDirectory = folder;
             ProgressViewModel progressViewModel = new ProgressViewModel();
-            progressViewModel.DoWork += InitCollectionManager;
-            ProgressWindow progressWindow = new ProgressWindow(progressViewModel);
-            progressWindow.ShowDialog();
-        }
-
-        private void InitCollectionManager(IWorkProgress progress)
-        {
-            DirectoryInfo directoryInfo = new DirectoryInfo(RootDirectory);
-            progress.State = $"Создание коллекции: {Settings.DefaultCollectionName}";
-            DefaultCollection = new Collection(this, Settings.DefaultCollectionName);
-            foreach (FileInfo fileInfo in directoryInfo.GetFiles().WhereIsImage())
+            progressViewModel.DoWork += delegate (IWorkProgress progress)
             {
-                progress.State = $"Добавление: {fileInfo.FullName}";
-                DefaultCollection.AddItem(new CollectionItem(fileInfo));
-            }
-            progress.State = "Чтение и обработка метаданных";
-            IcdFile icdFile = IcdFile.Read(Path.Combine(RootDirectory, Settings.IcdFileName));
-            if (icdFile != null)
-            {
-                DefaultCollection.Hotkey = icdFile.Hotkey;
-            }
-            progress.State = $"Добавление коллекции \"{Settings.DefaultCollectionName}\" в список";
-            Collections.Add(DefaultCollection);
-            _collectionNames.Add(Settings.DefaultCollectionName.ToLower());
-            Collections.Add(DefaultCollection);
-            DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
-            foreach (DirectoryInfo directory in directoryInfos)
-            {
-                progress.State = $"Создание коллекции: {directory.Name}";
-                Collection collection = new Collection(this, directory.Name);
-                foreach (FileInfo fileInfo in directory.GetFiles().WhereIsImage())
+                DirectoryInfo directoryInfo = new DirectoryInfo(RootDirectory);
+                progress.State = $"Создание коллекции: {Settings.DefaultCollectionName}";
+                DefaultCollection = new Collection(this, Settings.DefaultCollectionName);
+                foreach (FileInfo fileInfo in directoryInfo.GetFiles().WhereIsImage())
                 {
                     progress.State = $"Добавление: {fileInfo.FullName}";
-                    collection.AddItem(new CollectionItem(fileInfo));
+                    DefaultCollection.AddItem(new CollectionItem(fileInfo));
                 }
                 progress.State = "Чтение и обработка метаданных";
-                icdFile = IcdFile.Read(Path.Combine(RootDirectory, directory.Name, Settings.IcdFileName));
+                IcdFile icdFile = IcdFile.Read(Path.Combine(RootDirectory, Settings.IcdFileName));
                 if (icdFile != null)
                 {
-                    collection.Hotkey = icdFile.Hotkey;
+                    DefaultCollection.Hotkey = icdFile.Hotkey;
                 }
-                progress.State = $"Добавление коллекции \"{directory.Name}\" в список";
-                Collections.Add(collection);
-                _collectionNames.Add(directory.Name.ToLower());
-            }
+                progress.State = $"Добавление коллекции \"{Settings.DefaultCollectionName}\" в список";
+                Collections.Add(DefaultCollection);
+                _collectionNames.Add(Settings.DefaultCollectionName.ToLower());
+                Collections.Add(DefaultCollection);
+                DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
+                foreach (DirectoryInfo directory in directoryInfos)
+                {
+                    progress.State = $"Создание коллекции: {directory.Name}";
+                    Collection collection = new Collection(this, directory.Name);
+                    foreach (FileInfo fileInfo in directory.GetFiles().WhereIsImage())
+                    {
+                        progress.State = $"Добавление: {fileInfo.FullName}";
+                        collection.AddItem(new CollectionItem(fileInfo));
+                    }
+                    progress.State = "Чтение и обработка метаданных";
+                    icdFile = IcdFile.Read(Path.Combine(RootDirectory, directory.Name, Settings.IcdFileName));
+                    if (icdFile != null)
+                    {
+                        collection.Hotkey = icdFile.Hotkey;
+                    }
+                    progress.State = $"Добавление коллекции \"{directory.Name}\" в список";
+                    Collections.Add(collection);
+                    _collectionNames.Add(directory.Name.ToLower());
+                }
+            };
+            ProgressWindow progressWindow = new ProgressWindow(progressViewModel);
+            progressWindow.ShowDialog();
         }
 
         public bool Rename(ICollection collection, string name)
