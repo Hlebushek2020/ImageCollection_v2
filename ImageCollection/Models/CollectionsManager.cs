@@ -97,43 +97,54 @@ namespace ImageCollection.Models
         public void Remove(ICollection collection)
         {
             collection.StopInitPreviewImages(true);
-            if (Settings.Current.MoveItemsFromRemoveCollection)
+            ProgressViewModel progressViewModel = new ProgressViewModel();
+            progressViewModel.DoWork += delegate (IWorkProgress progress)
             {
-                CollectionItemMover itemMover = new CollectionItemMover(this, collection, DefaultCollection);
-                foreach (ICollectionItem item in collection.Items)
+                if (Settings.Current.MoveItemsFromRemoveCollection)
                 {
-                    itemMover.Move(item);
-                }
-            }
-            if (Settings.Current.DeleteCollectionFolder)
-            {
-                if (Settings.Current.DeleteCollectionFolderIfEmpty)
-                {
-                    string collectionDirectory = collection.GetCollectionDirectory();
-                    DirectoryInfo previewDirectory = new DirectoryInfo(Path.Combine(collectionDirectory, Settings.PreviewDirectoryName));
-                    if (previewDirectory.Exists)
+                    progress.State = "**************************************************";
+                    progress.IsIndeterminate = false;
+                    progress.Maximum = collection.Items.Count;
+                    CollectionItemMover itemMover = new CollectionItemMover(this, collection, DefaultCollection);
+                    foreach (ICollectionItem item in collection.Items)
                     {
-                        previewDirectory.Delete(true);
-                    }
-                    FileInfo dataIcd = new FileInfo(Path.Combine(collectionDirectory, Settings.IcdFileName));
-                    if (dataIcd.Exists)
-                    {
-                        dataIcd.Delete();
-                    }
-                    DirectoryInfo collectionDirectoryInfo = new DirectoryInfo(collectionDirectory);
-                    FileInfo[] directoryInfo = collectionDirectoryInfo.GetFiles("*", SearchOption.AllDirectories);
-                    if (directoryInfo.Length == 0)
-                    {
-                        collectionDirectoryInfo.Delete(true);
+                        progress.State = "**************************************************";
+                        itemMover.Move(item);
+                        progress.Value++;
                     }
                 }
-                else
+                if (Settings.Current.DeleteCollectionFolder)
                 {
-                    Directory.Delete(collection.GetCollectionDirectory(), true);
+                    if (Settings.Current.DeleteCollectionFolderIfEmpty)
+                    {
+                        string collectionDirectory = collection.GetCollectionDirectory();
+                        DirectoryInfo previewDirectory = new DirectoryInfo(Path.Combine(collectionDirectory, Settings.PreviewDirectoryName));
+                        if (previewDirectory.Exists)
+                        {
+                            previewDirectory.Delete(true);
+                        }
+                        FileInfo dataIcd = new FileInfo(Path.Combine(collectionDirectory, Settings.IcdFileName));
+                        if (dataIcd.Exists)
+                        {
+                            dataIcd.Delete();
+                        }
+                        DirectoryInfo collectionDirectoryInfo = new DirectoryInfo(collectionDirectory);
+                        FileInfo[] directoryInfo = collectionDirectoryInfo.GetFiles("*", SearchOption.AllDirectories);
+                        if (directoryInfo.Length == 0)
+                        {
+                            collectionDirectoryInfo.Delete(true);
+                        }
+                    }
+                    else
+                    {
+                        Directory.Delete(collection.GetCollectionDirectory(), true);
+                    }
                 }
-            }
-            Collections.Remove(collection);
-            _collectionNames.Remove(collection.Name.ToLower());
+                Collections.Remove(collection);
+                _collectionNames.Remove(collection.Name.ToLower());
+            };
+            ProgressWindow progressWindow = new ProgressWindow(progressViewModel);
+            progressWindow.ShowDialog();
         }
 
         public void ToCollection(ICollection from, ICollection to)
