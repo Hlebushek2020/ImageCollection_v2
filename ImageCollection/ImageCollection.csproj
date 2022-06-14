@@ -103,35 +103,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Windows\SettingsWindow.xaml">
+    <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\ProgressWindow.xaml">
+    <Page Include="Views\ProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\EditHotkeyWindow.xaml">
+    <Page Include="Views\EditHotkeyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\CollectionHotkeysWindow.xaml">
+    <Page Include="Views\CollectionHotkeysWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\CollectionSelectionWindow.xaml">
+    <Page Include="Views\CollectionSelectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\RenameFilesWindow.xaml">
+    <Page Include="Views\RenameFilesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\AddOrRenameCollectionWindow.xaml">
+    <Page Include="Views\AddOrRenameCollectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -142,19 +142,19 @@
     <Compile Include="Interfaces\IWorkProgress.cs" />
     <Compile Include="Models\IcdFile.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="Windows\SettingsWindow.xaml.cs">
+    <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ProgressViewModel.cs" />
-    <Compile Include="Windows\ProgressWindow.xaml.cs">
+    <Compile Include="Views\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\EditHotkeyViewModel.cs" />
-    <Compile Include="Windows\EditHotkeyWindow.xaml.cs">
+    <Compile Include="Views\EditHotkeyWindow.xaml.cs">
       <DependentUpon>EditHotkeyWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CollectionHotkeysViewModel.cs" />
-    <Compile Include="Windows\CollectionHotkeysWindow.xaml.cs">
+    <Compile Include="Views\CollectionHotkeysWindow.xaml.cs">
       <DependentUpon>CollectionHotkeysWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICollectionItemMover.cs" />
@@ -164,15 +164,15 @@
     <Compile Include="Models\Structures\Hotkey.cs" />
     <Compile Include="ViewModels\RenameFilesViewModel.cs" />
     <Compile Include="ViewModels\CollectionSelectionViewModel.cs" />
-    <Compile Include="Windows\CollectionSelectionWindow.xaml.cs">
+    <Compile Include="Views\CollectionSelectionWindow.xaml.cs">
       <DependentUpon>CollectionSelectionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\CollectionItem.cs" />
-    <Compile Include="Windows\RenameFilesWindow.xaml.cs">
+    <Compile Include="Views\RenameFilesWindow.xaml.cs">
       <DependentUpon>RenameFilesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AddOrRenameCollectionViewModel.cs" />
-    <Compile Include="Windows\AddOrRenameCollectionWindow.xaml.cs">
+    <Compile Include="Views\AddOrRenameCollectionWindow.xaml.cs">
       <DependentUpon>AddOrRenameCollectionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\Extensions.cs" />
@@ -183,7 +183,7 @@
     <Compile Include="Models\Collection.cs" />
     <Compile Include="Models\CollectionsManager.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Windows\MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

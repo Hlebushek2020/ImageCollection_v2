@@ -102,42 +102,49 @@ namespace ImageCollection.Models
             {
                 if (Settings.Current.MoveItemsFromRemoveCollection)
                 {
-                    progress.State = "**************************************************";
+                    progress.State = "Подготовка к перемещению";
                     progress.IsIndeterminate = false;
                     progress.Maximum = collection.Items.Count;
                     CollectionItemMover itemMover = new CollectionItemMover(this, collection, DefaultCollection);
                     foreach (ICollectionItem item in collection.Items)
                     {
-                        progress.State = "**************************************************";
+                        progress.State = $"Перемещение: {item.Name}";
                         itemMover.Move(item);
                         progress.Value++;
                     }
                 }
                 if (Settings.Current.DeleteCollectionFolder)
                 {
+                    progress.IsIndeterminate = true;
+                    string collectionDirectory = collection.GetCollectionDirectory();
                     if (Settings.Current.DeleteCollectionFolderIfEmpty)
                     {
-                        string collectionDirectory = collection.GetCollectionDirectory();
-                        DirectoryInfo previewDirectory = new DirectoryInfo(Path.Combine(collectionDirectory, Settings.PreviewDirectoryName));
+                        string previewDirectoryPath = Path.Combine(collectionDirectory, Settings.PreviewDirectoryName);
+                        DirectoryInfo previewDirectory = new DirectoryInfo(previewDirectoryPath);
                         if (previewDirectory.Exists)
                         {
+                            progress.State = $"Удаление: {previewDirectoryPath}";
                             previewDirectory.Delete(true);
                         }
-                        FileInfo dataIcd = new FileInfo(Path.Combine(collectionDirectory, Settings.IcdFileName));
+                        string dataIcdPath = Path.Combine(collectionDirectory, Settings.IcdFileName);
+                        FileInfo dataIcd = new FileInfo(dataIcdPath);
                         if (dataIcd.Exists)
                         {
+                            progress.State = $"Удаление: {dataIcdPath}";
                             dataIcd.Delete();
                         }
                         DirectoryInfo collectionDirectoryInfo = new DirectoryInfo(collectionDirectory);
                         FileInfo[] directoryInfo = collectionDirectoryInfo.GetFiles("*", SearchOption.AllDirectories);
                         if (directoryInfo.Length == 0)
                         {
+                            progress.State = $"Удаление: {collectionDirectory}";
                             collectionDirectoryInfo.Delete(true);
                         }
                     }
                     else
                     {
-                        Directory.Delete(collection.GetCollectionDirectory(), true);
+                        progress.State = $"Удаление: {collectionDirectory}";
+                        Directory.Delete(collectionDirectory, true);
                     }
                 }
                 Collections.Remove(collection);
