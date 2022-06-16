@@ -2,6 +2,7 @@
 using ImageCollection.Models;
 using Prism.Commands;
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -122,6 +123,8 @@ namespace ImageCollection.ViewModels
                 System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
                 if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
+                    _selectedCollection?.StopInitPreviewImages();
+                    ImageOfSelectedCollectionItem = null;
                     CollectionsManager = new CollectionsManager(folderBrowserDialog.SelectedPath);
                 }
             });
@@ -161,7 +164,10 @@ namespace ImageCollection.ViewModels
                 bool? result = collectionSelection.ShowDialog();
                 if (result.HasValue && result.Value)
                 {
+                    ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
+                    int currentIndex = collectionView.CurrentPosition;
                     _collectionsManager.ToCollection(_selectedCollection, collectionSelection.GetSelectedCollection());
+                    collectionView.MoveCurrentToPosition(Math.Min(currentIndex, _selectedCollection.Items.Count - 1));
                 }
             }, () => _selectedCollectionItem != null);
             RenameSelectedFiles = new DelegateCommand(() =>
