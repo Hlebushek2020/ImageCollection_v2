@@ -12,20 +12,12 @@ namespace ImageCollection.Models
         private string _toPath;
         #endregion
 
-        public CollectionItemMover(CollectionsManager collectionsManager, ICollection from, ICollection to)
+        public CollectionItemMover(ICollection from, ICollection to)
         {
             _from = from;
-            _fromPath = collectionsManager.RootDirectory;
-            if (from.Equals(collectionsManager.RootDirectory))
-            {
-                _fromPath = Path.Combine(collectionsManager.RootDirectory, from.Name);
-            }
+            _fromPath = _from.GetCollectionDirectory();
             _to = to;
-            _toPath = collectionsManager.RootDirectory;
-            if (to.Equals(collectionsManager.DefaultCollection))
-            {
-                _toPath = Path.Combine(collectionsManager.RootDirectory, to.Name);
-            }
+            _toPath = _to.GetCollectionDirectory();
         }
 
         public void Move(ICollectionItem collectionItem)

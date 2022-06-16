@@ -105,7 +105,7 @@ namespace ImageCollection.Models
                     progress.State = "Подготовка к перемещению";
                     progress.IsIndeterminate = false;
                     progress.Maximum = collection.Items.Count;
-                    CollectionItemMover itemMover = new CollectionItemMover(this, collection, DefaultCollection);
+                    CollectionItemMover itemMover = new CollectionItemMover(collection, DefaultCollection);
                     foreach (ICollectionItem item in collection.Items)
                     {
                         progress.State = $"Перемещение: {item.Name}";
@@ -158,7 +158,7 @@ namespace ImageCollection.Models
         {
             from.StopInitPreviewImages(true);
             IEnumerable<ICollectionItem> items = from.Items.Where(ci => ci.IsSelected);
-            CollectionItemMover itemMover = new CollectionItemMover(this, from, to);
+            CollectionItemMover itemMover = new CollectionItemMover(from, to);
             foreach (ICollectionItem item in items)
             {
                 itemMover.Move(item);
