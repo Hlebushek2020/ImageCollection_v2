@@ -143,6 +143,7 @@ namespace ImageCollection.ViewModels
                 if (SUID.MessageBox.Show($"Удалить коллекцию \"{_selectedCollection.Name}\"?", App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     _collectionsManager.Remove(_selectedCollection);
+                    SelectedCollection = CollectionsManager.DefaultCollection;
                 }
             }, () => _selectedCollection != null && _selectedCollection != _collectionsManager.DefaultCollection);
             RemoveSelectedFiles = new DelegateCommand(() =>

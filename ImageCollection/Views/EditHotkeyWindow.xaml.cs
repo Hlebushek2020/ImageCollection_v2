@@ -26,8 +26,8 @@ namespace ImageCollection
         {
             if ((e.Key >= Key.D0 && e.Key <= Key.Z) || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
             {
-                if (_viewModel.SelectedModifier != ModifierKeys.Control &&
-                    e.Key != Key.O && e.Key != Key.A && e.Key != Key.H)
+                if (!(_viewModel.SelectedModifier == ModifierKeys.Control &&
+                    (e.Key == Key.O || e.Key == Key.A || e.Key == Key.H)))
                 {
                     _viewModel.SelectedKey = e.Key;
                 }

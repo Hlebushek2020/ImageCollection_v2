@@ -160,9 +160,8 @@ namespace ImageCollection.Models
         public void ToCollection(ICollection from, ICollection to)
         {
             from.StopInitPreviewImages(true);
-            IEnumerable<ICollectionItem> items = from.Items.Where(ci => ci.IsSelected);
+            IEnumerable<ICollectionItem> items = from.Items.Where(ci => ci.IsSelected).ToList();
             CollectionItemMover itemMover = new CollectionItemMover(from, to);
-            // ERROR: Коллекция была изменена; невозможно выполнить операцию перечисления
             foreach (ICollectionItem item in items)
             {
                 itemMover.Move(item);
