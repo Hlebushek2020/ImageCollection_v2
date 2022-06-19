@@ -1,6 +1,7 @@
 ﻿using ImageCollection.Extensions;
 using ImageCollection.Interfaces;
 using ImageCollection.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -43,22 +44,25 @@ namespace ImageCollection.Models
                 DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
                 foreach (DirectoryInfo directory in directoryInfos)
                 {
-                    progress.State = $"Создание коллекции: {directory.Name}";
-                    Collection collection = new Collection(this, directory.Name);
-                    foreach (FileInfo fileInfo in directory.GetFiles().WhereIsImage())
+                    if (!directory.Name.Equals(Settings.PreviewDirectoryName, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        progress.State = $"Добавление: {fileInfo.FullName}";
-                        collection.AddItem(new CollectionItem(fileInfo));
+                        progress.State = $"Создание коллекции: {directory.Name}";
+                        Collection collection = new Collection(this, directory.Name);
+                        foreach (FileInfo fileInfo in directory.GetFiles().WhereIsImage())
+                        {
+                            progress.State = $"Добавление: {fileInfo.FullName}";
+                            collection.AddItem(new CollectionItem(fileInfo));
+                        }
+                        progress.State = "Чтение и обработка метаданных";
+                        icdFile = IcdFile.Read(Path.Combine(RootDirectory, directory.Name, Settings.IcdFileName));
+                        if (icdFile != null)
+                        {
+                            collection.Hotkey = icdFile.Hotkey;
+                        }
+                        progress.State = $"Добавление коллекции \"{directory.Name}\" в список";
+                        Collections.Add(collection);
+                        _collectionNames.Add(directory.Name.ToLower());
                     }
-                    progress.State = "Чтение и обработка метаданных";
-                    icdFile = IcdFile.Read(Path.Combine(RootDirectory, directory.Name, Settings.IcdFileName));
-                    if (icdFile != null)
-                    {
-                        collection.Hotkey = icdFile.Hotkey;
-                    }
-                    progress.State = $"Добавление коллекции \"{directory.Name}\" в список";
-                    Collections.Add(collection);
-                    _collectionNames.Add(directory.Name.ToLower());
                 }
             };
             ProgressWindow progressWindow = new ProgressWindow(progressViewModel);
@@ -104,11 +108,11 @@ namespace ImageCollection.Models
                     progress.State = "Подготовка к перемещению";
                     progress.IsIndeterminate = false;
                     progress.Maximum = collection.Items.Count;
-                    CollectionItemMover itemMover = new CollectionItemMover(collection, DefaultCollection);
+                    CollectionItemMover itemMover = new CollectionItemMover(collection, DefaultCollection, true);
                     foreach (ICollectionItem item in collection.Items)
                     {
                         progress.State = $"Перемещение: {item.Name}";
-                        itemMover.Move(item);
+                        App.Current.Dispatcher.Invoke(() => itemMover.Move(item));
                         progress.Value++;
                     }
                 }
@@ -146,7 +150,7 @@ namespace ImageCollection.Models
                         Directory.Delete(collectionDirectory, true);
                     }
                 }
-                Collections.Remove(collection);
+                App.Current.Dispatcher.Invoke(() => Collections.Remove(collection));
                 _collectionNames.Remove(collection.Name.ToLower());
             };
             ProgressWindow progressWindow = new ProgressWindow(progressViewModel);
@@ -158,6 +162,7 @@ namespace ImageCollection.Models
             from.StopInitPreviewImages(true);
             IEnumerable<ICollectionItem> items = from.Items.Where(ci => ci.IsSelected);
             CollectionItemMover itemMover = new CollectionItemMover(from, to);
+            // ERROR: Коллекция была изменена; невозможно выполнить операцию перечисления
             foreach (ICollectionItem item in items)
             {
                 itemMover.Move(item);

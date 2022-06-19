@@ -6,18 +6,20 @@ namespace ImageCollection.Models
     internal class CollectionItemMover : ICollectionItemMover
     {
         #region Fields
-        private ICollection _from;
-        private string _fromPath;
-        private ICollection _to;
-        private string _toPath;
+        private readonly ICollection _from;
+        private readonly string _fromPath;
+        private readonly ICollection _to;
+        private readonly string _toPath;
+        private readonly bool _isDelete;
         #endregion
 
-        public CollectionItemMover(ICollection from, ICollection to)
+        public CollectionItemMover(ICollection from, ICollection to, bool isDelete = false)
         {
             _from = from;
             _fromPath = _from.GetCollectionDirectory();
             _to = to;
             _toPath = _to.GetCollectionDirectory();
+            _isDelete = isDelete;
         }
 
         public void Move(ICollectionItem collectionItem)
@@ -32,7 +34,10 @@ namespace ImageCollection.Models
                 toPathFull = Path.Combine(_toPath, newName);
             }
             File.Move(fromPathFull, toPathFull);
-            _from.RemoveItem(collectionItem);
+            if (!_isDelete)
+            {
+                _from.RemoveItem(collectionItem);
+            }
             _to.AddItem(collectionItem);
             if (newName != null)
             {
