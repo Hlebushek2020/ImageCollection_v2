@@ -40,7 +40,6 @@ namespace ImageCollection.Models
                 progress.State = $"Добавление коллекции \"{Settings.DefaultCollectionName}\" в список";
                 Collections.Add(DefaultCollection);
                 _collectionNames.Add(Settings.DefaultCollectionName.ToLower());
-                Collections.Add(DefaultCollection);
                 DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
                 foreach (DirectoryInfo directory in directoryInfos)
                 {
