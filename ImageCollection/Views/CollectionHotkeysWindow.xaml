@@ -24,12 +24,12 @@
                 <Image Source="/Resources/menu-reset-32.png"/>
             </Button>
         </StackPanel>
-        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,27,0,0" SelectionMode="Single" ItemsSource="{Binding Collections, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCollection, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
+        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,27,0,0" SelectionMode="Single" ItemsSource="{Binding Collections, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCollection, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="ListView_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Коллекция" DisplayMemberBinding="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <GridViewColumn Header="Модификатор" DisplayMemberBinding="{Binding Hotkey.Modifier, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <GridViewColumn Header="Клавиша" DisplayMemberBinding="{Binding Hotkey.Key, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Модификатор" DisplayMemberBinding="{Binding Hotkey.DisplayModifier, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Клавиша" DisplayMemberBinding="{Binding Hotkey.DisplayKey, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>

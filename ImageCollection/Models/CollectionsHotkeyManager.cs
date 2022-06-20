@@ -39,6 +39,17 @@ namespace ImageCollection.Models
                 _hotkeysForCollection[hotkey.Modifier]?.Remove(hotkey.Key);
         }
 
-        public ICollection GetCollectionByHotkeys(ModifierKeys modifier, Key key) => _hotkeysForCollection[modifier]?[key];
+        public ICollection GetCollectionByHotkeys(ModifierKeys modifier, Key key)
+        {
+            if (_hotkeysForCollection.ContainsKey(modifier))
+            {
+                Dictionary<Key, ICollection> keysForModifier = _hotkeysForCollection[modifier];
+                if (keysForModifier.ContainsKey(key))
+                {
+                    return keysForModifier[key];
+                }
+            }
+            return null;
+        }
     }
 }

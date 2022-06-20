@@ -85,8 +85,8 @@ namespace ImageCollection
                         listBox_CollectionItems.Items.MoveCurrentToNext();
                 }
                 listBox_CollectionItems.ScrollIntoView(listBox_CollectionItems.SelectedItem);
+                e.Handled = true;
             }
-            e.Handled = true;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ImageCollection.Interfaces;
 using ImageCollection.ViewModels;
 using System.Windows;
+using System.Windows.Input;
 
 namespace ImageCollection
 {
@@ -9,10 +10,15 @@ namespace ImageCollection
     /// </summary>
     public partial class CollectionHotkeysWindow : Window
     {
+        private readonly CollectionHotkeysViewModel _viewModel;
+
         public CollectionHotkeysWindow(ICollectionsManager collectionsManager)
         {
             InitializeComponent();
-            DataContext = new CollectionHotkeysViewModel(collectionsManager);
+            _viewModel = new CollectionHotkeysViewModel(collectionsManager);
+            DataContext = _viewModel;
         }
+
+        private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e) => _viewModel.Edit.Execute();
     }
 }

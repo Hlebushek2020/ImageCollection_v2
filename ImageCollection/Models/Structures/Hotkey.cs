@@ -4,10 +4,24 @@ namespace ImageCollection.Models.Structures
 {
     public struct Hotkey
     {
-        // TODO: add display property
         public ModifierKeys Modifier { get; }
-        // TODO: add display property
+        public string DisplayModifier
+        {
+            get
+            {
+                ModifierKeysConverter modifierKeysConverter = new ModifierKeysConverter();
+                return modifierKeysConverter.ConvertToString(Modifier);
+            }
+        }
         public Key Key { get; }
+        public string DisplayKey
+        {
+            get
+            {
+                KeyConverter keyConverter = new KeyConverter();
+                return keyConverter.ConvertToString(Key);
+            }
+        }
 
         public Hotkey(ModifierKeys modifier, Key key)
         {
