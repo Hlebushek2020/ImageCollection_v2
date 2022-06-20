@@ -151,6 +151,7 @@ namespace ImageCollection.Models
                     }
                 }
                 App.Current.Dispatcher.Invoke(() => Collections.Remove(collection));
+                // TODO: add unregister hotkey
                 _collectionNames.Remove(collection.Name.ToLower());
             };
             ProgressWindow progressWindow = new ProgressWindow(progressViewModel);

@@ -22,6 +22,7 @@ namespace ImageCollection.ViewModels
         {
             get
             {
+                // TODO: use KeyConverter
                 if (_selectedKey == Key.None)
                     return string.Empty;
                 return _selectedKey.ToString();
