@@ -17,7 +17,7 @@
         <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenFolder}"/>
         <KeyBinding Key="Delete" Command="{Binding RemoveSelectedFiles}"/>
         <KeyBinding Key="F2" Command="{Binding RenameSelectedFiles}"/>
-        <KeyBinding Modifiers="Ctrl" Key="A" Command="{Binding ToCollection}"/>
+        <KeyBinding Modifiers="Ctrl+Shift" Key="A" Command="{Binding ToCollection}"/>
         <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding CreateCollection}"/>
         <KeyBinding Modifiers="Ctrl" Key="F2" Command="{Binding RenameCollection}"/>
         <KeyBinding Modifiers="Ctrl" Key="Delete" Command="{Binding RemoveCollection}"/>
@@ -36,7 +36,7 @@
                 <MenuItem Header="Удалить" InputGestureText="Delete" Command="{Binding RemoveSelectedFiles}"/>
                 <MenuItem Header="Переименовать" InputGestureText="F2" Command="{Binding RenameSelectedFiles}"/>
                 <Separator/>
-                <MenuItem Header="Добавить в коллекцию" InputGestureText="Ctrl + A" Command="{Binding ToCollection}"/>
+                <MenuItem Header="Добавить в коллекцию" InputGestureText="Ctrl + Shift + A" Command="{Binding ToCollection}"/>
                 <Separator/>
                 <MenuItem Header="Настройки" Command="{Binding Settings}"/>
             </MenuItem>
@@ -72,7 +72,7 @@
                         <MenuItem Header="Удалить" InputGestureText="Delete" Command="{Binding RemoveSelectedFiles}"/>
                         <MenuItem Header="Переименовать" InputGestureText="F2" Command="{Binding RenameSelectedFiles}"/>
                         <Separator/>
-                        <MenuItem Header="Добавить в коллекцию" InputGestureText="Ctrl + A" Command="{Binding ToCollection}"/>
+                        <MenuItem Header="Добавить в коллекцию" InputGestureText="Ctrl + Shift + A" Command="{Binding ToCollection}"/>
                     </ContextMenu>
                 </ListBox.ContextMenu>
                 <ListBox.ItemTemplate>
