@@ -38,6 +38,7 @@ namespace ImageCollection.Models
             {
                 _from.RemoveItem(collectionItem);
             }
+            collectionItem.IsSelected = false;
             _to.AddItem(collectionItem);
             if (newName != null)
             {
