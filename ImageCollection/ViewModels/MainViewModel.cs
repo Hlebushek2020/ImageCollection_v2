@@ -17,17 +17,17 @@ namespace ImageCollection.ViewModels
     internal class MainViewModel : BindableBase, IWindowTitle
     {
         #region Fields
-        private ICollectionsManager _collectionsManager;
-        private ICollectionItem _selectedCollectionItem;
-        private ICollection _selectedCollection;
-        private ObservableCollection<ICollection> _collections;
+        private IImageCollectionsManager _collectionsManager;
+        private IImageCollectionItem _selectedCollectionItem;
+        private IImageCollection _selectedCollection;
+        private ObservableCollection<IImageCollection> _collections;
         private BitmapImage _imageOfSelectedCollectionItem;
         #endregion
 
         #region Property
-        public string Title { get => App.Name; }
+        public string Title => App.Name;
 
-        public ICollectionsManager CollectionsManager
+        public IImageCollectionsManager CollectionsManager
         {
             get { return _collectionsManager; }
             private set
@@ -40,7 +40,7 @@ namespace ImageCollection.ViewModels
             }
         }
 
-        public ObservableCollection<ICollection> Collections
+        public ObservableCollection<IImageCollection> Collections
         {
             get { return _collections; }
             set
@@ -50,7 +50,7 @@ namespace ImageCollection.ViewModels
             }
         }
 
-        public ICollection SelectedCollection
+        public IImageCollection SelectedCollection
         {
             get { return _selectedCollection; }
             set
@@ -71,7 +71,7 @@ namespace ImageCollection.ViewModels
             }
         }
 
-        public ICollectionItem SelectedCollectionItem
+        public IImageCollectionItem SelectedCollectionItem
         {
             get { return _selectedCollectionItem; }
             set
@@ -148,7 +148,7 @@ namespace ImageCollection.ViewModels
             }, () => _selectedCollection != null && _selectedCollection != _collectionsManager.DefaultCollection);
             RemoveSelectedFiles = new DelegateCommand(() =>
             {
-                IReadOnlyList<ICollectionItem> selectedItems = _selectedCollection.Items.Where(item => item.IsSelected).ToList();
+                IReadOnlyList<IImageCollectionItem> selectedItems = _selectedCollection.Items.Where(item => item.IsSelected).ToList();
                 string message = "Удалить выбранные файлы?";
                 if (selectedItems.Count == 1)
                 {
@@ -173,7 +173,7 @@ namespace ImageCollection.ViewModels
             }, () => _selectedCollectionItem != null);
             RenameSelectedFiles = new DelegateCommand(() =>
             {
-                IReadOnlyList<ICollectionItem> selectedFiles = _selectedCollection.Items.Where(ci => ci.IsSelected).ToList();
+                IReadOnlyList<IImageCollectionItem> selectedFiles = _selectedCollection.Items.Where(ci => ci.IsSelected).ToList();
                 RenameFilesWindow renameFiles = new RenameFilesWindow();
                 if (selectedFiles.Count == 1)
                 {
@@ -221,19 +221,19 @@ namespace ImageCollection.ViewModels
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
-                collectionView.SortDescriptions.Add(new SortDescription(nameof(ICollectionItem.Name), ListSortDirection.Descending));
+                collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Name), ListSortDirection.Descending));
             });
             SortBySize = new DelegateCommand(() =>
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
-                collectionView.SortDescriptions.Add(new SortDescription(nameof(ICollectionItem.Size), ListSortDirection.Descending));
+                collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Size), ListSortDirection.Descending));
             });
             SortByResolution = new DelegateCommand(() =>
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
-                collectionView.SortDescriptions.Add(new SortDescription(nameof(ICollectionItem.Resolution), ListSortDirection.Descending));
+                collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Resolution), ListSortDirection.Descending));
             });
         }
     }

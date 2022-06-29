@@ -9,9 +9,9 @@ namespace ImageCollection.ViewModels
     internal class CollectionSelectionViewModel : IWindowTitle
     {
         #region Property
-        public string Title { get => App.Name; }
-        public IReadOnlyCollection<ICollection> Collections { get; }
-        public ICollection SelectedCollection { get; set; }
+        public string Title => App.Name;
+        public IReadOnlyCollection<IImageCollection> Collections { get; }
+        public IImageCollection SelectedCollection { get; set; }
         #endregion
 
         #region Commands
@@ -19,7 +19,7 @@ namespace ImageCollection.ViewModels
         public DelegateCommand<Window> OkCommand { get; }
         #endregion
 
-        public CollectionSelectionViewModel(ICollectionsManager collectionsManager, ICollection currentCollection)
+        public CollectionSelectionViewModel(IImageCollectionsManager collectionsManager, IImageCollection currentCollection)
         {
             Collections = collectionsManager.Collections;
             CanselCommand = new DelegateCommand<Window>((w) => w.Close());

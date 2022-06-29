@@ -9,14 +9,18 @@ using System.Linq;
 
 namespace ImageCollection.Models
 {
-    internal class CollectionsManager : ICollectionsManager
+    internal class CollectionsManager : IImageCollectionsManager
     {
+        #region Fields
         private readonly HashSet<string> _collectionNames = new HashSet<string>();
+        #endregion
 
+        #region Properties
         public string RootDirectory { get; private set; }
-        public CollectionsHotkeyManager HotkeyManager { get; } = new CollectionsHotkeyManager();
-        public ObservableCollection<ICollection> Collections { get; private set; } = new ObservableCollection<ICollection>();
-        public ICollection DefaultCollection { get; private set; }
+        public CollectionsHotkeyManager HotkeyManager => new CollectionsHotkeyManager();
+        public ObservableCollection<IImageCollection> Collections { get; private set; } = new ObservableCollection<IImageCollection>();
+        public IImageCollection DefaultCollection { get; private set; }
+        #endregion
 
         public CollectionsManager(string folder)
         {
@@ -69,7 +73,7 @@ namespace ImageCollection.Models
             progressWindow.ShowDialog();
         }
 
-        public bool Rename(ICollection collection, string name)
+        public bool Rename(IImageCollection collection, string name)
         {
             if (!_collectionNames.Contains(name))
             {
@@ -84,7 +88,7 @@ namespace ImageCollection.Models
             return false;
         }
 
-        public ICollection Create(string name)
+        public IImageCollection Create(string name)
         {
             if (!_collectionNames.Contains(name))
             {
@@ -97,7 +101,7 @@ namespace ImageCollection.Models
             return null;
         }
 
-        public void Remove(ICollection collection)
+        public void Remove(IImageCollection collection)
         {
             collection.StopInitPreviewImages(true);
             ProgressViewModel progressViewModel = new ProgressViewModel();
@@ -109,7 +113,7 @@ namespace ImageCollection.Models
                     progress.IsIndeterminate = false;
                     progress.Maximum = collection.Items.Count;
                     CollectionItemMover itemMover = new CollectionItemMover(collection, DefaultCollection, true);
-                    foreach (ICollectionItem item in collection.Items)
+                    foreach (IImageCollectionItem item in collection.Items)
                     {
                         progress.State = $"Перемещение: {item.Name}";
                         App.Current.Dispatcher.Invoke(() => itemMover.Move(item));
@@ -158,12 +162,12 @@ namespace ImageCollection.Models
             progressWindow.ShowDialog();
         }
 
-        public void ToCollection(ICollection from, ICollection to)
+        public void ToCollection(IImageCollection from, IImageCollection to)
         {
             from.StopInitPreviewImages(true);
-            IEnumerable<ICollectionItem> items = from.Items.Where(ci => ci.IsSelected).ToList();
+            IEnumerable<IImageCollectionItem> items = from.Items.Where(ci => ci.IsSelected).ToList();
             CollectionItemMover itemMover = new CollectionItemMover(from, to);
-            foreach (ICollectionItem item in items)
+            foreach (IImageCollectionItem item in items)
             {
                 itemMover.Move(item);
             }

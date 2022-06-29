@@ -9,17 +9,17 @@ namespace ImageCollection
     /// </summary>
     public partial class RenameFilesWindow : Window
     {
-        private readonly RenameFilesViewModel viewModel;
+        private readonly RenameFilesViewModel _viewModel;
 
-        public RenameFilesWindow(ICollectionItem collectionItem, ICollection collection)
+        public RenameFilesWindow(IImageCollectionItem collectionItem, IImageCollection collection)
         {
             InitializeComponent();
-            viewModel = new RenameFilesViewModel(collectionItem, collection);
-            DataContext = viewModel;
+            _viewModel = new RenameFilesViewModel(collectionItem, collection);
+            DataContext = _viewModel;
         }
 
         public RenameFilesWindow() : this(null, null) { }
 
-        public string GetNewNameOrPattern() => viewModel.NewNameOrPattern;
+        public string GetNewNameOrPattern() => _viewModel.NewNameOrPattern;
     }
 }

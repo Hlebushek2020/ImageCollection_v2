@@ -12,7 +12,7 @@ namespace ImageCollection
     {
         private readonly CollectionHotkeysViewModel _viewModel;
 
-        public CollectionHotkeysWindow(ICollectionsManager collectionsManager)
+        public CollectionHotkeysWindow(IImageCollectionsManager collectionsManager)
         {
             InitializeComponent();
             _viewModel = new CollectionHotkeysViewModel(collectionsManager);

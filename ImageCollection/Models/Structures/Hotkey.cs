@@ -4,7 +4,10 @@ namespace ImageCollection.Models.Structures
 {
     public struct Hotkey
     {
+        #region Properties
         public ModifierKeys Modifier { get; }
+        public Key Key { get; }
+
         public string DisplayModifier
         {
             get
@@ -13,7 +16,7 @@ namespace ImageCollection.Models.Structures
                 return modifierKeysConverter.ConvertToString(Modifier);
             }
         }
-        public Key Key { get; }
+
         public string DisplayKey
         {
             get
@@ -22,6 +25,7 @@ namespace ImageCollection.Models.Structures
                 return keyConverter.ConvertToString(Key);
             }
         }
+        #endregion
 
         public Hotkey(ModifierKeys modifier, Key key)
         {

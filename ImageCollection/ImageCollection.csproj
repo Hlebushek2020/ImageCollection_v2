@@ -139,6 +139,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Exceptions\UnrecognizedImageFormatException.cs" />
     <Compile Include="Interfaces\IWorkProgress.cs" />
     <Compile Include="Models\IcdFile.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -157,8 +158,7 @@
     <Compile Include="Views\CollectionHotkeysWindow.xaml.cs">
       <DependentUpon>CollectionHotkeysWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\ICollectionItemMover.cs" />
-    <Compile Include="Models\CollectionHotkey.cs" />
+    <Compile Include="Interfaces\IImageCollectionItemMover.cs" />
     <Compile Include="Models\CollectionItemMover.cs" />
     <Compile Include="Models\CollectionsHotkeyManager.cs" />
     <Compile Include="Models\Structures\Hotkey.cs" />
@@ -176,9 +176,9 @@
       <DependentUpon>AddOrRenameCollectionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Interfaces\ICollection.cs" />
-    <Compile Include="Interfaces\ICollectionItem.cs" />
-    <Compile Include="Interfaces\ICollectionsManager.cs" />
+    <Compile Include="Interfaces\IImageCollection.cs" />
+    <Compile Include="Interfaces\IImageCollectionItem.cs" />
+    <Compile Include="Interfaces\IImageCollectionsManager.cs" />
     <Compile Include="Interfaces\IWindowTitle.cs" />
     <Compile Include="Models\Collection.cs" />
     <Compile Include="Models\CollectionsManager.cs" />

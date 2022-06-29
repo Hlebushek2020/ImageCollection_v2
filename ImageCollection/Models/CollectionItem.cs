@@ -8,14 +8,21 @@ using System.Windows.Media.Imaging;
 
 namespace ImageCollection.Models
 {
-    internal class CollectionItem : BindableBase, ICollectionItem
+    internal class CollectionItem : BindableBase, IImageCollectionItem
     {
         #region Fields
         private string _name;
         private BitmapImage _preview;
         #endregion
 
+        #region Properties
         public Guid Id { get; }
+        public string Description { get; }
+        public long Size { get; set; }
+        public Size Resolution { get; set; }
+        public bool IsPreview => _preview != null;
+        public bool IsSelected { get; set; }
+
         public string Name
         {
             get { return _name; }
@@ -25,10 +32,7 @@ namespace ImageCollection.Models
                 RaisePropertyChanged();
             }
         }
-        public string Description { get; }
-        public long Size { get; set; }
-        public Size Resolution { get; set; }
-        public bool IsPreview { get { return _preview != null; } }
+
         public BitmapImage Preview
         {
             get
@@ -43,7 +47,7 @@ namespace ImageCollection.Models
                 RaisePropertyChanged();
             }
         }
-        public bool IsSelected { get; set; }
+        #endregion
 
         public CollectionItem(FileInfo fileInfo)
         {

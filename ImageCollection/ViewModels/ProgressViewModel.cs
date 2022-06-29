@@ -14,7 +14,8 @@ namespace ImageCollection.ViewModels
         #endregion
 
         #region Propirties
-        public string Title { get { return App.Name; } }
+        public string Title => App.Name;
+
         public string State
         {
             get { return _state; }
@@ -24,6 +25,7 @@ namespace ImageCollection.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         public double Value
         {
             get { return _value; }
@@ -33,6 +35,7 @@ namespace ImageCollection.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         public double Maximum
         {
             get { return _maximum; }
@@ -42,6 +45,7 @@ namespace ImageCollection.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         public double Minimum
         {
             get { return _minimum; }
@@ -51,6 +55,7 @@ namespace ImageCollection.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         public bool IsIndeterminate
         {
             get { return _isIndeterminate; }

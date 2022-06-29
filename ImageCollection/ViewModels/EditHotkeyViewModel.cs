@@ -17,7 +17,10 @@ namespace ImageCollection.ViewModels
         #endregion
 
         #region Property
-        public string Title { get { return App.Name; } }
+        public string Title => App.Name;
+        public ObservableCollection<ModifierKeys> Modifiers { get; set; }
+        public ModifierKeys SelectedModifier { get; set; }
+
         public string DisplaySelectedKey
         {
             get
@@ -26,6 +29,7 @@ namespace ImageCollection.ViewModels
                 return keyConverter.ConvertToString(_selectedKey);
             }
         }
+
         public Key SelectedKey
         {
             get { return _selectedKey; }
@@ -35,8 +39,6 @@ namespace ImageCollection.ViewModels
                 RaisePropertyChanged(nameof(DisplaySelectedKey));
             }
         }
-        public ObservableCollection<ModifierKeys> Modifiers { get; set; }
-        public ModifierKeys SelectedModifier { get; set; }
         #endregion
 
         #region Commands

@@ -10,14 +10,15 @@ namespace ImageCollection.ViewModels
     internal class CollectionHotkeysViewModel : IWindowTitle
     {
         #region Fields
-        private readonly ICollectionsManager _collectionsManager;
-        private ICollection _selectedCollection;
+        private readonly IImageCollectionsManager _collectionsManager;
+        private IImageCollection _selectedCollection;
         #endregion
 
         #region Properties
-        public string Title { get { return App.Name; } }
-        public ObservableCollection<ICollection> Collections { get; }
-        public ICollection SelectedCollection
+        public string Title => App.Name;
+        public ObservableCollection<IImageCollection> Collections { get; }
+
+        public IImageCollection SelectedCollection
         {
             get => _selectedCollection;
             set
@@ -34,7 +35,7 @@ namespace ImageCollection.ViewModels
         public DelegateCommand Reset { get; }
         #endregion
 
-        public CollectionHotkeysViewModel(ICollectionsManager collectionsManager)
+        public CollectionHotkeysViewModel(IImageCollectionsManager collectionsManager)
         {
             _collectionsManager = collectionsManager;
             Collections = _collectionsManager.Collections;

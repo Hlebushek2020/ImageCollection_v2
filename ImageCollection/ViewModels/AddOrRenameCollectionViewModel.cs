@@ -9,7 +9,7 @@ namespace ImageCollection.ViewModels
     internal class AddOrRenameCollectionViewModel : IWindowTitle
     {
         #region Property
-        public string Title { get => App.Name; }
+        public string Title => App.Name;
         public string NewName { get; set; }
         #endregion
 
@@ -18,7 +18,7 @@ namespace ImageCollection.ViewModels
         public DelegateCommand<Window> OkCommand { get; }
         #endregion
 
-        public AddOrRenameCollectionViewModel(ICollectionsManager collectionsManager, ICollection collection)
+        public AddOrRenameCollectionViewModel(IImageCollectionsManager collectionsManager, IImageCollection collection)
         {
             if (collection != null)
             {

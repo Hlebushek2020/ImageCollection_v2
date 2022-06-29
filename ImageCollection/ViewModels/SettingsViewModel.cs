@@ -10,8 +10,8 @@ namespace ImageCollection.ViewModels
     internal class SettingsViewModel : IWindowTitle
     {
         #region Propirties
-        public string Title { get { return App.Name; } }
-        public List<DisplayTheme> Themes { get; } = DisplayTheme.GetList();
+        public string Title => App.Name;
+        public List<DisplayTheme> Themes => DisplayTheme.GetList();
         public DisplayTheme SelectedTheme { get; set; } = new DisplayTheme(Settings.Current.Theme);
         public bool MoveItemsFromRemoveCollection { get; set; } = Settings.Current.MoveItemsFromRemoveCollection;
         public bool DeleteCollectionFolder { get; set; } = Settings.Current.DeleteCollectionFolder;

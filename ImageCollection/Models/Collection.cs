@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace ImageCollection.Models
 {
-    internal class Collection : BindableBase, ICollection, IEquatable<Collection>
+    internal class Collection : BindableBase, IImageCollection, IEquatable<Collection>
     {
         #region Field
         private readonly CollectionsManager _collectionsManager;
@@ -28,6 +28,8 @@ namespace ImageCollection.Models
 
         #region Properties
         public Guid Id { get; }
+        public ObservableCollection<IImageCollectionItem> Items { get; } = new ObservableCollection<IImageCollectionItem>();
+
         public string Name
         {
             get { return _name; }
@@ -37,6 +39,7 @@ namespace ImageCollection.Models
                 RaisePropertyChanged();
             }
         }
+
         public Hotkey Hotkey
         {
             get { return _hotkey; }
@@ -47,7 +50,6 @@ namespace ImageCollection.Models
                 RaisePropertyChanged();
             }
         }
-        public ObservableCollection<ICollectionItem> Items { get; } = new ObservableCollection<ICollectionItem>();
         #endregion
 
         public Collection(CollectionsManager collectionsManager, string name)
@@ -57,11 +59,11 @@ namespace ImageCollection.Models
             Name = name;
         }
 
-        public void RemoveFiles(IEnumerable<ICollectionItem> items)
+        public void RemoveFiles(IEnumerable<IImageCollectionItem> items)
         {
             StopInitPreviewImages(true);
             string collectionDirectory = GetCollectionDirectory();
-            foreach (ICollectionItem collectionItem in items)
+            foreach (IImageCollectionItem collectionItem in items)
             {
                 File.Delete(Path.Combine(collectionDirectory, collectionItem.Name));
                 Items.Remove(collectionItem);
@@ -69,11 +71,11 @@ namespace ImageCollection.Models
             InitPreviewImages();
         }
 
-        public void AddItem(ICollectionItem item) => Items.Add(item);
+        public void AddItem(IImageCollectionItem item) => Items.Add(item);
 
-        public bool RemoveItem(ICollectionItem item) => Items.Remove(item);
+        public bool RemoveItem(IImageCollectionItem item) => Items.Remove(item);
 
-        public BitmapImage GetImageOfCollectionItem(ICollectionItem item)
+        public BitmapImage GetImageOfCollectionItem(IImageCollectionItem item)
         {
             BitmapImage bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
@@ -83,13 +85,13 @@ namespace ImageCollection.Models
             return bitmapImage;
         }
 
-        public bool CheckingNewFileName(ICollectionItem collectionItem, string newName)
+        public bool CheckingNewFileName(IImageCollectionItem collectionItem, string newName)
         {
             string filePath = Path.Combine(GetCollectionDirectory(), $"{newName}.{Path.GetExtension(collectionItem.Name)}");
             return File.Exists(filePath);
         }
 
-        public void RenameFile(ICollectionItem item, string newName)
+        public void RenameFile(IImageCollectionItem item, string newName)
         {
             StopInitPreviewImages(true);
             string directoryPath = GetCollectionDirectory();
@@ -99,7 +101,7 @@ namespace ImageCollection.Models
             InitPreviewImages();
         }
 
-        public void RenameFiles(IEnumerable<ICollectionItem> items, string pattern)
+        public void RenameFiles(IEnumerable<IImageCollectionItem> items, string pattern)
         {
             StopInitPreviewImages(true);
             ProgressViewModel progressView = new ProgressViewModel();
@@ -109,7 +111,7 @@ namespace ImageCollection.Models
                 string directoryPath = GetCollectionDirectory();
                 HashSet<string> checkName = new HashSet<string>();
                 int counter = 0;
-                foreach (ICollectionItem collectionItem in items)
+                foreach (IImageCollectionItem collectionItem in items)
                 {
                     string extension = Path.GetExtension(collectionItem.Name);
                     string fromPath = Path.Combine(directoryPath, collectionItem.Name);
@@ -158,7 +160,7 @@ namespace ImageCollection.Models
                     string collectionDirectory = GetCollectionDirectory();
                     string previewDirectory = Path.Combine(collectionDirectory, Settings.PreviewDirectoryName);
                     Directory.CreateDirectory(previewDirectory);
-                    foreach (ICollectionItem collectionItem in Items)
+                    foreach (IImageCollectionItem collectionItem in Items)
                     {
                         if (token.IsCancellationRequested)
                         {

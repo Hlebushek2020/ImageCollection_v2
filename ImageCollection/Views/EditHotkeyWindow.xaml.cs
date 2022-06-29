@@ -13,7 +13,7 @@ namespace ImageCollection
     {
         private readonly EditHotkeyViewModel _viewModel;
 
-        public bool IsAvailableHotkey { get => _viewModel.SelectedKey != Key.None; }
+        public bool IsAvailableHotkey => _viewModel.SelectedKey != Key.None;
 
         public EditHotkeyWindow(Hotkey hotkey, CollectionsHotkeyManager hotkeyManager)
         {

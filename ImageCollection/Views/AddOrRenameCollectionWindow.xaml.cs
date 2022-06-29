@@ -9,13 +9,13 @@ namespace ImageCollection
     /// </summary>
     public partial class AddOrRenameCollectionWindow : Window
     {
-        public AddOrRenameCollectionWindow(ICollectionsManager collectionsManager, ICollection collection)
+        public AddOrRenameCollectionWindow(IImageCollectionsManager collectionsManager, IImageCollection collection)
         {
             InitializeComponent();
             DataContext = new AddOrRenameCollectionViewModel(collectionsManager, collection);
         }
 
-        public AddOrRenameCollectionWindow(ICollectionsManager collectionsManager) : this(collectionsManager, null) { }
+        public AddOrRenameCollectionWindow(IImageCollectionsManager collectionsManager) : this(collectionsManager, null) { }
 
     }
 }

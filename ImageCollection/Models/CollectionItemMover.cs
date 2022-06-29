@@ -3,17 +3,17 @@ using System.IO;
 
 namespace ImageCollection.Models
 {
-    internal class CollectionItemMover : ICollectionItemMover
+    internal class CollectionItemMover : IImageCollectionItemMover
     {
         #region Fields
-        private readonly ICollection _from;
+        private readonly IImageCollection _from;
         private readonly string _fromPath;
-        private readonly ICollection _to;
+        private readonly IImageCollection _to;
         private readonly string _toPath;
         private readonly bool _isDelete;
         #endregion
 
-        public CollectionItemMover(ICollection from, ICollection to, bool isDelete = false)
+        public CollectionItemMover(IImageCollection from, IImageCollection to, bool isDelete = false)
         {
             _from = from;
             _fromPath = _from.GetCollectionDirectory();
@@ -22,7 +22,7 @@ namespace ImageCollection.Models
             _isDelete = isDelete;
         }
 
-        public void Move(ICollectionItem collectionItem)
+        public void Move(IImageCollectionItem collectionItem)
         {
             string fromPathFull = Path.Combine(_fromPath, collectionItem.Name);
             string toPathFull = Path.Combine(_toPath, collectionItem.Name);

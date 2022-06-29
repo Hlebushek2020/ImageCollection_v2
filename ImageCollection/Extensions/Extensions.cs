@@ -1,4 +1,5 @@
-﻿using MetadataExtractor.Formats.Bmp;
+﻿using ImageCollection.Exceptions;
+using MetadataExtractor.Formats.Bmp;
 using MetadataExtractor.Formats.Jpeg;
 using MetadataExtractor.Formats.Png;
 using MetadataExtractor.Formats.WebP;
@@ -54,7 +55,7 @@ namespace ImageCollection.Extensions
                     width = Convert.ToDouble(webPDirectory.GetDescription(WebPDirectory.TagImageWidth));
                     return new Size(width, height);
                 default:
-                    throw new Exception();
+                    throw new UnrecognizedImageFormatException();
             }
         }
     }

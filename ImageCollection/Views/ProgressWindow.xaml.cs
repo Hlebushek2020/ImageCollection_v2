@@ -12,8 +12,7 @@ namespace ImageCollection
     public partial class ProgressWindow : Window
     {
         private readonly ProgressViewModel _viewModel;
-
-        private bool isCompleted = false;
+        private bool _isCompleted = false;
 
         public ProgressWindow(ProgressViewModel progressViewModel)
         {
@@ -39,7 +38,7 @@ namespace ImageCollection
                 }
                 Dispatcher.Invoke(() =>
                 {
-                    isCompleted = true;
+                    _isCompleted = true;
                     Close();
                 });
             });
@@ -47,7 +46,7 @@ namespace ImageCollection
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = !isCompleted;
+            e.Cancel = !_isCompleted;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Windows.Media.Imaging;
 
 namespace ImageCollection.Interfaces
 {
-    public interface ICollectionItem
+    public interface IImageCollectionItem
     {
         string Name { get; }
         string Description { get; }

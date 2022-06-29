@@ -42,10 +42,12 @@ namespace ImageCollection.Models
         }
         #endregion
 
+        #region Properties
         public Theme Theme { get; set; } = Theme.Light;
         public bool MoveItemsFromRemoveCollection { get; set; } = true;
         public bool DeleteCollectionFolder { get; set; } = true;
         public bool DeleteCollectionFolderIfEmpty { get; set; } = true;
+        #endregion
 
         public void Save()
         {

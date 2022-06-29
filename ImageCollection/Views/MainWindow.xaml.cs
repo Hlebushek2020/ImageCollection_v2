@@ -28,7 +28,7 @@ namespace ImageCollection
         {
             if (_viewModel.CollectionsManager != null)
             {
-                ICollection toCollection = _viewModel.CollectionsManager.HotkeyManager.GetCollectionByHotkeys(e.KeyboardDevice.Modifiers, e.Key);
+                IImageCollection toCollection = _viewModel.CollectionsManager.HotkeyManager.GetCollectionByHotkeys(e.KeyboardDevice.Modifiers, e.Key);
                 if (toCollection != null && _viewModel.SelectedCollection != null)
                 {
                     int currentIndex = listBox_CollectionItems.SelectedIndex;
