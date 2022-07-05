@@ -4,27 +4,14 @@ namespace ImageCollection.Models.Structures
 {
     public struct Hotkey
     {
+        private static readonly ModifierKeysConverter _modifierKeysConverter = new ModifierKeysConverter();
+        private static readonly KeyConverter _keyConverter = new KeyConverter();
+
         #region Properties
         public ModifierKeys Modifier { get; }
         public Key Key { get; }
-
-        public string DisplayModifier
-        {
-            get
-            {
-                ModifierKeysConverter modifierKeysConverter = new ModifierKeysConverter();
-                return modifierKeysConverter.ConvertToString(Modifier);
-            }
-        }
-
-        public string DisplayKey
-        {
-            get
-            {
-                KeyConverter keyConverter = new KeyConverter();
-                return keyConverter.ConvertToString(Key);
-            }
-        }
+        public string DisplayModifier => _modifierKeysConverter.ConvertToString(Modifier);
+        public string DisplayKey => _keyConverter.ConvertToString(Key);
         #endregion
 
         public Hotkey(ModifierKeys modifier, Key key)

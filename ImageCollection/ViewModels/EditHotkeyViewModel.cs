@@ -12,23 +12,17 @@ namespace ImageCollection.ViewModels
 {
     internal class EditHotkeyViewModel : BindableBase, IWindowTitle
     {
+        private static readonly KeyConverter _keyConverter = new KeyConverter();
+
         #region Fields
         private Key _selectedKey;
         #endregion
 
         #region Property
         public string Title => App.Name;
+        public string DisplaySelectedKey => _keyConverter.ConvertToString(_selectedKey);
         public ObservableCollection<ModifierKeys> Modifiers { get; set; }
         public ModifierKeys SelectedModifier { get; set; }
-
-        public string DisplaySelectedKey
-        {
-            get
-            {
-                KeyConverter keyConverter = new KeyConverter();
-                return keyConverter.ConvertToString(_selectedKey);
-            }
-        }
 
         public Key SelectedKey
         {
