@@ -210,7 +210,7 @@ namespace ImageCollection.Models
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        public void SaveHotkey() => IcdFile.WriteHotkey(Path.Combine(GetCollectionDirectory(), Settings.IcdFileName), _hotkey);
+        public void SaveHotkey() => IcdFile.WriteHotkey(Path.Combine(GetCollectionDirectory(), Settings.IcdFileName), this);
 
         public string GetCollectionDirectory()
         {

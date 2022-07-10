@@ -1,4 +1,6 @@
-﻿using ImageCollection.Models.Structures;
+﻿using ImageCollection.Interfaces;
+using ImageCollection.Models.Structures;
+using System;
 using System.IO;
 using System.Text;
 using System.Windows.Input;
@@ -7,34 +9,51 @@ namespace ImageCollection.Models
 {
     internal class IcdFile
     {
-        public Hotkey Hotkey { get; set; }
+        private const int CurrentFileVerson = 20220710;
 
-        private IcdFile() { }
+        #region Property
+        public int FileVersion { get; set; }
+        public Guid Id { get; set; }
+        public Hotkey Hotkey { get; set; }
+        #endregion
 
         public static IcdFile Read(string path)
         {
             if (!File.Exists(path))
+            {
                 return null;
+            }
+
             IcdFile icdFile = new IcdFile();
             using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
                 using (BinaryReader br = new BinaryReader(fs, Encoding.UTF8))
                 {
+                    icdFile.FileVersion = br.ReadInt32();
+                    icdFile.Id = new Guid(br.ReadBytes(16));
                     icdFile.Hotkey = new Hotkey((ModifierKeys)br.ReadInt32(), (Key)br.ReadInt32());
                 }
             }
+
             return icdFile;
         }
 
-        public static void WriteHotkey(string path, Hotkey hotkey)
+        public static void WriteHotkey(string path, IImageCollection collection)
         {
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            FileInfo icdInfo = new FileInfo(path);
+            using (BinaryWriter bw = new BinaryWriter(icdInfo.OpenWrite(), Encoding.UTF8))
             {
-                using (BinaryWriter bw = new BinaryWriter(fs, Encoding.UTF8))
+                if (icdInfo.Exists)
                 {
-                    bw.Write((int)hotkey.Modifier);
-                    bw.Write((int)hotkey.Key);
+                    bw.BaseStream.Position = 16 + sizeof(int);
                 }
+                else
+                {
+                    bw.Write(CurrentFileVerson);
+                    bw.Write(collection.Id.ToByteArray());
+                }
+                bw.Write((int)collection.Hotkey.Modifier);
+                bw.Write((int)collection.Hotkey.Key);
             }
         }
     }
