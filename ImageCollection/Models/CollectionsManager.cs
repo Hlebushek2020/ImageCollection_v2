@@ -13,11 +13,12 @@ namespace ImageCollection.Models
     {
         #region Fields
         private readonly HashSet<string> _collectionNames = new HashSet<string>();
+        private readonly CollectionsHotkeyManager _hotkeyManager = new CollectionsHotkeyManager();
         #endregion
 
         #region Properties
         public string RootDirectory { get; private set; }
-        public CollectionsHotkeyManager HotkeyManager => new CollectionsHotkeyManager();
+        public CollectionsHotkeyManager HotkeyManager => _hotkeyManager;
         public ObservableCollection<IImageCollection> Collections { get; private set; } = new ObservableCollection<IImageCollection>();
         public IImageCollection DefaultCollection { get; private set; }
         #endregion
@@ -155,7 +156,7 @@ namespace ImageCollection.Models
                     }
                 }
                 App.Current.Dispatcher.Invoke(() => Collections.Remove(collection));
-                HotkeyManager.Remove(collection.Hotkey);
+                _hotkeyManager.Remove(collection.Hotkey);
                 _collectionNames.Remove(collection.Name.ToLower());
             };
             ProgressWindow progressWindow = new ProgressWindow(progressViewModel);
