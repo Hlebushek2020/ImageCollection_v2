@@ -181,7 +181,7 @@ namespace ImageCollection.Models
                             App.Current.Dispatcher.Invoke((Action<string>)((string _previewPath) =>
                             {
                                 collectionItem.Preview = IcUtils.GetThumbnail(_previewPath);
-                            }), previewPath);
+                            }), TimeSpan.FromMilliseconds(500), previewPath);
                         }
                     }
                 }, token);
