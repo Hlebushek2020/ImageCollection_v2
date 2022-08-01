@@ -55,7 +55,13 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>appIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MetadataExtractor, Version=2.7.2.0, Culture=neutral, PublicKeyToken=b66b5ccaf776c301, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetadataExtractor.2.7.2\lib\net45\MetadataExtractor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -74,6 +80,8 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -86,13 +94,44 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XmpCore, Version=6.1.10.1, Culture=neutral, PublicKeyToken=961f4f366277b80e, processorArchitecture=MSIL">
+      <HintPath>..\packages\XmpCore.6.1.10.1\lib\net35\XmpCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProgressWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditHotkeyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CollectionHotkeysWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CollectionSelectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RenameFilesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddOrRenameCollectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -100,12 +139,58 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Exceptions\UnrecognizedImageFormatException.cs" />
+    <Compile Include="Interfaces\IWorkProgress.cs" />
+    <Compile Include="Models\IcdFile.cs" />
+    <Compile Include="Utils\IcUtils.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ProgressViewModel.cs" />
+    <Compile Include="Views\ProgressWindow.xaml.cs">
+      <DependentUpon>ProgressWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\EditHotkeyViewModel.cs" />
+    <Compile Include="Views\EditHotkeyWindow.xaml.cs">
+      <DependentUpon>EditHotkeyWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\CollectionHotkeysViewModel.cs" />
+    <Compile Include="Views\CollectionHotkeysWindow.xaml.cs">
+      <DependentUpon>CollectionHotkeysWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IImageCollectionItemMover.cs" />
+    <Compile Include="Models\CollectionItemMover.cs" />
+    <Compile Include="Models\CollectionsHotkeyManager.cs" />
+    <Compile Include="Models\Structures\Hotkey.cs" />
+    <Compile Include="ViewModels\RenameFilesViewModel.cs" />
+    <Compile Include="ViewModels\CollectionSelectionViewModel.cs" />
+    <Compile Include="Views\CollectionSelectionWindow.xaml.cs">
+      <DependentUpon>CollectionSelectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CollectionItem.cs" />
+    <Compile Include="Views\RenameFilesWindow.xaml.cs">
+      <DependentUpon>RenameFilesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AddOrRenameCollectionViewModel.cs" />
+    <Compile Include="Views\AddOrRenameCollectionWindow.xaml.cs">
+      <DependentUpon>AddOrRenameCollectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Interfaces\IImageCollection.cs" />
+    <Compile Include="Interfaces\IImageCollectionItem.cs" />
+    <Compile Include="Interfaces\IImageCollectionsManager.cs" />
+    <Compile Include="Interfaces\IWindowTitle.cs" />
+    <Compile Include="Models\Collection.cs" />
+    <Compile Include="Models\CollectionsManager.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -131,6 +216,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="appIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\menu-edit-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\menu-reset-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\defaultImage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
