@@ -2,11 +2,14 @@
 using ImageCollection.ViewModels;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using ImageCollection.Models;
+using SUID = Sergey.UI.Extension.Dialogs;
 
 namespace ImageCollection
 {
@@ -26,35 +29,48 @@ namespace ImageCollection
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (_viewModel.CollectionsManager != null)
+            IImageCollection toCollection =
+                _viewModel.CollectionsManager?.HotkeyManager.GetCollectionByHotkeys(e.KeyboardDevice.Modifiers,
+                    e.Key);
+            if (toCollection != null && _viewModel.SelectedCollection != null)
             {
-                IImageCollection toCollection = _viewModel.CollectionsManager.HotkeyManager.GetCollectionByHotkeys(e.KeyboardDevice.Modifiers, e.Key);
-                if (toCollection != null && _viewModel.SelectedCollection != null)
-                {
-                    int currentIndex = listBox_CollectionItems.SelectedIndex;
-                    _viewModel.CollectionsManager.ToCollection(_viewModel.SelectedCollection, toCollection);
-                    listBox_CollectionItems.Items.MoveCurrentToPosition(Math.Min(currentIndex, listBox_CollectionItems.Items.Count - 1));
-                }
+                int currentIndex = listBox_CollectionItems.SelectedIndex;
+                _viewModel.CollectionsManager.ToCollection(_viewModel.SelectedCollection, toCollection);
+                listBox_CollectionItems.Items.MoveCurrentToPosition(Math.Min(currentIndex,
+                    listBox_CollectionItems.Items.Count - 1));
             }
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             _viewModel.SelectedCollection?.StopInitPreviewImages(true);
+
+            if (_viewModel.CollectionsManager != null)
+            {
+                Session session = new Session
+                {
+                    BaseDirectory = _viewModel.CollectionsManager.RootDirectory,
+                    Collection = _viewModel.SelectedCollection?.Name,
+                    Item = _viewModel.SelectedCollectionItem?.Name
+                };
+                session.Save();
+            }
         }
 
-        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e) => PreparationOfImageDisplayElement();
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e) =>
+            PreparationOfImageDisplayElement();
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => PreparationOfImageDisplayElement();
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) =>
+            PreparationOfImageDisplayElement();
 
         private void PreparationOfImageDisplayElement()
         {
             if (image_Image.Source != null && image_Image.Width != 0)
             {
-                double actualWidth = ((Grid)image_Image.Parent).ActualWidth;
-                double actualHeight = ((Grid)image_Image.Parent).ActualHeight;
-                double pixelWidth = ((BitmapImage)image_Image.Source).PixelWidth;
-                double pixelHeight = ((BitmapImage)image_Image.Source).PixelHeight;
+                double actualWidth = ((Grid) image_Image.Parent).ActualWidth;
+                double actualHeight = ((Grid) image_Image.Parent).ActualHeight;
+                double pixelWidth = ((BitmapImage) image_Image.Source).PixelWidth;
+                double pixelHeight = ((BitmapImage) image_Image.Source).PixelHeight;
                 if (pixelWidth < actualWidth && pixelHeight < actualHeight)
                 {
                     image_Image.Height = pixelHeight;
@@ -86,6 +102,19 @@ namespace ImageCollection
                 }
                 listBox_CollectionItems.ScrollIntoView(listBox_CollectionItems.SelectedItem);
                 e.Handled = true;
+            }
+        }
+
+        private void Window_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (Session.AvailabilityOfSaving())
+            {
+                Session session = Session.Load();
+                if (Directory.Exists(session.BaseDirectory) && SUID.MessageBox.Show("Загрузить последнюю сессию?",
+                        App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    _viewModel.LoadSession(session);
+                }
             }
         }
     }
