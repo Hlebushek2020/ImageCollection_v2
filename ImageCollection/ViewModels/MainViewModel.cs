@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -84,6 +86,7 @@ namespace ImageCollection.ViewModels
                 }
                 RaisePropertyChanged();
                 ToCollection.RaiseCanExecuteChanged();
+                SearchInInternet.RaiseCanExecuteChanged();
                 RemoveSelectedFiles.RaiseCanExecuteChanged();
                 RenameSelectedFiles.RaiseCanExecuteChanged();
             }
@@ -104,6 +107,7 @@ namespace ImageCollection.ViewModels
         public DelegateCommand OpenFolder { get; }
         public DelegateCommand RemoveSelectedFiles { get; }
         public DelegateCommand RenameSelectedFiles { get; }
+        public DelegateCommand SearchInInternet { get; }
         public DelegateCommand ToCollection { get; }
         public DelegateCommand CreateCollection { get; }
         public DelegateCommand RenameCollection { get; }
@@ -178,6 +182,30 @@ namespace ImageCollection.ViewModels
                     collectionView.MoveCurrentToPosition(Math.Min(currentIndex, _selectedCollection.Items.Count - 1));
                 }
             }, () => _selectedCollectionItem != null);
+            SearchInInternet = new DelegateCommand(() =>
+                {
+                    try
+                    {
+                        string currentFile = Path.Combine(_selectedCollection.GetCollectionDirectory(),
+                            _selectedCollectionItem.Name);
+                        string searchCommand = string.Format(Models.Settings.Current.SearchCommand, currentFile);
+                        int startIndex = searchCommand[0] == '"' ? 1 : 0;
+                        int endIndex = searchCommand.IndexOf(".exe");
+                        int argStartIndex = searchCommand[endIndex + 4] == '"' ? endIndex + 5 : endIndex + 4;
+                        Process.Start(new ProcessStartInfo
+                        {
+                            FileName = searchCommand.Substring(startIndex, endIndex + 3).Trim(),
+                            Arguments = searchCommand.Substring(argStartIndex).Trim()
+                        });
+                    }
+                    catch
+                    {
+                        SUID.MessageBox.Show("Невозможно выполнить команду поиска, проверьте ее правильность!",
+                            App.Name, MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
+                },
+                () => _selectedCollectionItem != null &&
+                      !string.IsNullOrWhiteSpace(Models.Settings.Current.SearchCommand));
             RenameSelectedFiles = new DelegateCommand(() =>
             {
                 IReadOnlyList<IImageCollectionItem> selectedFiles =

@@ -35,8 +35,8 @@
         </GroupBox>
         <GroupBox Header="Поиск" FontWeight="Medium" Margin="0,5,0,0" VerticalAlignment="Top">
             <StackPanel Margin="5" Orientation="Vertical">
-                <TextBlock FontWeight="Normal" HorizontalAlignment="Left" Margin="0,4,0,0" TextWrapping="Wrap" Text="Команда для поиска (в команде должен присутствовать символ подстановки - {0}, для замены его на путь к файлу):" VerticalAlignment="Top"/>
-                <TextBox Margin="0,5,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Text="{Binding SearchCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock FontWeight="Normal" HorizontalAlignment="Left" Margin="0,4,0,0" TextWrapping="Wrap" Text="Команда поиска (в команде должен присутствовать символ подстановки - {0}, для замены его на путь к файлу):" VerticalAlignment="Top"/>
+                <TextBox FontWeight="Normal" Margin="0,5,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Text="{Binding SearchCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </GroupBox>
         <Grid Margin="0,10,0,0" VerticalAlignment="Top">
