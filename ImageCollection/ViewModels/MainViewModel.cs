@@ -79,7 +79,8 @@ namespace ImageCollection.ViewModels
                 _selectedCollectionItem = value;
                 if (_selectedCollectionItem != null)
                 {
-                    ImageOfSelectedCollectionItem = _selectedCollection.GetImageOfCollectionItem(_selectedCollectionItem);
+                    ImageOfSelectedCollectionItem =
+                        _selectedCollection.GetImageOfCollectionItem(_selectedCollectionItem);
                 }
                 RaisePropertyChanged();
                 ToCollection.RaiseCanExecuteChanged();
@@ -120,7 +121,8 @@ namespace ImageCollection.ViewModels
         {
             OpenFolder = new DelegateCommand(() =>
             {
-                System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+                System.Windows.Forms.FolderBrowserDialog folderBrowserDialog =
+                    new System.Windows.Forms.FolderBrowserDialog();
                 if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     _selectedCollection?.StopInitPreviewImages();
@@ -135,12 +137,14 @@ namespace ImageCollection.ViewModels
             }, () => _collectionsManager != null);
             RenameCollection = new DelegateCommand(() =>
             {
-                AddOrRenameCollectionWindow collectionEdit = new AddOrRenameCollectionWindow(_collectionsManager, _selectedCollection);
+                AddOrRenameCollectionWindow collectionEdit =
+                    new AddOrRenameCollectionWindow(_collectionsManager, _selectedCollection);
                 collectionEdit.ShowDialog();
             }, () => _selectedCollection != null && _selectedCollection != _collectionsManager.DefaultCollection);
             RemoveCollection = new DelegateCommand(() =>
             {
-                if (SUID.MessageBox.Show($"Удалить коллекцию \"{_selectedCollection.Name}\"?", App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (SUID.MessageBox.Show($"Удалить коллекцию \"{_selectedCollection.Name}\"?", App.Name,
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     _collectionsManager.Remove(_selectedCollection);
                     SelectedCollection = CollectionsManager.DefaultCollection;
@@ -148,20 +152,23 @@ namespace ImageCollection.ViewModels
             }, () => _selectedCollection != null && _selectedCollection != _collectionsManager.DefaultCollection);
             RemoveSelectedFiles = new DelegateCommand(() =>
             {
-                IReadOnlyList<IImageCollectionItem> selectedItems = _selectedCollection.Items.Where(item => item.IsSelected).ToList();
+                IReadOnlyList<IImageCollectionItem> selectedItems =
+                    _selectedCollection.Items.Where(item => item.IsSelected).ToList();
                 string message = "Удалить выбранные файлы?";
                 if (selectedItems.Count == 1)
                 {
                     message = $"Удалить {selectedItems[0].Name}?";
                 }
-                if (SUID.MessageBox.Show(message, App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (SUID.MessageBox.Show(message, App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) ==
+                    MessageBoxResult.Yes)
                 {
                     _selectedCollection.RemoveFiles(selectedItems);
                 }
             }, () => _selectedCollectionItem != null);
             ToCollection = new DelegateCommand(() =>
             {
-                CollectionSelectionWindow collectionSelection = new CollectionSelectionWindow(_collectionsManager, _selectedCollection);
+                CollectionSelectionWindow collectionSelection =
+                    new CollectionSelectionWindow(_collectionsManager, _selectedCollection);
                 bool? result = collectionSelection.ShowDialog();
                 if (result.HasValue && result.Value)
                 {
@@ -173,7 +180,8 @@ namespace ImageCollection.ViewModels
             }, () => _selectedCollectionItem != null);
             RenameSelectedFiles = new DelegateCommand(() =>
             {
-                IReadOnlyList<IImageCollectionItem> selectedFiles = _selectedCollection.Items.Where(ci => ci.IsSelected).ToList();
+                IReadOnlyList<IImageCollectionItem> selectedFiles =
+                    _selectedCollection.Items.Where(ci => ci.IsSelected).ToList();
                 RenameFilesWindow renameFiles = new RenameFilesWindow();
                 if (selectedFiles.Count == 1)
                 {
@@ -221,20 +229,49 @@ namespace ImageCollection.ViewModels
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
-                collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Name), ListSortDirection.Descending));
+                collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Name),
+                    ListSortDirection.Descending));
             });
             SortBySize = new DelegateCommand(() =>
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
-                collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Size), ListSortDirection.Descending));
+                collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Size),
+                    ListSortDirection.Descending));
             });
             SortByResolution = new DelegateCommand(() =>
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
-                collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Resolution), ListSortDirection.Descending));
+                collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Resolution),
+                    ListSortDirection.Descending));
             });
+        }
+
+        public void LoadSession(Session session)
+        {
+            CollectionsManager = new CollectionsManager(session.BaseDirectory);
+            bool isContinue = session.Collection.Equals(_collectionsManager.DefaultCollection.Name,
+                StringComparison.OrdinalIgnoreCase);
+            if (session.Collection != null && !isContinue)
+            {
+                IImageCollection collection = _collectionsManager.Collections.FirstOrDefault(col =>
+                    col.Name.Equals(session.Collection, StringComparison.OrdinalIgnoreCase));
+                if (collection != null)
+                {
+                    SelectedCollection = collection;
+                    isContinue = true;
+                }
+            }
+            if (session.Item != null && isContinue)
+            {
+                IImageCollectionItem collectionItem = _selectedCollection.Items.FirstOrDefault(item =>
+                    item.Name.Equals(session.Item, StringComparison.OrdinalIgnoreCase));
+                if (collectionItem != null)
+                {
+                    SelectedCollectionItem = collectionItem;
+                }
+            }
         }
     }
 }

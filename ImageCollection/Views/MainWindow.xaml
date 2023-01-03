@@ -12,7 +12,8 @@
         WindowStartupLocation="CenterScreen"
         FontSize="14"
         KeyDown="Window_KeyDown"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        Loaded="Window_OnLoaded">
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenFolder}"/>
         <KeyBinding Key="Delete" Command="{Binding RemoveSelectedFiles}"/>
