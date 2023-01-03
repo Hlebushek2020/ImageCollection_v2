@@ -47,6 +47,7 @@ namespace ImageCollection.Models
         public bool MoveItemsFromRemoveCollection { get; set; } = true;
         public bool DeleteCollectionFolder { get; set; } = true;
         public bool DeleteCollectionFolderIfEmpty { get; set; } = true;
+        public string SearchCommand { get; set; } = string.Empty;
         #endregion
 
         public void Save()

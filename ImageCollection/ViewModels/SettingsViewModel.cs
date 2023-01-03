@@ -16,6 +16,7 @@ namespace ImageCollection.ViewModels
         public bool MoveItemsFromRemoveCollection { get; set; } = Settings.Current.MoveItemsFromRemoveCollection;
         public bool DeleteCollectionFolder { get; set; } = Settings.Current.DeleteCollectionFolder;
         public bool DeleteCollectionFolderIfEmpty { get; set; } = Settings.Current.DeleteCollectionFolderIfEmpty;
+        public string SearchCommand { get; set; } = Settings.Current.SearchCommand;
         #endregion
 
         #region Commands
@@ -31,6 +32,7 @@ namespace ImageCollection.ViewModels
                 Settings.Current.MoveItemsFromRemoveCollection = MoveItemsFromRemoveCollection;
                 Settings.Current.DeleteCollectionFolder = DeleteCollectionFolder;
                 Settings.Current.DeleteCollectionFolderIfEmpty = DeleteCollectionFolderIfEmpty;
+                Settings.Current.SearchCommand = SearchCommand;
                 App.SwitchTheme(SelectedTheme.Value);
                 Settings.Current.Save();
                 w.Close();
