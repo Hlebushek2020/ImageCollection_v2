@@ -39,6 +39,10 @@ namespace ImageCollection.ViewModels
                 CollectionHotkeys.RaiseCanExecuteChanged();
                 Collections = _collectionsManager.Collections;
                 SelectedCollection = _collectionsManager.DefaultCollection;
+                ResetSorting.RaiseCanExecuteChanged();
+                SortByName.RaiseCanExecuteChanged();
+                SortBySize.RaiseCanExecuteChanged();
+                SortByResolution.RaiseCanExecuteChanged();
             }
         }
 
@@ -57,19 +61,13 @@ namespace ImageCollection.ViewModels
             get { return _selectedCollection; }
             set
             {
-                if (_selectedCollection != null)
-                {
-                    _selectedCollection.StopInitPreviewImages();
-                }
+                _selectedCollection?.StopInitPreviewImages();
                 _selectedCollection = value;
                 RaisePropertyChanged();
                 RenameCollection.RaiseCanExecuteChanged();
                 RemoveCollection.RaiseCanExecuteChanged();
                 RenameCollectionFiles.RaiseCanExecuteChanged();
-                if (_selectedCollection != null)
-                {
-                    _selectedCollection.InitPreviewImages();
-                }
+                _selectedCollection?.InitPreviewImages();
             }
         }
 
@@ -252,28 +250,28 @@ namespace ImageCollection.ViewModels
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
-            });
+            }, () => _selectedCollection != null);
             SortByName = new DelegateCommand(() =>
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
                 collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Name),
                     ListSortDirection.Descending));
-            });
+            }, () => _selectedCollection != null);
             SortBySize = new DelegateCommand(() =>
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
                 collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Size),
                     ListSortDirection.Descending));
-            });
+            }, () => _selectedCollection != null);
             SortByResolution = new DelegateCommand(() =>
             {
                 ICollectionView collectionView = CollectionViewSource.GetDefaultView(_selectedCollection.Items);
                 collectionView.SortDescriptions.Clear();
                 collectionView.SortDescriptions.Add(new SortDescription(nameof(IImageCollectionItem.Resolution),
                     ListSortDirection.Descending));
-            });
+            }, () => _selectedCollection != null);
         }
 
         public void LoadSession(Session session)
