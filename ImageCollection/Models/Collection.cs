@@ -28,7 +28,8 @@ namespace ImageCollection.Models
 
         #region Properties
         public Guid Id { get; }
-        public ObservableCollection<IImageCollectionItem> Items { get; } = new ObservableCollection<IImageCollectionItem>();
+        public ObservableCollection<IImageCollectionItem> Items { get; } =
+            new ObservableCollection<IImageCollectionItem>();
 
         public string Name
         {
@@ -87,7 +88,8 @@ namespace ImageCollection.Models
 
         public bool CheckingNewFileName(IImageCollectionItem collectionItem, string newName)
         {
-            string filePath = Path.Combine(GetCollectionDirectory(), $"{newName}.{Path.GetExtension(collectionItem.Name)}");
+            string filePath = Path.Combine(GetCollectionDirectory(),
+                $"{newName}.{Path.GetExtension(collectionItem.Name)}");
             return File.Exists(filePath);
         }
 
@@ -105,7 +107,7 @@ namespace ImageCollection.Models
         {
             StopInitPreviewImages(true);
             ProgressViewModel progressView = new ProgressViewModel();
-            progressView.DoWork += delegate (IWorkProgress progress)
+            progressView.DoWork += delegate(IWorkProgress progress)
             {
                 progress.State = "Подготовка";
                 string directoryPath = GetCollectionDirectory();
@@ -151,7 +153,8 @@ namespace ImageCollection.Models
 
         public void InitPreviewImages()
         {
-            if (Items.Count != 0 && (!_isPreviousCompleted || _taskInitPreviewImages == null || _taskInitPreviewImages.IsCompleted))
+            if (Items.Count != 0 && (!_isPreviousCompleted || _taskInitPreviewImages == null ||
+                                     _taskInitPreviewImages.IsCompleted))
             {
                 _ctsInitPreviewImages = new CancellationTokenSource();
                 CancellationToken token = _ctsInitPreviewImages.Token;
@@ -168,7 +171,8 @@ namespace ImageCollection.Models
                         }
                         if (!collectionItem.IsPreview)
                         {
-                            string previewPath = Path.Combine(previewDirectory, $"{Path.GetFileNameWithoutExtension(collectionItem.Name)}.jpg");
+                            string previewPath = Path.Combine(previewDirectory,
+                                $"{Path.GetFileNameWithoutExtension(collectionItem.Name)}.jpg");
                             if (!File.Exists(previewPath))
                             {
                                 string originalPath = Path.Combine(collectionDirectory, collectionItem.Name);
@@ -178,10 +182,11 @@ namespace ImageCollection.Models
                             {
                                 return;
                             }
-                            App.Current.Dispatcher.Invoke((Action<string>)((string _previewPath) =>
-                            {
-                                collectionItem.Preview = IcUtils.GetThumbnail(_previewPath);
-                            }), TimeSpan.FromMilliseconds(500), previewPath);
+                            App.Current.Dispatcher.Invoke(
+                                (Action<string>)((string _previewPath) =>
+                                {
+                                    collectionItem.Preview = IcUtils.GetThumbnail(_previewPath);
+                                }), TimeSpan.FromMilliseconds(500), previewPath);
                         }
                     }
                 }, token);
@@ -210,15 +215,12 @@ namespace ImageCollection.Models
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        public void SaveHotkey() => IcdFile.WriteHotkey(Path.Combine(GetCollectionDirectory(), Settings.IcdFileName), this);
+        public void SaveHotkey() =>
+            IcdFile.WriteHotkey(Path.Combine(GetCollectionDirectory(), Settings.IcdFileName), this);
 
-        public string GetCollectionDirectory()
-        {
-            if (!Equals(_collectionsManager.DefaultCollection))
-            {
-                return Path.Combine(_collectionsManager.RootDirectory, Name);
-            }
-            return _collectionsManager.RootDirectory;
-        }
+        public string GetCollectionDirectory() =>
+            !Equals(_collectionsManager.DefaultCollection)
+                ? Path.Combine(_collectionsManager.RootDirectory, Name)
+                : _collectionsManager.RootDirectory;
     }
 }
