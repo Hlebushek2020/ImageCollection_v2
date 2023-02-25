@@ -142,7 +142,7 @@ namespace ImageCollection.Models
                     {
                         progress.State = fromPath + " -> " + toPath;
                         File.Move(fromPath, toPath);
-                        ((CollectionItem)collectionItem).Name = newName;
+                        ((CollectionItem) collectionItem).Name = newName;
                     }
                 }
             };
@@ -166,24 +166,22 @@ namespace ImageCollection.Models
                     foreach (IImageCollectionItem collectionItem in Items)
                     {
                         if (token.IsCancellationRequested)
-                        {
-                            return;
-                        }
+                            break;
+
                         if (!collectionItem.IsPreview)
                         {
-                            string previewPath = Path.Combine(previewDirectory,
-                                $"{Path.GetFileNameWithoutExtension(collectionItem.Name)}.jpg");
+                            string previewPath = Path.Combine(previewDirectory, $"{collectionItem.Name}.jpg");
                             if (!File.Exists(previewPath))
                             {
                                 string originalPath = Path.Combine(collectionDirectory, collectionItem.Name);
                                 IcUtils.CreateThumbnail(originalPath, collectionItem.Resolution, previewPath);
                             }
+
                             if (token.IsCancellationRequested)
-                            {
-                                return;
-                            }
+                                break;
+
                             App.Current.Dispatcher.Invoke(
-                                (Action<string>)((string _previewPath) =>
+                                (Action<string>) ((string _previewPath) =>
                                 {
                                     collectionItem.Preview = IcUtils.GetThumbnail(_previewPath);
                                 }), TimeSpan.FromMilliseconds(500), previewPath);
