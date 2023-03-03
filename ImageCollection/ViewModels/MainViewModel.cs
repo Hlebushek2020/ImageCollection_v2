@@ -24,6 +24,7 @@ namespace ImageCollection.ViewModels
         private IImageCollection _selectedCollection;
         private ObservableCollection<IImageCollection> _collections;
         private BitmapImage _imageOfSelectedCollectionItem;
+        private Action _scrollToselectedItem;
         #endregion
 
         #region Property
@@ -64,6 +65,7 @@ namespace ImageCollection.ViewModels
                 _selectedCollection?.StopInitPreviewImages();
                 _selectedCollection = value;
                 RaisePropertyChanged();
+                _scrollToselectedItem?.Invoke();
                 RenameCollection.RaiseCanExecuteChanged();
                 RemoveCollection.RaiseCanExecuteChanged();
                 RenameCollectionFiles.RaiseCanExecuteChanged();
@@ -119,8 +121,9 @@ namespace ImageCollection.ViewModels
         public DelegateCommand SortByResolution { get; }
         #endregion
 
-        public MainViewModel()
+        public MainViewModel(Action scroll)
         {
+            _scrollToselectedItem = scroll;
             OpenFolder = new DelegateCommand(() =>
             {
                 System.Windows.Forms.FolderBrowserDialog folderBrowserDialog =

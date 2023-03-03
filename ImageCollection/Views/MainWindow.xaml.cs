@@ -23,7 +23,11 @@ namespace ImageCollection
         public MainWindow()
         {
             InitializeComponent();
-            _viewModel = new MainViewModel();
+            _viewModel = new MainViewModel(() =>
+            {
+                if (listBox_CollectionItems.SelectedItem != null)
+                    listBox_CollectionItems.ScrollIntoView(listBox_CollectionItems.SelectedItem);
+            });
             DataContext = _viewModel;
         }
 
