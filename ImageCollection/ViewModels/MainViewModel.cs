@@ -191,7 +191,7 @@ namespace ImageCollection.ViewModels
                             _selectedCollectionItem.Name);
                         string searchCommand = string.Format(Models.Settings.Current.SearchCommand, currentFile);
                         int startIndex = searchCommand[0] == '"' ? 1 : 0;
-                        int endIndex = searchCommand.IndexOf(".exe");
+                        int endIndex = searchCommand.IndexOf(".exe", StringComparison.Ordinal);
                         int argStartIndex = searchCommand[endIndex + 4] == '"' ? endIndex + 5 : endIndex + 4;
                         Process.Start(new ProcessStartInfo
                         {
